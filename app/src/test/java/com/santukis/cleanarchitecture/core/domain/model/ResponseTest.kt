@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.core.model
+package com.santukis.cleanarchitecture.core.domain.model
 
 import org.junit.Assert.*
 import org.junit.Test

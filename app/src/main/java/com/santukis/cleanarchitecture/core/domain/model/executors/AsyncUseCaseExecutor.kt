@@ -1,8 +1,8 @@
-package com.santukis.cleanarchitecture.core.model.executors
+package com.santukis.cleanarchitecture.core.domain.model.executors
 
-import com.santukis.cleanarchitecture.core.model.Executor
-import com.santukis.cleanarchitecture.core.model.Response
-import com.santukis.cleanarchitecture.core.model.UseCase
+import com.santukis.cleanarchitecture.core.domain.model.Executor
+import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.core.domain.model.UseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch

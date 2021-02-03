@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.core.model
+package com.santukis.cleanarchitecture.core.domain.model
 
 sealed class Response<Item> {
 
