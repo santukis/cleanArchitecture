@@ -2,10 +2,7 @@ package com.santukis.cleanarchitecture.core.domain.model
 
 interface Executor {
 
-    fun <Params, Result> execute(useCase: UseCase<Params, Result>,
+    fun <Params, Response> execute(useCase: UseCase<Params, Response>,
                                  params: Params,
-                                 onResult: (Response<Result>) -> Unit = {})
-
-    suspend fun <Params, Result> execute(useCase: UseCase<Params, Result>,
-                                         params: Params): Response<Result>
+                                 onResult: (Result<Response>) -> Unit = {})
 }

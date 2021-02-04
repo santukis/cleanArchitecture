@@ -2,7 +2,7 @@ package com.santukis.cleanarchitecture.core.domain.model
 
 import kotlinx.coroutines.flow.Flow
 
-interface UseCase<Params, Result> {
+interface UseCase<Params, Response> {
 
-    fun run(params: Params): Flow<Response<Result>>
+    fun run(params: Params): Flow<Result<Response>>
 }
