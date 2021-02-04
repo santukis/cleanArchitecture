@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.core.data.remote
 
 import com.santukis.cleanarchitecture.BuildConfig
+import com.santukis.cleanarchitecture.artwork.data.remote.ArtworkService
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,6 +31,8 @@ class HttpClient(host: String) {
             .baseUrl(host)
             .addConverterFactory(MoshiConverterFactory.create(jsonConverter))
             .build()
+
+    val artworkService: ArtworkService = retrofit.create(ArtworkService::class.java)
 }
 
 inline fun <Item, Success> Call<Item>.unwrapCall(success: Item.() -> Success?, error: String.() -> Throwable) =
