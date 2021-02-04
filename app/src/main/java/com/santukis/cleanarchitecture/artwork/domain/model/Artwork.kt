@@ -1,13 +1,12 @@
 package com.santukis.cleanarchitecture.artwork.domain.model
 
-import org.threeten.bp.LocalDate
-
 data class Artwork(
     val id: String,
     val title: String = "",
     val description: String = "",
     val author: String = "",
-    val date: LocalDate? = null,
+    val year: Int = 0,
+    val dimensions: String = "",
     val image: String = "",
     val colors: List<Color> = emptyList()
 ) {
