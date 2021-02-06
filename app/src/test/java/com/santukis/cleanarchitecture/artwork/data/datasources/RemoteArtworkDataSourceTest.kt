@@ -36,7 +36,7 @@ class RemoteArtworkDataSourceTest {
     }
 
     @Test
-    fun loadArtworksShouldReturnSuccessWhenResponseIsOk() {
+    fun `loadArtworks should return success when response is Ok`() {
         mockWebServer.enqueue(MockResponse().setBody(ArtworkDataProvider.artWorkResponseMultipleItems))
 
         runBlocking {
@@ -62,7 +62,7 @@ class RemoteArtworkDataSourceTest {
     }
 
     @Test
-    fun loadArtworksShouldReturnErrorWhenResponseIsFail() {
+    fun `loadArtworks should return error when response is fail`() {
         mockWebServer.enqueue(MockResponse().setResponseCode(500))
 
         runBlocking {
@@ -74,7 +74,7 @@ class RemoteArtworkDataSourceTest {
     }
 
     @Test
-    fun loadArtworksShouldBuildTheRequestSuccessfullyWhenLastItemIsDefault() {
+    fun `loadArtworks should build the request successfully when lastItem is default`() {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
@@ -86,7 +86,7 @@ class RemoteArtworkDataSourceTest {
     }
 
     @Test
-    fun loadArtworksShouldBuildTheRequestSuccessfullyWhenLastItemIsNotDefault() {
+    fun `loadArtworks should build the request successfully when lastItem is not default`() {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
