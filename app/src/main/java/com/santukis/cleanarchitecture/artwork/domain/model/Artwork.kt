@@ -9,8 +9,7 @@ data class Artwork(
     val dimensions: List<Dimension> = emptyList(),
     val image: String = "",
     val colors: List<Color> = emptyList()
-) {
-}
+)
 
 data class Dating(
     val year: Int = 0,
@@ -32,6 +31,8 @@ sealed class Dimension(
     class Width(value: Double, unit: MeasureUnit): Dimension(value, unit)
 
     class Weight(value: Double, unit: MeasureUnit): Dimension(value, unit)
+
+    class Unknown(value: Double, unit: MeasureUnit): Dimension(value, unit)
 
 }
 
