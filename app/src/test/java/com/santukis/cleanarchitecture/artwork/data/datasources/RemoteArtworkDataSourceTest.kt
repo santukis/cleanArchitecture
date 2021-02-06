@@ -6,6 +6,9 @@ import com.santukis.cleanarchitecture.artwork.domain.model.Dating
 import com.santukis.cleanarchitecture.artwork.domain.model.Dimension
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.model.Response
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -40,8 +43,10 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setBody(ArtworkDataProvider.artWorkResponseMultipleItems))
 
         runBlocking {
-            when (val response = artworkDataSource.loadArtworks()) {
-                is Response.Success -> {
+            artworkDataSource.loadArtworks()
+                .catch { fail() }
+                .collect {
+                    val response = it as Response.Success
                     assertEquals(2, response.data.size)
 
                     val sampleItem = response.data.getOrNull(0)
@@ -50,14 +55,14 @@ class RemoteArtworkDataSourceTest {
                     assertEquals("Portrait of a Woman, Possibly Maria Trip", sampleItem?.title)
                     assertEquals("", sampleItem?.description)
                     assertEquals("Rembrandt van Rijn", sampleItem?.author)
-                    assertEquals("https://lh3.googleusercontent.com/AyiKhdEWJ7XmtPXQbRg_kWqKn6mCV07bsuUB01hJHjVVP-ZQFmzjTWt7JIWiQFZbb9l5tKFhVOspmco4lMwqwWImfgg=s0", sampleItem?.image)
+                    assertEquals(
+                        "https://lh3.googleusercontent.com/AyiKhdEWJ7XmtPXQbRg_kWqKn6mCV07bsuUB01hJHjVVP-ZQFmzjTWt7JIWiQFZbb9l5tKFhVOspmco4lMwqwWImfgg=s0",
+                        sampleItem?.image
+                    )
                     assertEquals(Dating.EMPTY, sampleItem?.dating)
                     assertEquals(emptyList<Dimension>(), sampleItem?.dimensions)
                     assertEquals(emptyList<Color>(), sampleItem?.colors)
-
                 }
-                else -> fail("Success should be called")
-            }
         }
     }
 
@@ -66,10 +71,9 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(500))
 
         runBlocking {
-            when (val response = artworkDataSource.loadArtworks()) {
-                is Response.Success -> fail("Error should be called")
-                is Response.Error -> assertEquals("Server Error", response.error.message)
-            }
+            artworkDataSource.loadArtworks()
+                .catch { error -> assertEquals("Server Error", error.message) }
+                .single()
         }
     }
 
