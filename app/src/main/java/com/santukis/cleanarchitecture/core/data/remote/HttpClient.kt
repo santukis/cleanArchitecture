@@ -40,7 +40,7 @@ inline fun <Item, Success> Response<Item>.unwrapResponse(success: Item.() -> Suc
     try {
         when(isSuccessful) {
             true -> body()?.success()
-            false -> message()?.error() ?: "Unknown error".error()
+            false -> message().error() ?: "Unknown error".error()
         }
 
     } catch (exception: Exception) {

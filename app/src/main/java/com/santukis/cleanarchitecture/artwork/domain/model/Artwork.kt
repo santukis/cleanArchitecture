@@ -34,6 +34,8 @@ sealed class Dimension(
 
     class Width(value: Double, unit: MeasureUnit): Dimension(value, unit)
 
+    class Depth(value: Double, unit: MeasureUnit): Dimension(value, unit)
+
     class Weight(value: Double, unit: MeasureUnit): Dimension(value, unit)
 
     class Unknown(value: Double, unit: MeasureUnit): Dimension(value, unit)
