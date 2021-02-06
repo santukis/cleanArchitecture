@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.squareup.moshi.Moshi
 import org.junit.Assert.*
 import org.junit.Before
@@ -60,5 +61,21 @@ class ArtworkDtoParsing {
         assertEquals("SK-C-6", item?.id)
         assertNull(item?.title)
         assertNull(item?.description)
+    }
+
+    @Test
+    fun toArtWorkShouldReturnDefaultValuesWhenDtoValuesAreNull() {
+        val artworkDto = ArtworkDto(
+            id = null,
+            title = null,
+            description = null,
+            image = null,
+            dating = null,
+            author = null,
+            dimensions = null,
+            colors = null
+        )
+
+        assertEquals(Artwork.EMPTY, artworkDto.toArtwork())
     }
 }

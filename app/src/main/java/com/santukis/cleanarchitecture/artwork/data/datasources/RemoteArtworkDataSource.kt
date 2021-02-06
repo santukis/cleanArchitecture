@@ -4,7 +4,7 @@ import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.remote.ArtworkDto
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
-import com.santukis.cleanarchitecture.core.data.remote.unwrapCall
+import com.santukis.cleanarchitecture.core.data.remote.unwrapResponse
 import com.santukis.cleanarchitecture.core.domain.model.Response
 
 class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSource {
@@ -20,7 +20,7 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
                 "ps" to MAX_ITEM_SIZE.toString(),
                 "p" to (lastItem / MAX_ITEM_SIZE).toString()
             )
-        ).unwrapCall(success = { items }, error = { Exception(this) })
+        ).unwrapResponse(success = { items }, error = { Exception(this) })
 
         when(response) {
             is Throwable -> Response.Error(response)

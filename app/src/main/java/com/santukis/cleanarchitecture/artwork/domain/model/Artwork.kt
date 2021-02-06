@@ -1,7 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.domain.model
 
 data class Artwork(
-    val id: String,
+    val id: String = "",
     val title: String = "",
     val description: String = "",
     val author: String = "",
@@ -9,7 +9,11 @@ data class Artwork(
     val dimensions: List<Dimension> = emptyList(),
     val image: String = "",
     val colors: List<Color> = emptyList()
-)
+) {
+    companion object {
+        val EMPTY = Artwork()
+    }
+}
 
 data class Dating(
     val year: Int = 0,
