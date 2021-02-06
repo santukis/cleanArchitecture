@@ -17,8 +17,8 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
         val response = client.artworkService.loadArtworks(
             apiKey = BuildConfig.API_KEY,
             fields = mapOf(
-                "ps" to MAX_ITEM_SIZE,
-                "p" to lastItem / MAX_ITEM_SIZE
+                "ps" to MAX_ITEM_SIZE.toString(),
+                "p" to (lastItem / MAX_ITEM_SIZE).toString()
             )
         ).unwrapCall(success = { items }, error = { Exception(this) })
 
