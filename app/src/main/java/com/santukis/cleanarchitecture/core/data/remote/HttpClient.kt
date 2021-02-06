@@ -3,6 +3,7 @@ package com.santukis.cleanarchitecture.core.data.remote
 import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.remote.ArtworkService
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -23,7 +24,9 @@ class HttpClient(host: String) {
             })
             .build()
 
-    private val jsonConverter = Moshi.Builder().build()
+    private val jsonConverter = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
 
     private val retrofit: Retrofit =
         Retrofit.Builder()
