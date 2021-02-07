@@ -6,9 +6,7 @@ import com.santukis.cleanarchitecture.artwork.domain.model.Dating
 import com.santukis.cleanarchitecture.artwork.domain.model.Dimension
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -45,11 +43,12 @@ class RemoteArtworkDataSourceTest {
         runBlocking {
             artworkDataSource.loadArtworks()
                 .catch { fail() }
+                .onEmpty { fail() }
                 .collect {
-                    val response = it as Response.Success
-                    assertEquals(2, response.data.size)
+                    val response = it
+                    assertEquals(2, response.size)
 
-                    val sampleItem = response.data.getOrNull(0)
+                    val sampleItem = response.getOrNull(0)
                     assertNotNull(sampleItem)
                     assertEquals("SK-C-597", sampleItem?.id)
                     assertEquals("Portrait of a Woman, Possibly Maria Trip", sampleItem?.title)
@@ -72,8 +71,12 @@ class RemoteArtworkDataSourceTest {
 
         runBlocking {
             artworkDataSource.loadArtworks()
-                .catch { error -> assertEquals("Server Error", error.message) }
-                .single()
+                .onEmpty {
+                    assertEquals(1, 1)
+                }
+                .collect {
+                    fail()
+                }
         }
     }
 
