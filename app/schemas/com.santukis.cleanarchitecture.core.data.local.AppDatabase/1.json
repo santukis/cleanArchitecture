@@ -1,0 +1,239 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d992e8404db14c0d1fdadd6b12db9c2d",
+    "entities": [
+      {
+        "tableName": "artworks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `author` TEXT NOT NULL, `image` TEXT NOT NULL, `_dating_year` INTEGER NOT NULL, `_dating_started` INTEGER NOT NULL, `_dating_finished` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "author",
+            "columnName": "author",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dating.year",
+            "columnName": "_dating_year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dating.started",
+            "columnName": "_dating_started",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dating.finished",
+            "columnName": "_dating_finished",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_artworks_title_title",
+            "unique": false,
+            "columnNames": [
+              "title",
+              "title"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_artworks_title_title` ON `${TABLE_NAME}` (`title`, `title`)"
+          },
+          {
+            "name": "index_artworks_author_author",
+            "unique": false,
+            "columnNames": [
+              "author",
+              "author"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_artworks_author_author` ON `${TABLE_NAME}` (`author`, `author`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "dimensions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `value` REAL NOT NULL, `type` TEXT NOT NULL, `unit` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "parentId",
+            "columnName": "parentId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unit.unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_dimensions_parentId_parentId",
+            "unique": false,
+            "columnNames": [
+              "parentId",
+              "parentId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_dimensions_parentId_parentId` ON `${TABLE_NAME}` (`parentId`, `parentId`)"
+          },
+          {
+            "name": "index_dimensions_value_value",
+            "unique": false,
+            "columnNames": [
+              "value",
+              "value"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_dimensions_value_value` ON `${TABLE_NAME}` (`value`, `value`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "artworks",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "parentId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "colors",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `percentage` INTEGER NOT NULL, `color` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "parentId",
+            "columnName": "parentId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "percentage",
+            "columnName": "percentage",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_colors_parentId_parentId",
+            "unique": false,
+            "columnNames": [
+              "parentId",
+              "parentId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_colors_parentId_parentId` ON `${TABLE_NAME}` (`parentId`, `parentId`)"
+          },
+          {
+            "name": "index_colors_color_color",
+            "unique": false,
+            "columnNames": [
+              "color",
+              "color"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_colors_color_color` ON `${TABLE_NAME}` (`color`, `color`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "artworks",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "parentId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd992e8404db14c0d1fdadd6b12db9c2d')"
+    ]
+  }
+}
