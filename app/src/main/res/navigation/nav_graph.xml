@@ -11,7 +11,9 @@
         android:label="ArtworksFragment" >
         <action
             android:id="@+id/action_artworksFragment_to_artworkDetailFragment"
-            app:destination="@id/artworkDetailFragment" />
+            app:destination="@id/artworkDetailFragment"
+            app:popUpTo="@id/artworksFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/artworkDetailFragment"

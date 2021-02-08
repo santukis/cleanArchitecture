@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface ArtworkDao: BaseDao<ArtworkDb> {
 
     @Query("SELECT * FROM artworks")
-    fun loadArtworks(): Flow<List<ArtworkDb>>?
+    fun loadArtworks(): Flow<List<ArtworkDb>>
 
 }
 

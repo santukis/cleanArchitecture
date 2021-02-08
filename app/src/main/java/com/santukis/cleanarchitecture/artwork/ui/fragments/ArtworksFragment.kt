@@ -38,7 +38,7 @@ class ArtworksFragment: Fragment(), DIAware {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentArtworksBinding.inflate(inflater)
+        binding = FragmentArtworksBinding.inflate(inflater, container, false)
         binding.recycler.adapter = artworksAdapter
         binding.recycler.addEndlessScrollListener(threshold = 3) { lastItemPosition ->
             artworkViewModel?.notifyLastVisible(lastItemPosition)
