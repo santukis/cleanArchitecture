@@ -16,6 +16,6 @@ class ArtworkRepository(
 
     suspend fun loadArtworks(): Flow<List<Artwork>> =
         localDataSource.loadArtworks()
-            .onCompletion { refreshArtworks() }
+            .onStart { refreshArtworks() }
             .catch { emit(emptyList()) }
 }
