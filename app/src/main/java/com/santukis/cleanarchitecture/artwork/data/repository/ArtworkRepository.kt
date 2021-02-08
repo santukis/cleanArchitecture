@@ -9,17 +9,13 @@ class ArtworkRepository(
     private val remoteDataSource: ArtworkDataSource
 ) {
 
-    suspend fun checkArtworks(lastItem: Int) {
-        loadArtworksFromRemote(lastItem)
+    suspend fun refreshArtworks(lastItem: Int = 0) {
+        remoteDataSource.refreshArtworks(lastItem)
+            .collect { artworks -> localDataSource.saveArtworks(artworks) }
     }
 
     suspend fun loadArtworks(): Flow<List<Artwork>> =
         localDataSource.loadArtworks()
-            .onCompletion { loadArtworksFromRemote() }
+            .onCompletion { refreshArtworks() }
             .catch { emit(emptyList()) }
-
-    private suspend fun loadArtworksFromRemote(lastItem: Int = 0) {
-        remoteDataSource.loadArtworks(lastItem)
-            .collect { artworks -> localDataSource.saveArtworks(artworks) }
-    }
 }

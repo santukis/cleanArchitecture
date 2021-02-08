@@ -10,7 +10,7 @@ import com.santukis.cleanarchitecture.artwork.data.datasources.RemoteArtworkData
 import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadArtworks
-import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadMoreArtworks
+import com.santukis.cleanarchitecture.artwork.domain.usecases.RefreshArtworks
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
@@ -35,7 +35,7 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 fun usecases() = DI.Module("usecases", allowSilentOverride = true) {
     bind<Executor>(tag = "asyncExecutor") with provider { AsyncUseCaseExecutor() }
     bind<FlowUseCase<Unit, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance()) }
-    bind<UseCase<Int, Unit>>(tag = "loadMoreArtworks") with provider { LoadMoreArtworks(instance()) }
+    bind<UseCase<Int, Unit>>(tag = "loadMoreArtworks") with provider { RefreshArtworks(instance()) }
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
