@@ -1,6 +1,8 @@
 package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.*
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Dating
 
 @Entity(
     tableName = "artworks",
