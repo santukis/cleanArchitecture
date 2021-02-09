@@ -1,23 +1,32 @@
 package com.santukis.cleanarchitecture.artwork.ui.fragments
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentArtworkDetailBinding
 
-class ArtworkDetailFragment: Fragment() {
+class ArtworkDetailFragment: BaseFragment<FragmentArtworkDetailBinding>() {
 
-    companion object {
-        const val ARTWORK_ID = "artwork_id"
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentArtworkDetailBinding =
+        FragmentArtworkDetailBinding.inflate(inflater, container, false)
+
+
+    override fun initializeViewListeners(binding: FragmentArtworkDetailBinding) {
+        super.initializeViewListeners(binding)
+
+        artworkViewModel?.artwork?.observe(viewLifecycleOwner) { response ->
+            when(response) {
+                is Response.Success -> binding.artwork = response.data
+                is Response.Error -> {}
+            }
+        }
     }
 
-    private lateinit var binding: FragmentArtworkDetailBinding
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentArtworkDetailBinding.inflate(inflater)
-
-        return binding.root
+    override fun loadData() {
+      arguments?.getString("artworkId")?.apply {
+          artworkViewModel?.loadArtworkDetail(this)
+      }
     }
 }

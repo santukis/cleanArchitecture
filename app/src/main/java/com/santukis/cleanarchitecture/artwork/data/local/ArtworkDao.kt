@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,8 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks")
     fun loadArtworks(): Flow<List<ArtworkDb>>
 
+    @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
+    fun loadArtwork(artworkId: String): Flow<ArtworkDetailDb>?
 }
 
 @Dao

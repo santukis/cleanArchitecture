@@ -18,4 +18,14 @@ class ArtworkRepository(
         localDataSource.loadArtworks()
             .onStart { refreshArtworks() }
             .catch { emit(emptyList()) }
+
+    suspend fun refreshArtwork(artworkId: String) {
+        remoteDataSource.loadArtworkDetail(artworkId)
+            .collect { artwork -> localDataSource.saveArtwork(artwork) }
+    }
+
+    suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
+        localDataSource.loadArtworkDetail(artworkId)
+            .onStart { refreshArtwork(artworkId) }
+            .catch {  }
 }

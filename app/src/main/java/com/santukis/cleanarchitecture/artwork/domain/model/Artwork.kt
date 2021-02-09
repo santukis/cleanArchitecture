@@ -6,9 +6,9 @@ data class Artwork(
     val description: String = "",
     val author: String = "",
     val dating: Dating = Dating.EMPTY,
-    val dimensions: List<Dimension> = emptyList(),
+    var dimensions: List<Dimension> = emptyList(),
     val image: String = "",
-    val colors: List<Color> = emptyList()
+    var colors: List<Color> = emptyList()
 ) {
     companion object {
         val EMPTY = Artwork()

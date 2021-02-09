@@ -9,6 +9,10 @@
             name="artwork"
             type="com.santukis.cleanarchitecture.artwork.domain.model.Artwork" />
 
+        <import
+            alias="util"
+            type="com.santukis.cleanarchitecture.core.ui.binding.CommonBinding" />
+
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -27,6 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintDimensionRatio="H,1:1"
                 android:scaleType="centerCrop"
+                app:showImage="@{artwork.image}"
                 android:adjustViewBounds="true"/>
 
             <View
@@ -57,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@id/colors"
                 android:padding="@dimen/normal_space"
                 tools:text="The Milkmaid"
-                style="@style/TextAppearance.AppCompat.Display1"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:text="@{artwork.title}"/>
 
             <androidx.appcompat.widget.AppCompatTextView

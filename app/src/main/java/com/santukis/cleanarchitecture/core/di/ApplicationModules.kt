@@ -9,6 +9,7 @@ import com.santukis.cleanarchitecture.artwork.data.datasources.LocalArtworkDataS
 import com.santukis.cleanarchitecture.artwork.data.datasources.RemoteArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadArtworkDetail
 import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadArtworks
 import com.santukis.cleanarchitecture.artwork.domain.usecases.RefreshArtworks
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
@@ -35,7 +36,8 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 fun usecases() = DI.Module("usecases", allowSilentOverride = true) {
     bind<Executor>(tag = "asyncExecutor") with provider { AsyncUseCaseExecutor() }
     bind<FlowUseCase<Unit, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance()) }
-    bind<UseCase<Int, Unit>>(tag = "loadMoreArtworks") with provider { RefreshArtworks(instance()) }
+    bind<UseCase<Int, Unit>>(tag = "refreshArtworks") with provider { RefreshArtworks(instance()) }
+    bind<FlowUseCase<String, Artwork>>(tag = "loadArtworkDetail") with provider { LoadArtworkDetail(instance()) }
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
@@ -44,7 +46,7 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
 }
 
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
-    bind<ArtworkDataSource>(tag = "local") with provider { LocalArtworkDataSource(instance()) }
-    bind<ArtworkDataSource>(tag = "remote") with provider { RemoteArtworkDataSource(instance()) }
-    bind<ArtworkRepository>() with provider { ArtworkRepository(instance("local"), instance("remote")) }
+    bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
+    bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource(instance()) }
+    bind<ArtworkRepository>() with singleton { ArtworkRepository(instance("local"), instance("remote")) }
 }

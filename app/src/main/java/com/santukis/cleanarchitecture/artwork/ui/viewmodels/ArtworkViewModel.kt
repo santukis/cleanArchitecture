@@ -23,10 +23,14 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
 
     private val executor: Executor by di.instance("asyncExecutor")
     private val loadArtworks: FlowUseCase<Unit, List<Artwork>> by di.instance("loadArtworks")
-    private val loadMoreArtworks: UseCase<Int, Unit> by di.instance("loadMoreArtworks")
+    private val refreshArtworks: UseCase<Int, Unit> by di.instance("refreshArtworks")
+    private val loadArtworkDetail: FlowUseCase<String, Artwork> by di.instance("loadArtworkDetail")
 
     private val _artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     val artworks: LiveData<Response<List<Artwork>>> = _artworks
+
+    private val _artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
+    val artwork: LiveData<Response<Artwork>> = _artwork
 
     fun loadArtworks() {
         executor.execute(loadArtworks, Unit) { response ->
@@ -38,7 +42,13 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
         _artworks.postValue(Response.Loading())
 
         viewModelScope.launch(Dispatchers.IO) {
-            executor.execute(loadMoreArtworks, lastVisible)
+            executor.execute(refreshArtworks, lastVisible)
+        }
+    }
+
+    fun loadArtworkDetail(artworkId: String) {
+        executor.execute(loadArtworkDetail, artworkId) { response ->
+            _artwork.postValue(response)
         }
     }
 }

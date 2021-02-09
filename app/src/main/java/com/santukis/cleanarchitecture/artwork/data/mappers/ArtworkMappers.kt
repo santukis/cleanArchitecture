@@ -1,7 +1,6 @@
 package com.santukis.cleanarchitecture.artwork.data.mappers
 
-import com.santukis.cleanarchitecture.artwork.data.local.ArtworkDb
-import com.santukis.cleanarchitecture.artwork.data.local.DatingDb
+import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.data.remote.ArtworkDto
 import com.santukis.cleanarchitecture.artwork.data.remote.ColorDto
 import com.santukis.cleanarchitecture.artwork.data.remote.DatingDto
@@ -51,12 +50,48 @@ fun ArtworkDb.toArtwork() =
         dating = dating.toDating()
     )
 
+fun ArtworkDb.toArtwork(dimensions: List<Dimension>, colors: List<Color>) =
+    Artwork(
+        id = id,
+        title = title,
+        description = description,
+        author = author,
+        image = image,
+        dating = dating.toDating(),
+        dimensions = dimensions,
+        colors = colors
+    )
+
 fun DatingDb.toDating() =
     Dating(
         year = year,
         started = started,
         finished = finished
     )
+
+fun DimensionDb.toDimension() =
+    when(type) {
+        Dimension.Height::class.java.name -> Dimension.Height(value = value, unit = unit.toMeasureUnit())
+        Dimension.Width::class.java.name -> Dimension.Width(value = value, unit = unit.toMeasureUnit())
+        Dimension.Depth::class.java.name -> Dimension.Depth(value = value, unit = unit.toMeasureUnit())
+        Dimension.Weight::class.java.name -> Dimension.Weight(value = value, unit = unit.toMeasureUnit())
+        else -> Dimension.Unknown(value = value, unit = unit.toMeasureUnit())
+    }
+
+fun MeasureUnitDb.toMeasureUnit() = MeasureUnit(unit)
+
+fun ColorDb.toColor() =
+    Color(
+        percentage = percentage,
+        color = color
+    )
+
+fun ArtworkDetailDb.toArtwork() =
+    artworkDb.toArtwork(
+        dimensions = dimensions.map { it.toDimension() },
+        colors = colors.map { it.toColor() }
+    )
+
 
 fun Artwork.toArtworkDb() =
     ArtworkDb(
@@ -68,9 +103,29 @@ fun Artwork.toArtworkDb() =
         dating = dating.toDatingDb()
     )
 
-private fun Dating.toDatingDb(): DatingDb =
+fun Dating.toDatingDb(): DatingDb =
     DatingDb(
         year = year,
         started = started,
         finished = finished
+    )
+
+fun Dimension.toDimensionDb(parentId: String): DimensionDb =
+    DimensionDb(
+        dimensionId = null,
+        parentId = parentId,
+        unit = unit.toMeasureUnitDb(),
+        value = value,
+        type = this::class.java.name
+    )
+
+fun MeasureUnit.toMeasureUnitDb() =
+    MeasureUnitDb(unit = unit)
+
+fun Color.toColorDb(parentId: String) =
+    ColorDb(
+        colorId = null,
+        parentId = parentId,
+        percentage = percentage,
+        color = color
     )

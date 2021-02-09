@@ -6,10 +6,10 @@ import androidx.sqlite.db.SupportSQLiteQuery
 @Dao
 interface BaseDao<Item> {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveItem(item: Item): Long
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveItems(items: List<Item>): List<Long>
 
     @Delete

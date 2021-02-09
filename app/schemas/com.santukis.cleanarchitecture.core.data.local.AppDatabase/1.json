@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d992e8404db14c0d1fdadd6b12db9c2d",
+    "identityHash": "ed55f19c0742099a32b387c4a589240b",
     "entities": [
       {
         "tableName": "artworks",
@@ -87,11 +87,11 @@
       },
       {
         "tableName": "dimensions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `value` REAL NOT NULL, `type` TEXT NOT NULL, `unit` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`dimensionId` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `value` REAL NOT NULL, `type` TEXT NOT NULL, `unit` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "dimensionId",
+            "columnName": "dimensionId",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -122,7 +122,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "dimensionId"
           ],
           "autoGenerate": true
         },
@@ -150,7 +150,7 @@
           {
             "table": "artworks",
             "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
+            "onUpdate": "CASCADE",
             "columns": [
               "parentId"
             ],
@@ -162,11 +162,11 @@
       },
       {
         "tableName": "colors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `percentage` INTEGER NOT NULL, `color` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`colorId` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `percentage` INTEGER NOT NULL, `color` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "colorId",
+            "columnName": "colorId",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -191,7 +191,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "colorId"
           ],
           "autoGenerate": true
         },
@@ -219,7 +219,7 @@
           {
             "table": "artworks",
             "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
+            "onUpdate": "CASCADE",
             "columns": [
               "parentId"
             ],
@@ -233,7 +233,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd992e8404db14c0d1fdadd6b12db9c2d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed55f19c0742099a32b387c4a589240b')"
     ]
   }
 }

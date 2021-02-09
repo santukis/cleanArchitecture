@@ -3,6 +3,7 @@ package com.santukis.cleanarchitecture.artwork.data.local
 import androidx.room.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.artwork.domain.model.Dating
+import com.santukis.cleanarchitecture.artwork.domain.model.MeasureUnit
 
 @Entity(
     tableName = "artworks",
@@ -25,11 +26,19 @@ data class DatingDb(
 
 @Entity(
     tableName = "dimensions",
-    foreignKeys = [ ForeignKey(entity = ArtworkDb::class, parentColumns = ["id"], childColumns = ["parentId"], onDelete = ForeignKey.CASCADE) ],
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+                  ],
     indices = [Index("parentId", "parentId"), Index("value", "value")]
 )
 data class DimensionDb(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @PrimaryKey(autoGenerate = true) val dimensionId: Long?,
     val parentId: String,
     @Embedded val unit: MeasureUnitDb,
     val value: Double,
@@ -40,12 +49,33 @@ data class MeasureUnitDb(val unit: String)
 
 @Entity(
     tableName = "colors",
-    foreignKeys = [ ForeignKey(entity = ArtworkDb::class, parentColumns = ["id"], childColumns = ["parentId"], onDelete = ForeignKey.CASCADE) ],
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ) ],
     indices = [Index("parentId", "parentId"), Index("color", "color")]
 )
 data class ColorDb(
-    @PrimaryKey(autoGenerate = true) val id: Long?,
+    @PrimaryKey(autoGenerate = true) val colorId: Long?,
     val parentId: String,
     val percentage: Int,
     val color: String
+)
+
+data class ArtworkDetailDb(
+    @Embedded val artworkDb: ArtworkDb,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "parentId"
+    ) val dimensions: List<DimensionDb>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "parentId"
+    ) val colors: List<ColorDb>
 )

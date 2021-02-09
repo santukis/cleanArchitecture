@@ -9,12 +9,22 @@
         android:id="@+id/artworksFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment"
         android:label="ArtworksFragment" >
+
         <action
-            android:id="@+id/action_artworksFragment_to_artworkDetailFragment"
+            android:id="@+id/openArtworkDetail"
             app:destination="@id/artworkDetailFragment"
             app:popUpTo="@id/artworksFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="artworkId"
+                app:argType="string"
+                android:defaultValue=""/>
+
+        </action>
+
     </fragment>
+
     <fragment
         android:id="@+id/artworkDetailFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworkDetailFragment"
