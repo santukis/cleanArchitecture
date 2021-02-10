@@ -39,13 +39,9 @@ abstract class BaseFragment<Binding: ViewBinding>: Fragment(), DIAware {
 
     abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
 
-    open fun initializeViewComponents(binding: Binding) {
+    open fun initializeViewComponents(binding: Binding) {}
 
-    }
-
-    open fun initializeViewListeners(binding: Binding) {
-
-    }
+    open fun initializeViewListeners(binding: Binding) {}
 
     open fun loadData() {}
 }

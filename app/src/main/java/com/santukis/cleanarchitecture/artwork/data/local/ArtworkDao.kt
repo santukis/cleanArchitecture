@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ArtworkDao: BaseDao<ArtworkDb> {
 
-    @Query("SELECT * FROM artworks ORDER BY title")
+    @Query("SELECT * FROM artworks")
     fun loadArtworks(): Flow<List<ArtworkDb>>
 
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")

@@ -9,10 +9,6 @@
             name="artwork"
             type="com.santukis.cleanarchitecture.artwork.domain.model.Artwork" />
 
-        <import
-            alias="util"
-            type="com.santukis.cleanarchitecture.core.ui.binding.CommonBinding" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -47,12 +43,14 @@
                 android:id="@+id/colors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_space"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/image"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:listitem="@layout/element_color_item"
                 tools:itemCount="3"
+                app:showColors="@{artwork.colors}"
                 app:reverseLayout="true"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -61,6 +59,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/colors"
                 android:padding="@dimen/normal_space"
+                android:layout_marginTop="@dimen/small_space"
                 tools:text="The Milkmaid"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:text="@{artwork.title}"/>

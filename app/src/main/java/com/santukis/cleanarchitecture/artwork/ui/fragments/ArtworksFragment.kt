@@ -7,7 +7,7 @@ import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.addEndlessScrollListener
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
-import com.santukis.cleanarchitecture.artwork.ui.components.ArtworkViewHolder
+import com.santukis.cleanarchitecture.artwork.ui.binding.ArtworkViewHolder
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.ElementArtworkItemBinding
@@ -33,7 +33,7 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
             artworkViewModel?.notifyLastVisible(lastItemPosition)
         }
 
-        artworkViewModel?.artworks?.observe(viewLifecycleOwner) { response ->
+        artworkViewModel?.artworks?.observe(this) { response ->
             binding.progress.isVisible = response is Response.Loading
 
             when (response) {

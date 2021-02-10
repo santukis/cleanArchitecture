@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <View
-        android:id="@+id/color"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@color/purple_500"/>
+    <data>
+        <variable
+            name="color"
+            type="com.santukis.cleanarchitecture.artwork.domain.model.Color" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <import
+            alias="util"
+            type="com.santukis.cleanarchitecture.artwork.ui.model.ArtworkUIKt"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@color/purple_500"
+            android:backgroundTint="@{util.toRGB(color.color)}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

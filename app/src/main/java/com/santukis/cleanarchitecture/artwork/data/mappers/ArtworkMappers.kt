@@ -37,7 +37,7 @@ fun DatingDto.toDating() =
 fun ColorDto.toColor() =
     Color(
         percentage = percentage ?: 0,
-        color = color ?: "#000000"
+        color = color?.trim() ?: "#000000"
     )
 
 fun ArtworkDb.toArtwork() =
