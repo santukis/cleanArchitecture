@@ -50,6 +50,6 @@ data class MeasureUnit(val unit: String) {
 }
 
 data class Color(
-    val percentage: Int = 0,
-    val color: String = "#000000"
+    val color: Int = 0,
+    val normalizedColor: String = "#000000"
 )

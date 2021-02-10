@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ed55f19c0742099a32b387c4a589240b",
+    "identityHash": "ed13fca220282fcde3f3a3df911fa32f",
     "entities": [
       {
         "tableName": "artworks",
@@ -162,7 +162,7 @@
       },
       {
         "tableName": "colors",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`colorId` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `percentage` INTEGER NOT NULL, `color` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`colorId` INTEGER PRIMARY KEY AUTOINCREMENT, `parentId` TEXT NOT NULL, `color` INTEGER NOT NULL, `normalizedColor` TEXT NOT NULL, FOREIGN KEY(`parentId`) REFERENCES `artworks`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "colorId",
@@ -177,14 +177,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "percentage",
-            "columnName": "percentage",
+            "fieldPath": "color",
+            "columnName": "color",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "color",
-            "columnName": "color",
+            "fieldPath": "normalizedColor",
+            "columnName": "normalizedColor",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -233,7 +233,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed55f19c0742099a32b387c4a589240b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed13fca220282fcde3f3a3df911fa32f')"
     ]
   }
 }

@@ -1,6 +1,6 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
-import com.santukis.cleanarchitecture.artwork.domain.model.*
+import android.graphics.Color
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -19,7 +19,7 @@ data class ArtworkDto(
     @Json(name = "webImage") val image: ImageDto? = ImageDto(),
     @Json(name = "dating") val dating: DatingDto? = DatingDto.EMPTY,
     @Json(name = "dimensions") val dimensions: List<DimensionDto>? = emptyList(),
-    @Json(name = "normalized32Colors") val colors: List<ColorDto>? = emptyList(),
+    @Json(name = "colorsWithNormalization") val colors: List<ColorDto>? = emptyList(),
 ) {
     companion object {
         val EMPTY = ArtworkDto()
@@ -51,6 +51,6 @@ data class DatingDto(
 
 @JsonClass(generateAdapter = true)
 data class ColorDto(
-    @Json(name = "percentage") val percentage: Int? = 0,
-    @Json(name = "hex") val color: String? = "#000000"
+    @Json(name = "originalHex") val color: String? = "#000000",
+    @Json(name = "normalizedHex") val normalizedColor: String? = "#000000"
 )

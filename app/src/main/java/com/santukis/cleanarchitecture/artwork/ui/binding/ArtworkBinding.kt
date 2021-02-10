@@ -24,6 +24,6 @@ object ArtworkBinding {
             view.addItemDecoration(MarginItemDecoration(left = 10))
         }
 
-        (view.adapter as? ItemsAdapter<Color>)?.showItems(colors.sortedBy { it.percentage })
+        (view.adapter as? ItemsAdapter<Color>)?.showItems(colors)
     }
 }

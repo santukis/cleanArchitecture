@@ -62,8 +62,8 @@ data class MeasureUnitDb(val unit: String)
 data class ColorDb(
     @PrimaryKey(autoGenerate = true) val colorId: Long?,
     val parentId: String,
-    val percentage: Int,
-    val color: String
+    val color: Int = 0,
+    val normalizedColor: String = "#000000"
 )
 
 data class ArtworkDetailDb(

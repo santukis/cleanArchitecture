@@ -36,9 +36,18 @@ fun DatingDto.toDating() =
 
 fun ColorDto.toColor() =
     Color(
-        percentage = percentage ?: 0,
-        color = color?.trim() ?: "#000000"
+        normalizedColor = normalizedColor ?: "#000000",
+        color = color?.trim()?.toRGB() ?: android.graphics.Color.BLACK
     )
+
+fun String.toRGB(): Int = try {
+    when (isNullOrEmpty()) {
+        false -> android.graphics.Color.parseColor(this)
+        true -> android.graphics.Color.BLACK
+    }
+} catch (exception: Exception) {
+    android.graphics.Color.BLACK
+}
 
 fun ArtworkDb.toArtwork() =
     Artwork(
@@ -82,7 +91,7 @@ fun MeasureUnitDb.toMeasureUnit() = MeasureUnit(unit)
 
 fun ColorDb.toColor() =
     Color(
-        percentage = percentage,
+        normalizedColor = normalizedColor,
         color = color
     )
 
@@ -126,6 +135,6 @@ fun Color.toColorDb(parentId: String) =
     ColorDb(
         colorId = null,
         parentId = parentId,
-        percentage = percentage,
+        normalizedColor = normalizedColor,
         color = color
     )
