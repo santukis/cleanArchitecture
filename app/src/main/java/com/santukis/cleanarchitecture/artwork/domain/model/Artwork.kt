@@ -8,7 +8,10 @@ data class Artwork(
     val dating: Dating = Dating.EMPTY,
     var dimensions: List<Dimension> = emptyList(),
     val image: String = "",
-    var colors: List<Color> = emptyList()
+    var colors: List<Color> = emptyList(),
+    var categories: List<Category> = emptyList(),
+    var materials: List<Material> = emptyList(),
+    var techniques: List<Technique> = emptyList()
 ) {
     companion object {
         val EMPTY = Artwork()
@@ -52,4 +55,16 @@ data class MeasureUnit(val unit: String) {
 data class Color(
     val color: Int = 0,
     val normalizedColor: String = "#000000"
+)
+
+data class Category(
+    val category: String = ""
+)
+
+data class Material(
+    val material: String = ""
+)
+
+data class Technique(
+    val technique: String = ""
 )

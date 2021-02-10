@@ -66,6 +66,60 @@ data class ColorDb(
     val normalizedColor: String = "#000000"
 )
 
+@Entity(
+    tableName = "categories",
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ) ],
+    indices = [Index("parentId", "parentId"), Index("category", "category")]
+)
+data class CategoryDb(
+    @PrimaryKey(autoGenerate = true) val id: Long?,
+    val parentId: String,
+    val category: String = ""
+)
+
+@Entity(
+    tableName = "materials",
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ) ],
+    indices = [Index("parentId", "parentId"), Index("material", "material")]
+)
+data class MaterialDb(
+    @PrimaryKey(autoGenerate = true) val id: Long?,
+    val parentId: String,
+    val material: String = ""
+)
+
+@Entity(
+    tableName = "techniques",
+    foreignKeys = [
+        ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["parentId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ) ],
+    indices = [Index("parentId", "parentId"), Index("technique", "technique")]
+)
+data class TechniqueDb(
+    @PrimaryKey(autoGenerate = true) val id: Long?,
+    val parentId: String,
+    val technique: String = ""
+)
+
 data class ArtworkDetailDb(
     @Embedded val artworkDb: ArtworkDb,
 
@@ -77,5 +131,20 @@ data class ArtworkDetailDb(
     @Relation(
         parentColumn = "id",
         entityColumn = "parentId"
-    ) val colors: List<ColorDb>
+    ) val colors: List<ColorDb>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "parentId"
+    ) val categories: List<CategoryDb>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "parentId"
+    ) val materials: List<MaterialDb>,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "parentId"
+    ) val techniques: List<TechniqueDb>
 )

@@ -10,9 +10,12 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
     entities = [
         ArtworkDb::class,
         DimensionDb::class,
-        ColorDb::class
+        ColorDb::class,
+        CategoryDb::class,
+        MaterialDb::class,
+        TechniqueDb::class
     ],
-    exportSchema = true, version = 1
+    exportSchema = true, version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -21,6 +24,12 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun dimensionsDao(): DimensionDao
 
     abstract fun colorsDao(): ColorDao
+
+    abstract fun categoriesDao(): CategoryDao
+
+    abstract fun materialsDao(): MaterialDao
+
+    abstract fun techniquesDao(): TechniqueDao
 
     companion object {
         @Volatile

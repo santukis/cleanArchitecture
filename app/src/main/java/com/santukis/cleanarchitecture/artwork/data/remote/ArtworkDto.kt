@@ -1,6 +1,5 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
-import android.graphics.Color
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -20,6 +19,9 @@ data class ArtworkDto(
     @Json(name = "dating") val dating: DatingDto? = DatingDto.EMPTY,
     @Json(name = "dimensions") val dimensions: List<DimensionDto>? = emptyList(),
     @Json(name = "colorsWithNormalization") val colors: List<ColorDto>? = emptyList(),
+    @Json(name = "objectTypes") val categories: List<String>? = emptyList(),
+    @Json(name = "materials") val materials: List<String>? = emptyList(),
+    @Json(name = "techniques") val techniques: List<String>? = emptyList()
 ) {
     companion object {
         val EMPTY = ArtworkDto()

@@ -16,7 +16,10 @@ fun ArtworkDto.toArtwork() =
         image = image?.url ?: "",
         dating = dating?.toDating() ?: Dating.EMPTY,
         dimensions = dimensions?.map { it.toDimension() } ?: emptyList(),
-        colors = colors?.map { it.toColor() } ?: emptyList()
+        colors = colors?.map { it.toColor() } ?: emptyList(),
+        categories = categories?.map { Category(it) } ?: emptyList(),
+        materials = materials?.map { Material(it) } ?: emptyList(),
+        techniques = techniques?.map { Technique(it) } ?: emptyList()
     )
 
 fun DimensionDto.toDimension() = when(type) {
@@ -59,7 +62,12 @@ fun ArtworkDb.toArtwork() =
         dating = dating.toDating()
     )
 
-fun ArtworkDb.toArtwork(dimensions: List<Dimension>, colors: List<Color>) =
+fun ArtworkDb.toArtwork(
+    dimensions: List<Dimension>,
+    colors: List<Color>,
+    categories: List<Category>,
+    materials: List<Material>,
+    techniques: List<Technique>) =
     Artwork(
         id = id,
         title = title,
@@ -68,7 +76,10 @@ fun ArtworkDb.toArtwork(dimensions: List<Dimension>, colors: List<Color>) =
         image = image,
         dating = dating.toDating(),
         dimensions = dimensions,
-        colors = colors
+        colors = colors,
+        categories = categories,
+        materials = materials,
+        techniques = techniques
     )
 
 fun DatingDb.toDating() =
@@ -95,12 +106,20 @@ fun ColorDb.toColor() =
         color = color
     )
 
+fun CategoryDb.toCategory() = Category(category)
+
+fun MaterialDb.toMaterial() = Material(material)
+
+fun TechniqueDb.toTechnique() = Technique(technique)
+
 fun ArtworkDetailDb.toArtwork() =
     artworkDb.toArtwork(
         dimensions = dimensions.map { it.toDimension() },
-        colors = colors.map { it.toColor() }
+        colors = colors.map { it.toColor() },
+        categories = categories.map { it.toCategory() },
+        materials = materials.map { it.toMaterial() },
+        techniques = techniques.map { it.toTechnique() }
     )
-
 
 fun Artwork.toArtworkDb() =
     ArtworkDb(
@@ -137,4 +156,25 @@ fun Color.toColorDb(parentId: String) =
         parentId = parentId,
         normalizedColor = normalizedColor,
         color = color
+    )
+
+fun Category.toCategoryDb(parentId: String) =
+    CategoryDb(
+        id = null,
+        parentId = parentId,
+        category = category
+    )
+
+fun Material.toMaterialDb(parentId: String) =
+    MaterialDb(
+        id = null,
+        parentId = parentId,
+        material = material
+    )
+
+fun Technique.toTechniqueDb(parentId: String) =
+    TechniqueDb(
+        id = null,
+        parentId = parentId,
+        technique = technique
     )

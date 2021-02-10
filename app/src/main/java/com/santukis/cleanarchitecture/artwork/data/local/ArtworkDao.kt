@@ -17,17 +17,16 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
 }
 
 @Dao
-interface DimensionDao: BaseDao<DimensionDb> {
-
-    @Query("SELECT * FROM dimensions WHERE parentId = :from")
-    fun loadDimensions(from: String): Flow<List<DimensionDb>>
-
-}
+interface DimensionDao: BaseDao<DimensionDb>
 
 @Dao
-interface ColorDao: BaseDao<ColorDb> {
+interface ColorDao: BaseDao<ColorDb>
 
-    @Query("SELECT * FROM colors WHERE parentId = :from")
-    fun loadColors(from: String): Flow<List<ColorDb>>
+@Dao
+interface CategoryDao: BaseDao<CategoryDb>
 
-}
+@Dao
+interface MaterialDao: BaseDao<MaterialDb>
+
+@Dao
+interface TechniqueDao: BaseDao<TechniqueDb>
