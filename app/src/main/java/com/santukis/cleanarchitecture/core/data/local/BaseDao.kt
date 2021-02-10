@@ -9,7 +9,7 @@ interface BaseDao<Item> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveItem(item: Item): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun saveItems(items: List<Item>): List<Long>
 
     @Delete

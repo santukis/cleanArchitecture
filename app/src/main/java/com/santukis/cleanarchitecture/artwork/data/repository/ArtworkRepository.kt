@@ -15,9 +15,15 @@ class ArtworkRepository(
     }
 
     suspend fun loadArtworks(): Flow<List<Artwork>> =
-        localDataSource.loadArtworks()
-            .onStart { refreshArtworks() }
-            .catch { emit(emptyList()) }
+        flow {
+            localDataSource.loadArtworks()
+                .collect { artworks ->
+                    when(artworks.isEmpty()) {
+                        true -> refreshArtworks()
+                        false -> emit(artworks)
+                    }
+                }
+        }
 
     suspend fun refreshArtwork(artworkId: String) {
         remoteDataSource.loadArtworkDetail(artworkId)
@@ -25,7 +31,11 @@ class ArtworkRepository(
     }
 
     suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
-        localDataSource.loadArtworkDetail(artworkId)
-            .onStart { refreshArtwork(artworkId) }
-            .catch {  }
+        flow {
+            localDataSource.loadArtworkDetail(artworkId)
+                .collect { artwork ->
+                    emit(artwork)
+                    artwork.takeIf { it.colors.isEmpty() && it.dimensions.isEmpty() }?.apply { refreshArtwork(id) }
+                }
+        }
 }
