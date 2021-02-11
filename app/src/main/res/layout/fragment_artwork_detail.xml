@@ -5,9 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="artwork"
             type="com.santukis.cleanarchitecture.artwork.domain.model.Artwork" />
+
+        <import type="android.view.View"/>
 
     </data>
 
@@ -61,8 +64,21 @@
                 android:padding="@dimen/normal_space"
                 android:layout_marginTop="@dimen/small_space"
                 tools:text="The Milkmaid"
+                android:textIsSelectable="true"
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:text="@{artwork.title}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:padding="@dimen/normal_space"
+                android:layout_marginTop="@dimen/small_space"
+                android:textIsSelectable="true"
+                tools:text="The Milkmaid"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:text="@{String.valueOf(artwork.dating.year)}"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/author"
@@ -72,6 +88,7 @@
                 tools:text="Johannes Vermeer"
                 style="@style/TextAppearance.AppCompat.Large"
                 android:padding="@dimen/normal_space"
+                android:textIsSelectable="true"
                 android:textColor="@color/white"
                 android:text="@{artwork.author}"/>
 
@@ -79,11 +96,49 @@
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/date"
                 android:padding="@dimen/normal_space"
+                android:textIsSelectable="true"
                 style="@style/TextAppearance.AppCompat.Medium"
                 tools:text="A maidservant pours milk, entirely absorbed in her work. Except for the stream of milk, everything else is still. Vermeer took this simple everyday activity and made it the subject of an impressive painting – the woman stands like a statue in the brightly lit room. Vermeer also had an eye for how light by means of hundreds of colourful dots plays over the surface of objects."
                 android:text="@{artwork.description}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/material_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                android:padding="@dimen/normal_space"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:visibility="@{artwork.materials.size() == 0 ? View.GONE : View.VISIBLE}"
+                android:text="@string/materials" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/material_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/material_title"
+                android:padding="@dimen/normal_space"
+                app:showMaterials="@{artwork.materials}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/technique_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/material_container"
+                android:padding="@dimen/normal_space"
+                android:layout_marginTop="@dimen/small_space"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:visibility="@{artwork.techniques.size() == 0 ? View.GONE : View.VISIBLE}"
+                android:text="@string/techniques" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/technique_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/technique_title"
+                android:padding="@dimen/normal_space"
+                app:showTechniques="@{artwork.techniques}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

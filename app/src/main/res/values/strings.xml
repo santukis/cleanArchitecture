@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">cleanArchitecture</string>
+    <string name="materials">Materials</string>
+    <string name="techniques">Techniques</string>
 </resources>

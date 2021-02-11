@@ -19,7 +19,7 @@
             android:layout_height="50dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:background="@color/purple_500"
+            android:background="@color/colorPrimaryDark"
             android:backgroundTint="@{color.color}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
