@@ -59,7 +59,8 @@ fun ArtworkDb.toArtwork() =
         description = description,
         author = author,
         image = image,
-        dating = dating.toDating()
+        dating = dating.toDating(),
+        shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
     )
 
 fun ArtworkDb.toArtwork(
@@ -79,7 +80,8 @@ fun ArtworkDb.toArtwork(
         colors = colors,
         categories = categories,
         materials = materials,
-        techniques = techniques
+        techniques = techniques,
+        shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
     )
 
 fun DatingDb.toDating() =

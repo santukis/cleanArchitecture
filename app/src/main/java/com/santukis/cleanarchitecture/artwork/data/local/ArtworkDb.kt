@@ -14,7 +14,8 @@ data class ArtworkDb(
     val description: String,
     val author: String,
     val image: String,
-    @Embedded val dating: DatingDb
+    @Embedded val dating: DatingDb,
+    var updatedAt: Long = 0L
 ) {
 }
 

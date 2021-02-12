@@ -11,7 +11,8 @@ data class Artwork(
     var colors: List<Color> = emptyList(),
     var categories: List<Category> = emptyList(),
     var materials: List<Material> = emptyList(),
-    var techniques: List<Technique> = emptyList()
+    var techniques: List<Technique> = emptyList(),
+    var shouldBeUpdated: Boolean = false
 ) {
     companion object {
         val EMPTY = Artwork()

@@ -14,6 +14,7 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
 
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
     fun loadArtwork(artworkId: String): Flow<ArtworkDetailDb>?
+
 }
 
 @Dao

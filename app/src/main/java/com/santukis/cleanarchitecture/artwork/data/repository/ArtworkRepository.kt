@@ -35,7 +35,7 @@ class ArtworkRepository(
             localDataSource.loadArtworkDetail(artworkId)
                 .collect { artwork ->
                     emit(artwork)
-                    artwork.takeIf { it.colors.isEmpty() && it.dimensions.isEmpty() }?.apply { refreshArtwork(id) }
+                    artwork.takeIf { it.shouldBeUpdated }?.apply { refreshArtwork(id) }
                 }
         }
 }

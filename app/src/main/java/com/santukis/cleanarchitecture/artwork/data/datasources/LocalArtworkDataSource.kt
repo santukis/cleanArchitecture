@@ -27,7 +27,7 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
     }
 
     override suspend fun saveArtwork(artwork: Artwork) {
-        database.artworkDao().saveItem(artwork.toArtworkDb())
+        database.artworkDao().saveItem(artwork.toArtworkDb().apply { updatedAt = System.currentTimeMillis() })
         database.dimensionsDao().saveItems(artwork.dimensions.map { it.toDimensionDb(artwork.id) })
         database.colorsDao().saveItems(artwork.colors.map { it.toColorDb(artwork.id) })
         database.categoriesDao().saveItems(artwork.categories.map { it.toCategoryDb(artwork.id) })
