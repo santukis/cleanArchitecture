@@ -14,7 +14,7 @@ object CommonBinding {
             Glide.with(view.context)
                 .load(this)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .thumbnail(0.3f)
+                .thumbnail(0.7f)
                 .into(view)
         }
     }

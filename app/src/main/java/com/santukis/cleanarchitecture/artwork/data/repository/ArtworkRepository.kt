@@ -25,7 +25,7 @@ class ArtworkRepository(
                 }
         }
 
-    suspend fun refreshArtwork(artworkId: String) {
+    private suspend fun refreshArtwork(artworkId: String) {
         remoteDataSource.loadArtworkDetail(artworkId)
             .collect { artwork -> localDataSource.saveArtwork(artwork) }
     }
