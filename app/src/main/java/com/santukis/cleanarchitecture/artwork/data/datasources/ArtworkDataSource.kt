@@ -12,5 +12,5 @@ interface ArtworkDataSource {
 
     suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> = emptyFlow()
 
-    suspend fun saveArtwork(artwork: Artwork) {}
+    suspend fun saveArtwork(artwork: Artwork): Artwork = Artwork.EMPTY
 }

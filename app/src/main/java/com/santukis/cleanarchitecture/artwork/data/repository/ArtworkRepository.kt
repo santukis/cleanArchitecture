@@ -29,16 +29,17 @@ class ArtworkRepository(
             .map { artworks -> localDataSource.saveArtworks(artworks) }
 
     suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
-        flow {
-            localDataSource.loadArtworkDetail(artworkId)
-                .collect { artwork ->
-                    emit(artwork)
-                    artwork.takeIf { it.shouldBeUpdated }?.apply { refreshArtwork(id) }
+        localDataSource.loadArtworkDetail(artworkId)
+            .flatMapConcat { artwork ->
+                when(artwork.shouldBeUpdated) {
+                    true -> loadArtworkDetailFromRemote(artworkId)
+                    false -> flowOf(artwork)
                 }
-        }
+            }
 
-    private suspend fun refreshArtwork(artworkId: String) {
+
+
+    private suspend fun loadArtworkDetailFromRemote(artworkId: String): Flow<Artwork> =
         remoteDataSource.loadArtworkDetail(artworkId)
-            .collect { artwork -> localDataSource.saveArtwork(artwork) }
-    }
+            .map { artwork -> localDataSource.saveArtwork(artwork) }
 }
