@@ -33,8 +33,8 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 
 fun usecases() = DI.Module("usecases", allowSilentOverride = true) {
     bind<Executor>(tag = "asyncExecutor") with provider { AsyncUseCaseExecutor() }
-    bind<FlowUseCase<Int, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance()) }
-    bind<FlowUseCase<String, Artwork>>(tag = "loadArtworkDetail") with provider { LoadArtworkDetail(instance()) }
+    bind<FlowUseCase<Int, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance("repository")) }
+    bind<FlowUseCase<String, Artwork>>(tag = "loadArtworkDetail") with provider { LoadArtworkDetail(instance("repository")) }
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
@@ -45,5 +45,5 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
     bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource(instance()) }
-    bind<ArtworkRepository>() with singleton { ArtworkRepository(instance("local"), instance("remote")) }
+    bind<ArtworkRepository>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
 }

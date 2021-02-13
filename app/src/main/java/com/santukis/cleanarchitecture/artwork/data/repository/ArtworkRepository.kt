@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.*
 class ArtworkRepository(
     private val localDataSource: ArtworkDataSource,
     private val remoteDataSource: ArtworkDataSource
-) {
+): ArtworkDataSource {
 
-    suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
+    override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
         when(lastItem) {
             0 -> loadArtworksFromLocal()
             else -> loadArtworksFromRemote(lastItem)
@@ -28,7 +28,7 @@ class ArtworkRepository(
         remoteDataSource.loadArtworks(lastItem)
             .map { artworks -> localDataSource.saveArtworks(artworks) }
 
-    suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
+    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
         localDataSource.loadArtworkDetail(artworkId)
             .flatMapConcat { artwork ->
                 when(artwork.shouldBeUpdated) {
