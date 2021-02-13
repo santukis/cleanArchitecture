@@ -7,24 +7,16 @@ import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
-    override suspend fun loadArtworks(): Flow<List<Artwork>> = try {
-            database.artworkDao().loadArtworks()
-                .map { items -> items.map { artworkDb -> artworkDb.toArtwork() } }
-
-        } catch (exception: Exception) {
-            emptyFlow()
-        }
+    override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
+        database.artworkDao().loadArtworks()
+        .map { items -> items.map { artworkDb -> artworkDb.toArtwork() } }
 
     override suspend fun saveArtworks(artworks: List<Artwork>) {
         database.artworkDao().saveItems(artworks.map { it.toArtworkDb() })
     }
 
-    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> = try {
+    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
         database.artworkDao().loadArtwork(artworkId)?.map { it.toArtwork() } ?: emptyFlow()
-
-    } catch (exception: Exception) {
-        emptyFlow()
-    }
 
     override suspend fun saveArtwork(artwork: Artwork) {
         database.artworkDao().saveItem(artwork.toArtworkDb().apply { updatedAt = System.currentTimeMillis() })

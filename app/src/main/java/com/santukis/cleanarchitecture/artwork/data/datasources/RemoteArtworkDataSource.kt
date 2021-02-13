@@ -12,7 +12,7 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
         const val MAX_ITEM_SIZE = 20
     }
 
-    override suspend fun refreshArtworks(lastItem: Int): Flow<List<Artwork>> = try {
+    override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>>  =
         flowOf(
             client.artworkService.loadArtworks(
                 apiKey = BuildConfig.API_KEY,
@@ -20,19 +20,11 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
             ).items.map { it.toArtwork() }
         )
 
-    } catch (exception: Exception) {
-        emptyFlow()
-    }
-
-    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> = try {
+    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
         flowOf(
             client.artworkService.loadArtworkDetail(
                 apiKey = BuildConfig.API_KEY,
                 artworkId = artworkId
             ).item.toArtwork()
         )
-
-    } catch (exception: Exception) {
-        emptyFlow()
-    }
 }

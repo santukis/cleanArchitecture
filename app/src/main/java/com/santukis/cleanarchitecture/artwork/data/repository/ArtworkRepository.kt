@@ -10,7 +10,7 @@ class ArtworkRepository(
 ) {
 
     suspend fun refreshArtworks(lastItem: Int = 0) {
-        remoteDataSource.refreshArtworks(lastItem)
+        remoteDataSource.loadArtworks(lastItem)
             .collect { artworks -> localDataSource.saveArtworks(artworks) }
     }
 

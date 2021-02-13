@@ -6,9 +6,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 interface ArtworkDataSource {
 
-    suspend fun loadArtworks(): Flow<List<Artwork>> = emptyFlow()
-
-    suspend fun refreshArtworks(lastItem: Int = 0): Flow<List<Artwork>> = emptyFlow()
+    suspend fun loadArtworks(lastItem: Int = 0): Flow<List<Artwork>> = emptyFlow()
 
     suspend fun saveArtworks(artworks: List<Artwork>) {}
 
