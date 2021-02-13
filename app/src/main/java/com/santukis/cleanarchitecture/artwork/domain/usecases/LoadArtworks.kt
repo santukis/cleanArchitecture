@@ -5,7 +5,7 @@ import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.FlowUseCase
 import kotlinx.coroutines.flow.Flow
 
-class LoadArtworks(private val repository: ArtworkRepository): FlowUseCase<Unit, List<Artwork>> {
+class LoadArtworks(private val repository: ArtworkRepository): FlowUseCase<Int, List<Artwork>> {
 
-    override suspend fun flow(params: Unit): Flow<List<Artwork>> = repository.loadArtworks()
+    override suspend fun flow(params: Int): Flow<List<Artwork>> = repository.loadArtworks(params)
 }

@@ -9,10 +9,11 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
 
     override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
         database.artworkDao().loadArtworks()
-        .map { items -> items.map { artworkDb -> artworkDb.toArtwork() } }
+            .map { items -> items.map { artworkDb -> artworkDb.toArtwork() } }
 
-    override suspend fun saveArtworks(artworks: List<Artwork>) {
+    override suspend fun saveArtworks(artworks: List<Artwork>): List<Artwork> {
         database.artworkDao().saveItems(artworks.map { it.toArtworkDb() })
+        return artworks
     }
 
     override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =

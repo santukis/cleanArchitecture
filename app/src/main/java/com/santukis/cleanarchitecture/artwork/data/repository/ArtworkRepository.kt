@@ -9,26 +9,24 @@ class ArtworkRepository(
     private val remoteDataSource: ArtworkDataSource
 ) {
 
-    suspend fun refreshArtworks(lastItem: Int = 0) {
-        remoteDataSource.loadArtworks(lastItem)
-            .collect { artworks -> localDataSource.saveArtworks(artworks) }
-    }
-
-    suspend fun loadArtworks(): Flow<List<Artwork>> =
-        flow {
-            localDataSource.loadArtworks()
-                .collect { artworks ->
-                    when(artworks.isEmpty()) {
-                        true -> refreshArtworks()
-                        false -> emit(artworks)
-                    }
-                }
+    suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
+        when(lastItem) {
+            0 -> loadArtworksFromLocal()
+            else -> loadArtworksFromRemote(lastItem)
         }
 
-    private suspend fun refreshArtwork(artworkId: String) {
-        remoteDataSource.loadArtworkDetail(artworkId)
-            .collect { artwork -> localDataSource.saveArtwork(artwork) }
-    }
+    private suspend fun loadArtworksFromLocal(): Flow<List<Artwork>> =
+        localDataSource.loadArtworks()
+            .flatMapConcat { artworks ->
+                when(artworks.isNullOrEmpty()) {
+                    true -> loadArtworksFromRemote(0)
+                    false -> flowOf(artworks)
+                }
+            }
+
+    private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<List<Artwork>> =
+        remoteDataSource.loadArtworks(lastItem)
+            .map { artworks -> localDataSource.saveArtworks(artworks) }
 
     suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
         flow {
@@ -38,4 +36,9 @@ class ArtworkRepository(
                     artwork.takeIf { it.shouldBeUpdated }?.apply { refreshArtwork(id) }
                 }
         }
+
+    private suspend fun refreshArtwork(artworkId: String) {
+        remoteDataSource.loadArtworkDetail(artworkId)
+            .collect { artwork -> localDataSource.saveArtwork(artwork) }
+    }
 }

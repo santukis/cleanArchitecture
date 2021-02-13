@@ -17,7 +17,9 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
             client.artworkService.loadArtworks(
                 apiKey = BuildConfig.API_KEY,
                 fields = mapOf("ps" to MAX_ITEM_SIZE.toString(), "p" to (((lastItem + 1) / MAX_ITEM_SIZE) + 1).toString())
-            ).items.map { it.toArtwork() }
+            ).items.map {
+                it.toArtwork()
+            }
         )
 
     override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =

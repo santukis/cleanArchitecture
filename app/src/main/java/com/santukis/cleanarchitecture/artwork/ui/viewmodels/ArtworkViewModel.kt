@@ -21,24 +21,15 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
     override val di: DI by di()
 
     private val executor: Executor by di.instance("asyncExecutor")
-    private val loadArtworks: FlowUseCase<Unit, List<Artwork>> by di.instance("loadArtworks")
-    private val refreshArtworks: UseCase<Int, Unit> by di.instance("refreshArtworks")
+    private val loadArtworks: FlowUseCase<Int, List<Artwork>> by di.instance("loadArtworks")
     private val loadArtworkDetail: FlowUseCase<String, Artwork> by di.instance("loadArtworkDetail")
 
     val artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
 
-    fun loadArtworks() {
-        executor.execute(loadArtworks, Unit) { response ->
+    fun loadArtworks(lastVisible: Int) {
+        executor.execute(loadArtworks, lastVisible) { response ->
             artworks.postValue(response)
-        }
-    }
-
-    fun notifyLastVisible(lastVisible: Int) {
-        artworks.postValue(Response.Loading())
-
-        viewModelScope.launch(Dispatchers.IO) {
-            executor.execute(refreshArtworks, lastVisible)
         }
     }
 

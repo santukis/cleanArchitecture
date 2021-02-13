@@ -30,7 +30,7 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
     override fun initializeViewListeners(binding: FragmentArtworksBinding) {
         super.initializeViewListeners(binding)
         binding.recycler.addEndlessScrollListener(threshold = 3) { lastItemPosition ->
-            artworkViewModel?.notifyLastVisible(lastItemPosition)
+            artworkViewModel?.loadArtworks(lastItemPosition)
         }
 
         artworkViewModel?.artworks?.observe(this) { response ->
@@ -44,6 +44,6 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
     }
 
     override fun loadData() {
-        artworkViewModel?.loadArtworks()
+        artworkViewModel?.loadArtworks(0)
     }
 }

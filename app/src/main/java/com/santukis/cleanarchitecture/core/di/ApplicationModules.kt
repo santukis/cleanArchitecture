@@ -11,13 +11,11 @@ import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadArtworkDetail
 import com.santukis.cleanarchitecture.artwork.domain.usecases.LoadArtworks
-import com.santukis.cleanarchitecture.artwork.domain.usecases.RefreshArtworks
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.FlowUseCase
-import com.santukis.cleanarchitecture.core.domain.model.UseCase
 import com.santukis.cleanarchitecture.core.domain.model.executors.AsyncUseCaseExecutor
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
 import org.kodein.di.*
@@ -35,8 +33,7 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 
 fun usecases() = DI.Module("usecases", allowSilentOverride = true) {
     bind<Executor>(tag = "asyncExecutor") with provider { AsyncUseCaseExecutor() }
-    bind<FlowUseCase<Unit, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance()) }
-    bind<UseCase<Int, Unit>>(tag = "refreshArtworks") with provider { RefreshArtworks(instance()) }
+    bind<FlowUseCase<Int, List<Artwork>>>(tag = "loadArtworks") with provider { LoadArtworks(instance()) }
     bind<FlowUseCase<String, Artwork>>(tag = "loadArtworkDetail") with provider { LoadArtworkDetail(instance()) }
 }
 

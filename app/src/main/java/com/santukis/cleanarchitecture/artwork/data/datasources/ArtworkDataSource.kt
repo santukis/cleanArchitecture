@@ -8,7 +8,7 @@ interface ArtworkDataSource {
 
     suspend fun loadArtworks(lastItem: Int = 0): Flow<List<Artwork>> = emptyFlow()
 
-    suspend fun saveArtworks(artworks: List<Artwork>) {}
+    suspend fun saveArtworks(artworks: List<Artwork>): List<Artwork> = emptyList()
 
     suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> = emptyFlow()
 
