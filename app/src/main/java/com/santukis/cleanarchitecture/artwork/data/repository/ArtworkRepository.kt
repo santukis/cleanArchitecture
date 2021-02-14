@@ -27,10 +27,9 @@ class ArtworkRepository(
 
     private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<Response<List<Artwork>>> =
         remoteDataSource.loadArtworks(lastItem)
-            .map { response ->
-                when(response) {
-                    is Response.Success -> localDataSource.saveArtworks(response.data)
-                    else -> response
+            .onEach { response ->
+                if (response is Response.Success) {
+                    localDataSource.saveArtworks(response.data)
                 }
             }
 

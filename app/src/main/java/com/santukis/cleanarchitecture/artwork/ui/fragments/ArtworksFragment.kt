@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.addEndlessScrollListener
@@ -53,5 +54,10 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
                 is Response.Error -> {}
             }
         }
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Glide.with(this).clear(binding.root)
     }
 }
