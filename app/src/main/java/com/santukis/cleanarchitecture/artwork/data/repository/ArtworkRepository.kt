@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.artwork.data.repository
 
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
 
 class ArtworkRepository(
@@ -9,37 +10,42 @@ class ArtworkRepository(
     private val remoteDataSource: ArtworkDataSource
 ): ArtworkDataSource {
 
-    override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
+    override suspend fun loadArtworks(lastItem: Int): Flow<Response<List<Artwork>>> =
         when(lastItem) {
             0 -> loadArtworksFromLocal()
             else -> loadArtworksFromRemote(lastItem)
         }
 
-    private suspend fun loadArtworksFromLocal(): Flow<List<Artwork>> =
+    private suspend fun loadArtworksFromLocal(): Flow<Response<List<Artwork>>> =
         localDataSource.loadArtworks()
-            .flatMapConcat { artworks ->
-                when(artworks.isNullOrEmpty()) {
-                    true -> loadArtworksFromRemote(0)
-                    false -> flowOf(artworks)
+            .flatMapConcat { response ->
+                when(response) {
+                    is Response.Success -> flowOf(response)
+                    else -> loadArtworksFromRemote(0)
                 }
             }
 
-    private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<List<Artwork>> =
+    private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<Response<List<Artwork>>> =
         remoteDataSource.loadArtworks(lastItem)
-            .map { artworks -> localDataSource.saveArtworks(artworks) }
-
-    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
-        localDataSource.loadArtworkDetail(artworkId)
-            .flatMapConcat { artwork ->
-                when(artwork.shouldBeUpdated) {
-                    true -> loadArtworkDetailFromRemote(artworkId)
-                    false -> flowOf(artwork)
+            .map { response ->
+                when(response) {
+                    is Response.Success -> localDataSource.saveArtworks(response.data)
+                    else -> response
                 }
             }
 
+    override suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> {
+        val response = localDataSource.loadArtworkDetail(artworkId)
 
+        return when {
+            response is Response.Success && response.data.shouldBeUpdated -> loadArtworkDetailFromRemote(response.data)
+            else -> response
+        }
+    }
 
-    private suspend fun loadArtworkDetailFromRemote(artworkId: String): Flow<Artwork> =
-        remoteDataSource.loadArtworkDetail(artworkId)
-            .map { artwork -> localDataSource.saveArtwork(artwork) }
+    private suspend fun loadArtworkDetailFromRemote(artwork: Artwork): Response<Artwork> =
+        when(val response = remoteDataSource.loadArtworkDetail(artwork.id)) {
+            is Response.Success -> localDataSource.saveArtwork(response.data)
+            else -> Response.Success(artwork)
+        }
 }

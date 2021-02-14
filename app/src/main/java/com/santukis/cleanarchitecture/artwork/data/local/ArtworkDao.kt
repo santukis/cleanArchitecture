@@ -13,7 +13,7 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     fun loadArtworks(): Flow<List<ArtworkDb>>
 
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
-    fun loadArtwork(artworkId: String): Flow<ArtworkDetailDb>?
+    fun loadArtwork(artworkId: String): ArtworkDetailDb?
 
 }
 

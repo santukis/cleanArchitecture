@@ -3,29 +3,39 @@ package com.santukis.cleanarchitecture.artwork.data.datasources
 import com.santukis.cleanarchitecture.artwork.data.mappers.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
+import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
-    override suspend fun loadArtworks(lastItem: Int): Flow<List<Artwork>> =
+    override suspend fun loadArtworks(lastItem: Int): Flow<Response<List<Artwork>>> =
         database.artworkDao().loadArtworks()
-            .map { items -> items.map { artworkDb -> artworkDb.toArtwork() } }
+            .distinctUntilChanged()
+            .map { items ->
+                when {
+                    items.isNullOrEmpty() -> Response.Error(Exception("No Items"))
+                    else -> Response.Success(items.map { artworkDb -> artworkDb.toArtwork() })
+                }
+            }
 
-    override suspend fun saveArtworks(artworks: List<Artwork>): List<Artwork> {
+    override suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> {
         database.artworkDao().saveItems(artworks.map { it.toArtworkDb() })
-        return artworks
+        return Response.Success(artworks)
     }
 
-    override suspend fun loadArtworkDetail(artworkId: String): Flow<Artwork> =
-        database.artworkDao().loadArtwork(artworkId)?.map { it.toArtwork() } ?: emptyFlow()
+    override suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> =
+        when(val item = database.artworkDao().loadArtwork(artworkId)) {
+            null -> super.loadArtworkDetail(artworkId)
+            else -> Response.Success(item.toArtwork())
+        }
 
-    override suspend fun saveArtwork(artwork: Artwork): Artwork {
+    override suspend fun saveArtwork(artwork: Artwork): Response<Artwork> {
         database.artworkDao().saveItem(artwork.toArtworkDb().apply { updatedAt = System.currentTimeMillis() })
         database.dimensionsDao().saveItems(artwork.dimensions.map { it.toDimensionDb(artwork.id) })
         database.colorsDao().saveItems(artwork.colors.map { it.toColorDb(artwork.id) })
         database.categoriesDao().saveItems(artwork.categories.map { it.toCategoryDb(artwork.id) })
         database.materialsDao().saveItems(artwork.materials.map { it.toMaterialDb(artwork.id) })
         database.techniquesDao().saveItems(artwork.techniques.map { it.toTechniqueDb(artwork.id) })
-        return artwork
+        return Response.Success(artwork)
     }
 }

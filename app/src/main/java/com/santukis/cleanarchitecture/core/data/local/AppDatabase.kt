@@ -15,7 +15,7 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
         MaterialDb::class,
         TechniqueDb::class
     ],
-    exportSchema = true, version = 2
+    exportSchema = true, version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -40,13 +40,10 @@ abstract class AppDatabase : RoomDatabase() {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        "database"
-                    )
+                    instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "database")
                         .fallbackToDestructiveMigration()
                         .build()
+
                     INSTANCE = instance
                 }
                 return instance
