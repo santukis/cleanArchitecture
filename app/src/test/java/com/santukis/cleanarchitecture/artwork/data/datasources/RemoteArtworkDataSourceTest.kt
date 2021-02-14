@@ -45,7 +45,8 @@ class RemoteArtworkDataSourceTest {
                 .catch { fail() }
                 .onEmpty { fail() }
                 .collect {
-                    val response = it
+                    val response = (it as Response.Success).data
+
                     assertEquals(2, response.size)
 
                     val sampleItem = response.getOrNull(0)
@@ -72,10 +73,10 @@ class RemoteArtworkDataSourceTest {
         runBlocking {
             artworkDataSource.loadArtworks()
                 .onEmpty {
-                    assertEquals(1, 1)
+                    fail()
                 }
                 .collect {
-                    fail()
+                    assertTrue(it is Response.Error)
                 }
         }
     }
@@ -85,10 +86,10 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
-            artworkDataSource.loadArtworks()
+            artworkDataSource.loadArtworks().collect()
 
             val request = mockWebServer.takeRequest()
-            assertEquals("/api/en/collection?key=YtHr5uf6&ps=25&p=0", request.path)
+            assertEquals("/api/en/collection?key=YtHr5uf6&ps=20&p=1", request.path)
         }
     }
 
@@ -97,10 +98,10 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
-            artworkDataSource.loadArtworks(lastItem = 320)
+            artworkDataSource.loadArtworks(lastItem = 320).collect()
 
             val request = mockWebServer.takeRequest()
-            assertEquals("/api/en/collection?key=YtHr5uf6&ps=25&p=12", request.path)
+            assertEquals("/api/en/collection?key=YtHr5uf6&ps=20&p=17", request.path)
         }
     }
 }

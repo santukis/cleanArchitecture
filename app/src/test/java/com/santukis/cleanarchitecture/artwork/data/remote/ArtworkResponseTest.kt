@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
+import com.santukis.cleanarchitecture.artwork.data.mappers.toArtwork
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.squareup.moshi.Moshi
 import org.junit.Assert.*
@@ -49,8 +50,8 @@ class ArtworkDtoParsing {
         assertEquals(DatingDto(1662, 1662, 1662), item?.dating)
         assertEquals(2, item?.dimensions?.size)
         assertEquals(DimensionDto(type = "height", unit = "cm", value = "191.5"), item?.dimensions?.getOrNull(0))
-        assertEquals(4, item?.colors?.size)
-        assertEquals(ColorDto(percentage = 75, color = "#000000"), item?.colors?.getOrNull(0))
+        assertEquals(6, item?.colors?.size)
+        assertEquals(ColorDto(color = "#8B7759", normalizedColor = "#E0CC91"), item?.colors?.getOrNull(0))
     }
 
     @Test
