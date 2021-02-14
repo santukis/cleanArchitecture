@@ -26,12 +26,15 @@ class ArtworkRepository(
             }
 
     private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<Response<List<Artwork>>> =
-        remoteDataSource.loadArtworks(lastItem)
-            .onEach { response ->
-                if (response is Response.Success) {
-                    localDataSource.saveArtworks(response.data)
+        flow {
+            remoteDataSource.loadArtworks(lastItem)
+                .collect { response ->
+                    when(response) {
+                        is Response.Success -> localDataSource.saveArtworks(response.data)
+                        is Response.Error -> emit(response)
+                    }
                 }
-            }
+        }
 
     override suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> {
         val response = localDataSource.loadArtworkDetail(artworkId)

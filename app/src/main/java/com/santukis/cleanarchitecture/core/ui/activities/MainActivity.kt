@@ -8,7 +8,6 @@ import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
-import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
 class MainActivity: AppCompatActivity() , DIAware {

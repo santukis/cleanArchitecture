@@ -32,5 +32,5 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
     bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource(instance()) }
-    bind<ArtworkRepository>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
+    bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
 }
