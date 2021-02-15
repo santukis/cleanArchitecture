@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.ui.activities.MainActivity
+import com.santukis.cleanarchitecture.game.fragments.ui.viewmodels.GameViewModel
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -19,6 +20,8 @@ abstract class BaseFragment<Binding: ViewBinding>: Fragment(), DIAware {
     protected lateinit var binding: Binding
 
     protected val artworkViewModel: ArtworkViewModel? by lazy { (activity as? MainActivity)?.artworkViewModel }
+
+    protected val gameViewModel: GameViewModel? by lazy { (activity as? MainActivity)?.gameViewModel }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = getViewBinding(inflater, container)

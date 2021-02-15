@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.fragments.ui
+package com.santukis.cleanarchitecture.game.fragments.ui.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

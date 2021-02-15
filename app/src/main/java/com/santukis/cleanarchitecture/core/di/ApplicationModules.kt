@@ -12,6 +12,7 @@ import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
+import com.santukis.cleanarchitecture.game.fragments.ui.viewmodels.GameViewModel
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 
@@ -26,6 +27,7 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
     bind<ViewModel>(tag = ArtworkViewModel::class.java.simpleName) with provider { ArtworkViewModel(instance()) }
+    bind<ViewModel>(tag = GameViewModel::class.java.simpleName) with provider { GameViewModel(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di) }
 }
 

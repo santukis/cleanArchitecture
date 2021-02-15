@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI
 import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.databinding.ActivityMainBinding
+import com.santukis.cleanarchitecture.game.fragments.ui.viewmodels.GameViewModel
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
@@ -27,6 +28,10 @@ class MainActivity: AppCompatActivity() , DIAware {
 
     val artworkViewModel: ArtworkViewModel? by lazy {
         ViewModelProvider(this, viewModelFactory).get(ArtworkViewModel::class.java)
+    }
+
+    val gameViewModel: GameViewModel? by lazy {
+        ViewModelProvider(this, viewModelFactory).get(GameViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
