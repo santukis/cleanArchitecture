@@ -2,4 +2,7 @@
     <string name="app_name">cleanArchitecture</string>
     <string name="materials">Materials</string>
     <string name="techniques">Techniques</string>
+    <string name="collections">Collections</string>
+    <string name="favourites">Favourites</string>
+    <string name="game">Game</string>
 </resources>

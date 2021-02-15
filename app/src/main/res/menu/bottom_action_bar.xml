@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/artworksFragment"
+        android:title="@string/collections"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_museum"/>
+
+    <item android:id="@+id/favouritesFragment"
+        android:title="@string/favourites"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_favourite"/>
+
+    <item android:id="@+id/gameFragment"
+        android:title="@string/game"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_artwork"/>
+
+</menu>

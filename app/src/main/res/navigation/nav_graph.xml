@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/artworksFragment">
@@ -8,7 +7,7 @@
     <fragment
         android:id="@+id/artworksFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment"
-        android:label="ArtworksFragment" >
+        android:label="ArtworksFragment">
 
         <action
             android:id="@+id/openArtworkDetail"
@@ -18,8 +17,8 @@
 
             <argument
                 android:name="artworkId"
-                app:argType="string"
-                android:defaultValue=""/>
+                android:defaultValue=""
+                app:argType="string" />
 
         </action>
 
@@ -29,4 +28,15 @@
         android:id="@+id/artworkDetailFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworkDetailFragment"
         android:label="ArtworkDetailFragment" />
+
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.santukis.cleanarchitecture.game.fragments.ui.GameFragment"
+        android:label="GameFragment" />
+
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.FavouritesFragment"
+        android:label="FavouritesFragment" />
+
 </navigation>
