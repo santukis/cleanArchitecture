@@ -15,6 +15,8 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
     fun loadArtwork(artworkId: String): ArtworkDetailDb?
 
+    @Query("SELECT * FROM artworks WHERE artworks.title != '' ORDER BY RANDOM() LIMIT 3")
+    fun loadTitleQuestion(): List<ArtworkDetailDb>?
 }
 
 @Dao
