@@ -15,6 +15,6 @@ interface BaseDao<Item> {
     @Delete
     fun deleteItem(item: Item): Int
 
-    @RawQuery
-    fun loadItems(query: SupportSQLiteQuery): List<Item>
+    @Update
+    fun updateItem(item: Item): Int
 }
