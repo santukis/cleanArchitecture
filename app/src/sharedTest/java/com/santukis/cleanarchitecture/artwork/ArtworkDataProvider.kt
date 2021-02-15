@@ -1,5 +1,8 @@
 package com.santukis.cleanarchitecture.artwork
 
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Dating
+
 object ArtworkDataProvider {
 
     val artWorkResponseMultipleItems = "{" +
@@ -391,4 +394,31 @@ object ArtworkDataProvider {
             "        \"dimensions\": null" +
             "    }" +
             "}"
+
+    val artworks = listOf(
+        Artwork(
+            id = "1",
+            title = "title01",
+            description = "description01",
+            author = "author01",
+            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            image = "image01"
+        ),
+        Artwork(
+            id = "2",
+            title = "title02",
+            description = "description02",
+            author = "author02",
+            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            image = "image02"
+        ),
+        Artwork(
+            id = "3",
+            title = "title03",
+            description = "description03",
+            author = "author03",
+            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            image = "image03"
+        )
+    )
 }
