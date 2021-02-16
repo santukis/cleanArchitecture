@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.fragments.ui.binding
+package com.santukis.cleanarchitecture.game.ui.binding
 
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.OnItemClickListener
@@ -13,6 +13,6 @@ class AnswerViewHolder(binding: ElementGameAnswerBinding): ItemsAdapter.ItemBind
     }
 
     override fun setOnItemClickListener(onItemClickListener: OnItemClickListener?, item: Artwork, position: Int) {
-
+        binding.root.setOnClickListener { onItemClickListener?.onItemClick(binding.root, item) }
     }
 }

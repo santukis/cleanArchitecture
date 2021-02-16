@@ -2,7 +2,7 @@ package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import com.santukis.cleanarchitecture.game.fragments.domain.model.Question
+import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

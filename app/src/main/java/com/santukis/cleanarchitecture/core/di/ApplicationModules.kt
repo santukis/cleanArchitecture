@@ -12,7 +12,7 @@ import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
-import com.santukis.cleanarchitecture.game.fragments.ui.viewmodels.GameViewModel
+import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 

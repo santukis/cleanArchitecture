@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.fragments.ui.fragments
+package com.santukis.cleanarchitecture.game.ui.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,13 +18,16 @@ class GameFragment: BaseFragment<FragmentGameBinding>() {
 
         fragmentsAdapter = FragmentsAdapter(this)
         binding.fragmentContainer.adapter = fragmentsAdapter
+        binding.fragmentContainer.isUserInputEnabled = false
         fragmentsAdapter?.showFragments(listOf(QuestionFragment(), AnswerFragment()))
-
     }
 
     override fun initializeViewListeners(binding: FragmentGameBinding) {
         super.initializeViewListeners(binding)
 
+        gameViewModel?.screen?.observe(viewLifecycleOwner) { screen ->
+            binding.fragmentContainer.setCurrentItem(screen, true)
+        }
     }
 
 }

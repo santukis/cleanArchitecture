@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.fragments.ui.fragments
+package com.santukis.cleanarchitecture.game.ui.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +10,11 @@ class QuestionFragment: BaseFragment<FragmentGameQuestionBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentGameQuestionBinding =
         FragmentGameQuestionBinding.inflate(inflater, container, false)
+
+    override fun initializeViewComponents(binding: FragmentGameQuestionBinding) {
+        super.initializeViewComponents(binding)
+        binding.viewmodel = gameViewModel
+    }
 
     override fun initializeViewListeners(binding: FragmentGameQuestionBinding) {
         super.initializeViewListeners(binding)

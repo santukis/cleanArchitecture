@@ -6,5 +6,5 @@ sealed class Response<Item> {
 
     data class Error<Item>(val error: Throwable): Response<Item>()
 
-    class Loading<Item>(): Response<Item>()
+    data class Loading<Item>(val progress: Int = 0): Response<Item>()
 }

@@ -4,7 +4,7 @@ import com.santukis.cleanarchitecture.artwork.data.mappers.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import com.santukis.cleanarchitecture.game.fragments.domain.model.Question
+import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {

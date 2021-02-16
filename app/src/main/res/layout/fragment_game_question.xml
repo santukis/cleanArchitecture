@@ -7,7 +7,11 @@
 
         <variable
             name="question"
-            type="com.santukis.cleanarchitecture.game.fragments.domain.model.Question" />
+            type="com.santukis.cleanarchitecture.game.domain.model.Question" />
+
+        <variable
+            name="viewmodel"
+            type="com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel" />
 
         <import type="android.view.View" />
 
@@ -62,6 +66,7 @@
                 android:layout_marginTop="@dimen/normal_space"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/element_game_answer"
+                app:onAnswerClick="@{viewmodel.onAnswerClick}"
                 app:showAnswers="@{question.options}"
                 tools:itemCount="3"/>
 

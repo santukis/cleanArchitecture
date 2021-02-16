@@ -3,16 +3,12 @@ package com.santukis.cleanarchitecture.core.ui.activities
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.databinding.ActivityMainBinding
-import com.santukis.cleanarchitecture.game.fragments.ui.viewmodels.GameViewModel
+import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.di

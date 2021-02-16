@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.fragments.domain.model
+package com.santukis.cleanarchitecture.game.domain.model
 
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import kotlin.random.Random

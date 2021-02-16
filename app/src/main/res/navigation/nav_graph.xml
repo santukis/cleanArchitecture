@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.santukis.cleanarchitecture.game.fragments.ui.fragments.GameFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.GameFragment"
         android:label="GameFragment" />
 
     <fragment
