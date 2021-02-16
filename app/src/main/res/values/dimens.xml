@@ -3,4 +3,6 @@
     <dimen name="normal_space">8dp</dimen>
     <dimen name="small_space">4dp</dimen>
     <dimen name="large_radius">20dp</dimen>
+    <dimen name="large_space">16dp</dimen>
+    <dimen name="xlarge_space">32dp</dimen>
 </resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="question"
+            type="com.santukis.cleanarchitecture.game.fragments.domain.model.Question" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:showImage="@{question.options.get(question.rightOption).image}"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/gradient_black"
+                app:layout_constraintBottom_toBottomOf="@id/image"
+                app:layout_constraintLeft_toLeftOf="@id/image"
+                app:layout_constraintRight_toRightOf="@id/image"
+                app:layout_constraintTop_toTopOf="@id/image" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/question"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                android:padding="@dimen/normal_space"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:text="@{question.title}"
+                android:gravity="center"
+                tools:text="¿Quién es el autor de esta obra"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/answers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/question"
+                android:layout_marginTop="@dimen/normal_space"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/element_game_answer"
+                app:showAnswers="@{question.options}"
+                tools:itemCount="3"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>
