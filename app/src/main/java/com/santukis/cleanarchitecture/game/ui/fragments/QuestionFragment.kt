@@ -19,7 +19,7 @@ class QuestionFragment: BaseFragment<FragmentGameQuestionBinding>() {
     override fun initializeViewListeners(binding: FragmentGameQuestionBinding) {
         super.initializeViewListeners(binding)
 
-        gameViewModel?.question?.observe(this) { response ->
+        gameViewModel?.question?.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Success -> binding.setQuestion(response.data)
                 is Response.Error -> {}

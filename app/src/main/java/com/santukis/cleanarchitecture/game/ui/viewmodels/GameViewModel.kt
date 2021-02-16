@@ -15,7 +15,7 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class GameViewModel(application: Application): AndroidViewModel(application), DIAware {
+class GameViewModel(application: Application) : AndroidViewModel(application), DIAware {
 
     companion object {
         const val QUESTION_SCREEN = 0
@@ -42,8 +42,16 @@ class GameViewModel(application: Application): AndroidViewModel(application), DI
     val onAnswerClick: OnItemClickListener = object : OnItemClickListener {
         override fun onItemClick(view: View, item: Any) {
             if (item is Artwork) {
+                updateQuestionAnswer(item)
                 _screen.postValue(ANSWER_SCREEN)
             }
+        }
+    }
+
+    private fun updateQuestionAnswer(answer: Artwork) {
+        (_question.value as? Response.Success)?.data?.let { question ->
+            question.checkAnswer(answer)
+            _question.postValue(Response.Success(question))
         }
     }
 }

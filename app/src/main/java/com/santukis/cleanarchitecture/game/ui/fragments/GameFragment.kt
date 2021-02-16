@@ -24,7 +24,6 @@ class GameFragment: BaseFragment<FragmentGameBinding>() {
 
     override fun initializeViewListeners(binding: FragmentGameBinding) {
         super.initializeViewListeners(binding)
-
         gameViewModel?.screen?.observe(viewLifecycleOwner) { screen ->
             binding.fragmentContainer.setCurrentItem(screen, true)
         }

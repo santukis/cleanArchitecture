@@ -1,12 +1,14 @@
 package com.santukis.cleanarchitecture.game.ui.binding
 
 import android.view.LayoutInflater
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.OnItemClickListener
 import com.frikiplanet.proteo.ViewHolderProvider
+import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.databinding.ElementGameAnswerBinding
 
@@ -25,6 +27,15 @@ object GameBinding {
         (view.adapter as? ItemsAdapter<Artwork>)?.apply {
             addOnItemClickListener(onItemClickListener)
             artworks?.apply { showItems(artworks) }
+        }
+    }
+
+    @BindingAdapter("app:setAnwserIcon")
+    @JvmStatic
+    fun setAnswerIcon(view: AppCompatImageView, isRightAnswer: Boolean?) {
+        when(isRightAnswer) {
+            true -> view.setImageResource(R.drawable.ic_right)
+            else -> view.setImageResource(R.drawable.ic_wrong)
         }
     }
 }
