@@ -42,9 +42,7 @@ data class ImageDto(
 
 @JsonClass(generateAdapter = true)
 data class DatingDto(
-    @Json(name = "sortingDate") val year: Int? = 0,
-    @Json(name = "yearEarly") val from: Int? = 0,
-    @Json(name = "yearLate") val to: Int? = 0
+    @Json(name = "sortingDate") val year: Int? = 0
 ) {
     companion object {
         val EMPTY = DatingDto()

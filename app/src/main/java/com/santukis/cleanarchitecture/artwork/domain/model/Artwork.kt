@@ -20,9 +20,7 @@ data class Artwork(
 }
 
 data class Dating(
-    val year: Int = 0,
-    val started: Int = 0,
-    val finished: Int = 0
+    val year: Int = 0
 ) {
     companion object {
         val EMPTY = Dating()

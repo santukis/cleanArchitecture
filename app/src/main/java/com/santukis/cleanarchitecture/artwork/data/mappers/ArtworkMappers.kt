@@ -32,9 +32,7 @@ fun DimensionDto.toDimension() = when(type) {
 
 fun DatingDto.toDating() =
     Dating(
-        year = year ?: 0,
-        started = from ?: 0,
-        finished = to ?: 0
+        year = year ?: 0
     )
 
 fun ColorDto.toColor() =
@@ -59,7 +57,7 @@ fun ArtworkDb.toArtwork() =
         description = description,
         author = author,
         image = image,
-        dating = dating.toDating(),
+        dating = Dating(year = dating),
         shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
     )
 
@@ -75,20 +73,13 @@ fun ArtworkDb.toArtwork(
         description = description,
         author = author,
         image = image,
-        dating = dating.toDating(),
+        dating = Dating(year = dating),
         dimensions = dimensions,
         colors = colors,
         categories = categories,
         materials = materials,
         techniques = techniques,
         shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
-    )
-
-fun DatingDb.toDating() =
-    Dating(
-        year = year,
-        started = started,
-        finished = finished
     )
 
 fun DimensionDb.toDimension() =
@@ -130,14 +121,7 @@ fun Artwork.toArtworkDb() =
         description = description,
         author = author,
         image = image,
-        dating = dating.toDatingDb()
-    )
-
-fun Dating.toDatingDb(): DatingDb =
-    DatingDb(
-        year = year,
-        started = started,
-        finished = finished
+        dating = dating.year
     )
 
 fun Dimension.toDimensionDb(parentId: String): DimensionDb =

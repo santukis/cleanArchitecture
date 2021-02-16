@@ -2,7 +2,6 @@ package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 import kotlinx.coroutines.flow.Flow
 
@@ -17,6 +16,12 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
 
     @Query("SELECT * FROM artworks WHERE artworks.title != '' ORDER BY RANDOM() LIMIT 3")
     fun loadTitleQuestion(): List<ArtworkDetailDb>?
+
+    @Query("SELECT * FROM artworks WHERE artworks.author != '' ORDER BY RANDOM() LIMIT 3")
+    fun loadAuthorQuestion(): List<ArtworkDetailDb>?
+
+    @Query("SELECT * FROM artworks WHERE artworks.dating != 0 ORDER BY RANDOM() LIMIT 3")
+    fun loadDatingQuestion(): List<ArtworkDetailDb>?
 }
 
 @Dao

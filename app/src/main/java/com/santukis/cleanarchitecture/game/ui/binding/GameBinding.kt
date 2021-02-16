@@ -11,12 +11,13 @@ import com.frikiplanet.proteo.ViewHolderProvider
 import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.databinding.ElementGameAnswerBinding
+import com.santukis.cleanarchitecture.game.domain.model.Answer
 
 object GameBinding {
 
     @BindingAdapter("app:showAnswers", "app:onAnswerClick")
     @JvmStatic
-    fun showAnswers(view: RecyclerView, artworks: List<Artwork>?, onItemClickListener: OnItemClickListener?) {
+    fun showAnswers(view: RecyclerView, artworks: List<Answer>?, onItemClickListener: OnItemClickListener?) {
         if (view.adapter == null) {
             view.adapter = ItemsAdapter(ViewHolderProvider { parent, viewType ->
                 AnswerViewHolder(ElementGameAnswerBinding.inflate(LayoutInflater.from(view.context), parent, false))
@@ -24,7 +25,7 @@ object GameBinding {
             view.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
         }
 
-        (view.adapter as? ItemsAdapter<Artwork>)?.apply {
+        (view.adapter as? ItemsAdapter<Answer>)?.apply {
             addOnItemClickListener(onItemClickListener)
             artworks?.apply { showItems(artworks) }
         }

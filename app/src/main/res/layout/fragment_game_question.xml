@@ -13,8 +13,6 @@
             name="viewmodel"
             type="com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel" />
 
-        <import type="android.view.View" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -32,7 +30,7 @@
                 android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:showImage="@{question.options.get(question.rightOption).image}"
+                app:showImage="@{question.answers.get(question.rightOption).image}"
                 app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,7 +52,7 @@
                 android:padding="@dimen/normal_space"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"
-                android:text="@{question.title}"
+                app:setTextResource="@{question.title}"
                 android:gravity="center"
                 tools:text="¿Quién es el autor de esta obra"/>
 
@@ -67,7 +65,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/element_game_answer"
                 app:onAnswerClick="@{viewmodel.onAnswerClick}"
-                app:showAnswers="@{question.options}"
+                app:showAnswers="@{question.answers}"
                 tools:itemCount="3"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,8 @@
         android:largeHeap="true"
         android:theme="@style/Theme.CleanArchitecture">
 
-        <activity android:name=".core.ui.activities.MainActivity">
+        <activity android:name=".core.ui.activities.MainActivity"
+            android:label="Rijksmuseum">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

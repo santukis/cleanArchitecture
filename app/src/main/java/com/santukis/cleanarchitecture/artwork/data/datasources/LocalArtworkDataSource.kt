@@ -4,8 +4,10 @@ import com.santukis.cleanarchitecture.artwork.data.mappers.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.flow.*
+import kotlin.random.Random
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
@@ -41,11 +43,20 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
     }
 
     override suspend fun loadQuestion(): Response<Question> {
-        val items = database.artworkDao().loadTitleQuestion()
+        val type = Random.nextInt(0, 3)
+
+        val items = when(type) {
+            0 -> database.artworkDao().loadTitleQuestion()
+            1 -> database.artworkDao().loadAuthorQuestion()
+            else -> database.artworkDao().loadDatingQuestion()
+        }
 
         return when {
             items.isNullOrEmpty() -> super.loadQuestion()
-            else -> Response.Success(Question(options = items.map { it.toArtwork() }))
+            type == 0 -> Response.Success(Question.TitleQuestion(answers = items.map { Answer(it.artworkDb.image, it.artworkDb.title, it.artworkDb.description) }))
+            type == 1 -> Response.Success(Question.AuthorQuestion(answers = items.map { Answer(it.artworkDb.image, it.artworkDb.author, it.artworkDb.description) }))
+            type == 2 -> Response.Success(Question.DatingQuestion(answers = items.map { Answer(it.artworkDb.image, it.artworkDb.dating.toString(), it.artworkDb.description) }))
+            else -> Response.Error(Exception("Unknown Question"))
         }
     }
 }

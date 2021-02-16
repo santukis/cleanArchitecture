@@ -6,4 +6,7 @@
     <string name="favourites">Favourites</string>
     <string name="game">Game</string>
     <string name="next">Continue</string>
+    <string name="title_question">What\'s the title of this artwork?</string>
+    <string name="author_question">What\'s the author of this artwork?</string>
+    <string name="dating_question">What\'s the dating of this artwork?</string>
 </resources>

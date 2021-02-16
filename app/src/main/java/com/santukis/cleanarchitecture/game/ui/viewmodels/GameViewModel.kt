@@ -7,6 +7,7 @@ import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,14 +42,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
 
     val onAnswerClick: OnItemClickListener = object : OnItemClickListener {
         override fun onItemClick(view: View, item: Any) {
-            if (item is Artwork) {
+            if (item is Answer) {
                 updateQuestionAnswer(item)
                 _screen.postValue(ANSWER_SCREEN)
             }
         }
     }
 
-    private fun updateQuestionAnswer(answer: Artwork) {
+    private fun updateQuestionAnswer(answer: Answer) {
         (_question.value as? Response.Success)?.data?.let { question ->
             question.checkAnswer(answer)
             _question.postValue(Response.Success(question))

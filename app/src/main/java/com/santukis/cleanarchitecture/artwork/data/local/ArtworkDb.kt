@@ -1,9 +1,6 @@
 package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.*
-import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
-import com.santukis.cleanarchitecture.artwork.domain.model.Dating
-import com.santukis.cleanarchitecture.artwork.domain.model.MeasureUnit
 
 @Entity(
     tableName = "artworks",
@@ -14,15 +11,8 @@ data class ArtworkDb(
     val description: String,
     val author: String,
     val image: String,
-    @Embedded val dating: DatingDb,
+    val dating: Int,
     var updatedAt: Long = 0L
-) {
-}
-
-data class DatingDb(
-    @ColumnInfo(name = "_dating_year") val year: Int,
-    @ColumnInfo(name = "_dating_started") val started: Int,
-    @ColumnInfo(name = "_dating_finished") val finished: Int
 )
 
 @Entity(
