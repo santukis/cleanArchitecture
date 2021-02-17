@@ -41,6 +41,7 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
 
     fun loadArtworkDetail(artworkId: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            artwork.postValue(Response.Loading())
             artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId))
         }
     }
