@@ -9,6 +9,7 @@ interface ArtworkService {
 
     @GET("api/en/collection")
     suspend fun loadArtworks(@Query("key") apiKey: String,
+                             @Query("imgonly") withImage: Boolean = true,
                              @QueryMap fields: Map<String, String>): ArtworkResponse
 
     @GET("api/en/collection/{artworkId}")
