@@ -4,11 +4,21 @@ import androidx.annotation.StringRes
 import com.santukis.cleanarchitecture.R
 import org.threeten.bp.LocalDateTime
 import kotlin.random.Random
+import kotlin.reflect.KClass
 
 data class Game(
     var score: Int = 0,
     var date: LocalDateTime = LocalDateTime.now()
-)
+) {
+
+    fun getPercentageScore(): String = ""
+
+    fun getQuestionCount(): String = ""
+
+    fun getQuestionCount(type: KClass<out Question>): String = ""
+
+    fun getPercentageScore(type: KClass<out Question>): String = ""
+}
 
 sealed class Question(
     var answers: List<Answer>,
@@ -16,9 +26,9 @@ sealed class Question(
     var successfullyAnswered: Boolean = false
 ) {
 
-    private var rightOption: Int = Random.nextInt(0, answers.size)
+    private val rightOption: Int = Random.nextInt(0, answers.size)
 
-    fun getRightAnswer() = answers.get(rightOption)
+    fun getRightAnswer() = answers[rightOption]
 
     fun checkAnswer(artwork: Answer) {
         successfullyAnswered = getRightAnswer().text == artwork.text

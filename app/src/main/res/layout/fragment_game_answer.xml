@@ -47,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/normal_space"
+                android:textIsSelectable="true"
                 android:text="@{question.getRightAnswer().explanation}"
                 tools:text="Descripción de la obra mostrada" />
 
