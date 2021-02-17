@@ -34,7 +34,15 @@ class MainActivity: AppCompatActivity() , DIAware {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setUpActionBar()
         setUpNavigation()
+    }
+
+    private fun setUpActionBar() {
+        NavigationUI.setupActionBarWithNavController(
+            this,
+            findNavController(R.id.nav_host_fragment)
+        )
     }
 
     private fun setUpNavigation() {
@@ -42,6 +50,10 @@ class MainActivity: AppCompatActivity() , DIAware {
             binding.bottomActionBar,
             findNavController(R.id.nav_host_fragment)
         )
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp()
     }
 
 }

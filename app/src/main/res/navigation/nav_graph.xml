@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/artworksFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment"
-        android:label="ArtworksFragment">
+        android:label="Collections">
 
         <action
             android:id="@+id/openArtworkDetail"
@@ -27,16 +27,23 @@
     <fragment
         android:id="@+id/artworkDetailFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworkDetailFragment"
-        android:label="ArtworkDetailFragment" />
+        android:label="Detail" >
+
+        <action
+            android:id="@+id/action_artworkDetailFragment_pop"
+            app:popUpTo="@id/artworksFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.santukis.cleanarchitecture.game.ui.fragments.GameFragment"
-        android:label="GameFragment" />
+        android:label="Game" />
 
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.FavouritesFragment"
-        android:label="FavouritesFragment" />
+        android:label="Favourites" />
 
 </navigation>
