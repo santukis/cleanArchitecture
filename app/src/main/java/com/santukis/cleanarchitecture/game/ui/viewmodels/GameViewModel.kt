@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
-import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.Question

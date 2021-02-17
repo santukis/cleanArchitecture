@@ -6,12 +6,8 @@
 
     <data>
         <variable
-            name="game"
-            type="com.santukis.cleanarchitecture.game.domain.model.Game" />
-
-        <import type="com.santukis.cleanarchitecture.game.domain.model.Question.TitleQuestion"/>
-        <import type="com.santukis.cleanarchitecture.game.domain.model.Question.AuthorQuestion"/>
-        <import type="com.santukis.cleanarchitecture.game.domain.model.Question.DatingQuestion"/>
+            name="history"
+            type="com.santukis.cleanarchitecture.game.domain.model.GameHistory" />
 
     </data>
 
@@ -31,7 +27,7 @@
             app:layout_constraintVertical_bias="0.1"
             style="@style/TextAppearance.AppCompat.Display4"
             tools:text="37%"
-            android:text="@{game.getPercentageScore()}"
+            android:text="@{history.totalScore.successPercentage}"
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="20"
@@ -48,7 +44,7 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_marginTop="@dimen/large_space"
             tools:text="1500 Preguntas"
-            android:text="@{game.getQuestionCount()}"/>
+            android:text="@{history.totalScore.questionCount}"/>
 
         <LinearLayout
             android:id="@+id/data_container"
@@ -56,7 +52,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="@dimen/large_space"
-            android:padding="@dimen/normal_space"
+            android:paddingTop="@dimen/large_space"
+            android:paddingBottom="@dimen/large_space"
             android:background="@drawable/outlined_background"
             app:layout_constraintTop_toBottomOf="@id/questions"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -120,7 +117,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="245"
-                    android:text="@{game.getQuestionCount(TitleQuestion)}"
+                    android:text="@{history.titleScore.questionCount}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -130,7 +127,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="34%"
-                    android:text="@{game.getPercentageScore(TitleQuestion)}"
+                    android:text="@{history.titleScore.successPercentage}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -157,7 +154,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="245"
-                    android:text="@{game.getQuestionCount(AuthorQuestion)}"
+                    android:text="@{history.authorScore.questionCount}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -167,7 +164,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="34%"
-                    android:text="@{game.getPercentageScore(AuthorQuestion)}"
+                    android:text="@{history.authorScore.successPercentage}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -194,7 +191,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="245"
-                    android:text="@{game.getQuestionCount(DatingQuestion)}"
+                    android:text="@{history.datingScore.questionCount}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -204,7 +201,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="34%"
-                    android:text="@{game.getPercentageScore(DatingQuestion)}"
+                    android:text="@{history.datingScore.successPercentage}"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
