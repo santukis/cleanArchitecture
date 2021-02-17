@@ -14,7 +14,6 @@ class LocalGameDataSource(context: Context): GameDataSource {
 
     override suspend fun loadGameHistory(): Response<GameHistory> {
         val history = GameHistory(
-            totalScore = getScore(GameScore.TotalScore::class.java),
             titleScore = getScore(GameScore.TitleScore::class.java),
             authorScore = getScore(GameScore.AuthorScore::class.java),
             datingScore = getScore(GameScore.DatingScore::class.java)
@@ -27,19 +26,19 @@ class LocalGameDataSource(context: Context): GameDataSource {
     }
 
     private fun <Score: GameScore> getScore(score: Class<Score>): Score {
-        return score.getConstructor(Int::class.java, Int::class.java).newInstance(getCount(score), getSuccess(score))
+        return score.getConstructor(Int::class.java, Int::class.java).newInstance(getCount(score.simpleName), getSuccess(score.simpleName))
     }
 
     override suspend fun addScore(score: GameScore) {
-        var count = getCount(score::class.java)
-        var success = getSuccess(score::class.java)
-        sharedPreferences.edit().putInt("${score::class.java.name}_count", ++count).apply()
-        sharedPreferences.edit().putInt("${score::class.java.name}_success", ++success).apply()
+        val count = getCount(score::class.java.simpleName)
+        val success = getSuccess(score::class.java.simpleName)
+        sharedPreferences.edit().putInt("${score::class.java.simpleName}_count", count + score.count).apply()
+        sharedPreferences.edit().putInt("${score::class.java.simpleName}_success", success + score.success).apply()
     }
 
-    private fun <Score: GameScore> getCount(score: Class<Score>): Int =
-        sharedPreferences.getInt("${score::class.java.name}_count", 0)
+    private fun getCount(gameScoreName: String): Int =
+        sharedPreferences.getInt("${gameScoreName}_count", 0)
 
-    private fun <Score: GameScore> getSuccess(score: Class<Score>): Int =
-        sharedPreferences.getInt("${score::class.java.name}_success", 0)
+    private fun getSuccess(gameScoreName: String): Int =
+        sharedPreferences.getInt("${gameScoreName}_success", 0)
 }

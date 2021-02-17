@@ -41,7 +41,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
     val onAnswerClick: OnItemClickListener = object : OnItemClickListener {
         override fun onItemClick(view: View, item: Any) {
             if (item is Answer) {
-                updateQuestionAnswer(item)
+                updateQuestionAnswer(item)?.let { updatedQuestion ->
+                    updateGameHistory(updatedQuestion)
+                    _question.postValue(Response.Success(updatedQuestion))
+                }
+
                 _screen.postValue(ANSWER_SCREEN)
             }
         }
@@ -60,10 +64,12 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
         }
     }
 
-    private fun updateQuestionAnswer(answer: Answer) {
-        (_question.value as? Response.Success)?.data?.let { question ->
-            question.checkAnswer(answer)
-            _question.postValue(Response.Success(question))
+    private fun updateQuestionAnswer(answer: Answer): Question? =
+        (_question.value as? Response.Success)?.data?.checkAnswer(answer)
+
+    private fun updateGameHistory(question: Question) {
+        viewModelScope.launch {
+            gameDataSource.addScore(question.getScore())
         }
     }
 }
