@@ -14,13 +14,13 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
     fun loadArtwork(artworkId: String): ArtworkDetailDb?
 
-    @Query("SELECT * FROM artworks WHERE artworks.title != '' ORDER BY RANDOM() LIMIT 3")
+    @Query("SELECT * FROM artworks WHERE artworks.title != '' GROUP BY title ORDER BY RANDOM() LIMIT 3")
     fun loadTitleQuestion(): List<ArtworkDetailDb>?
 
-    @Query("SELECT * FROM artworks WHERE artworks.author != '' ORDER BY RANDOM() LIMIT 3")
+    @Query("SELECT * FROM artworks WHERE artworks.author != '' GROUP BY author ORDER BY RANDOM() LIMIT 3")
     fun loadAuthorQuestion(): List<ArtworkDetailDb>?
 
-    @Query("SELECT * FROM artworks WHERE artworks.dating != 0 ORDER BY RANDOM() LIMIT 3")
+    @Query("SELECT * FROM artworks WHERE artworks.dating != 0 GROUP BY dating ORDER BY RANDOM() LIMIT 3")
     fun loadDatingQuestion(): List<ArtworkDetailDb>?
 }
 
