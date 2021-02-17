@@ -12,6 +12,8 @@ import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
+import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
+import com.santukis.cleanarchitecture.game.data.datasources.LocalGameDataSource
 import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
@@ -22,6 +24,7 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
     bind<HttpClient>() with provider { HttpClient(BuildConfig.END_POINT) }
 
     import(artwork(), allowOverride = true)
+    import(game(), allowOverride = true)
     import(viewmodels(), allowOverride = true)
 }
 
@@ -35,4 +38,8 @@ fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
     bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource(instance()) }
     bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
+}
+
+fun game() = DI.Module("game", allowSilentOverride = true) {
+    bind<GameDataSource>(tag = "local") with singleton { LocalGameDataSource(instance()) }
 }

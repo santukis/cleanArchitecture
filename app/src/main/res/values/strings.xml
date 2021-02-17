@@ -15,4 +15,5 @@
     <string name="title">Title</string>
     <string name="authorship">Authorship</string>
     <string name="dating">Dating</string>
+    <string name="game_score">Game Score</string>
 </resources>

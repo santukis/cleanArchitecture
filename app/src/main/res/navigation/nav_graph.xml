@@ -39,11 +39,22 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.santukis.cleanarchitecture.game.ui.fragments.GameFragment"
-        android:label="Game" />
+        android:label="Game" >
+
+        <action
+            android:id="@+id/action_gameFragment_to_gameScoreFragment"
+            app:destination="@id/gameScoreFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.FavouritesFragment"
         android:label="Favourites" />
+
+    <fragment
+        android:id="@+id/gameScoreFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.GameScoreFragment"
+        android:label="Game Score" />
 
 </navigation>
