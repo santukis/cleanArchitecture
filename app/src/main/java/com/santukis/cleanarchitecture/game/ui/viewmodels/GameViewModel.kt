@@ -6,7 +6,9 @@ import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.domain.model.Answer
+import com.santukis.cleanarchitecture.game.domain.model.GameHistory
 import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,12 +27,25 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
     override val di: DI by di()
 
     private val artworkDataSource: ArtworkDataSource by di.instance("local")
+    private val gameDataSource: GameDataSource by di.instance("local")
+
+    private val _gameHistory: MutableLiveData<Response<GameHistory>> = MutableLiveData()
+    val gameHistory: LiveData<Response<GameHistory>> = _gameHistory
 
     private val _question: MutableLiveData<Response<Question>> = MutableLiveData()
     val question: LiveData<Response<Question>> = _question
 
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
+
+    val onAnswerClick: OnItemClickListener = object : OnItemClickListener {
+        override fun onItemClick(view: View, item: Any) {
+            if (item is Answer) {
+                updateQuestionAnswer(item)
+                _screen.postValue(ANSWER_SCREEN)
+            }
+        }
+    }
 
     fun loadQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,12 +54,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
         }
     }
 
-    val onAnswerClick: OnItemClickListener = object : OnItemClickListener {
-        override fun onItemClick(view: View, item: Any) {
-            if (item is Answer) {
-                updateQuestionAnswer(item)
-                _screen.postValue(ANSWER_SCREEN)
-            }
+    fun loadGameHistory() {
+        viewModelScope.launch {
+            _gameHistory.postValue(gameDataSource.loadGameHistory())
         }
     }
 
