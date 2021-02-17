@@ -33,7 +33,11 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/action"
+            app:layout_constraintTop_toBottomOf="@id/result"
+            android:layout_margin="@dimen/large_space"
+            android:overScrollMode="never"
             android:fillViewport="true">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -43,10 +47,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/normal_space"
-                android:text="@{question.answers.get(question.rightOption).explanation}"
-                app:layout_constraintBottom_toTopOf="@id/action"
-                app:layout_constraintTop_toBottomOf="@id/result"
-                app:layout_constraintVertical_bias="0.3"
+                android:text="@{question.getRightAnswer().explanation}"
                 tools:text="Descripción de la obra mostrada" />
 
         </androidx.core.widget.NestedScrollView>

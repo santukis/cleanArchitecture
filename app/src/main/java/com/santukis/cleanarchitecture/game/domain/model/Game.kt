@@ -2,10 +2,12 @@ package com.santukis.cleanarchitecture.game.domain.model
 
 import androidx.annotation.StringRes
 import com.santukis.cleanarchitecture.R
+import org.threeten.bp.LocalDateTime
 import kotlin.random.Random
 
 data class Game(
-    var score: Int = 0
+    var score: Int = 0,
+    var date: LocalDateTime = LocalDateTime.now()
 )
 
 sealed class Question(
@@ -14,11 +16,12 @@ sealed class Question(
     var successfullyAnswered: Boolean = false
 ) {
 
-    var rightOption: Int = Random.nextInt(0, 3)
-        private set
+    private var rightOption: Int = Random.nextInt(0, answers.size)
+
+    fun getRightAnswer() = answers.get(rightOption)
 
     fun checkAnswer(artwork: Answer) {
-        successfullyAnswered = answers.getOrNull(rightOption)?.text == artwork.text
+        successfullyAnswered = getRightAnswer().text == artwork.text
     }
 
     class TitleQuestion(answers: List<Answer>): Question(answers, title = R.string.title_question)
