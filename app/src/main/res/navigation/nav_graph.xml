@@ -50,7 +50,22 @@
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.FavouritesFragment"
-        android:label="Favourites" />
+        android:label="Favourites">
+
+        <action
+            android:id="@+id/openFavouriteDetail"
+            app:destination="@id/artworkDetailFragment"
+            app:popUpTo="@id/artworksFragment"
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="artworkId"
+                android:defaultValue=""
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
 
     <fragment
         android:id="@+id/gameScoreFragment"

@@ -58,8 +58,8 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
         }
     }
 
-    private fun toggleFavourite(artworkId: String) {
-        viewModelScope.launch {
+    fun toggleFavourite(artworkId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             artworkDataSource.toggleFavourite(artworkId)
         }
     }

@@ -15,6 +15,11 @@ class ArtworkDetailFragment: BaseFragment<FragmentArtworkDetailBinding>() {
         FragmentArtworkDetailBinding.inflate(inflater, container, false)
 
 
+    override fun initializeViewComponents(binding: FragmentArtworkDetailBinding) {
+        super.initializeViewComponents(binding)
+        binding.viewmodel = artworkViewModel
+    }
+
     override fun initializeViewListeners(binding: FragmentArtworkDetailBinding) {
         super.initializeViewListeners(binding)
 

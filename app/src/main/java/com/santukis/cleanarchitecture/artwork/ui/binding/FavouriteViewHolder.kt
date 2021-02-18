@@ -4,10 +4,10 @@ import androidx.navigation.findNavController
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
-import com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragmentDirections
-import com.santukis.cleanarchitecture.databinding.ElementArtworkItemBinding
+import com.santukis.cleanarchitecture.artwork.ui.fragments.FavouritesFragmentDirections
+import com.santukis.cleanarchitecture.databinding.ElementFavouriteItemBinding
 
-class ArtworkViewHolder(binding: ElementArtworkItemBinding): ItemsAdapter.ItemBindingViewHolder<Artwork, ElementArtworkItemBinding>(binding) {
+class FavouriteViewHolder(binding: ElementFavouriteItemBinding): ItemsAdapter.ItemBindingViewHolder<Artwork, ElementFavouriteItemBinding>(binding) {
 
     override fun bind(value: Artwork, position: Int) {
         binding.artwork = value
@@ -15,7 +15,7 @@ class ArtworkViewHolder(binding: ElementArtworkItemBinding): ItemsAdapter.ItemBi
 
     override fun setOnItemClickListener(onItemClickListener: OnItemClickListener?, item: Artwork, position: Int) {
         binding.root.setOnClickListener {
-            it.findNavController().navigate(ArtworksFragmentDirections.openArtworkDetail(item.id))
+            it.findNavController().navigate(FavouritesFragmentDirections.openFavouriteDetail(item.id))
         }
     }
 }
