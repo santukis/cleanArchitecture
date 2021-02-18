@@ -2,6 +2,8 @@ package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 import kotlinx.coroutines.flow.Flow
 
@@ -14,14 +16,8 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
     fun loadArtwork(artworkId: String): ArtworkDetailDb?
 
-    @Query("SELECT * FROM artworks WHERE artworks.title != '' GROUP BY title ORDER BY RANDOM() LIMIT 3")
-    fun loadTitleQuestion(): List<ArtworkDetailDb>?
-
-    @Query("SELECT * FROM artworks WHERE artworks.author != '' GROUP BY author ORDER BY RANDOM() LIMIT 3")
-    fun loadAuthorQuestion(): List<ArtworkDetailDb>?
-
-    @Query("SELECT * FROM artworks WHERE artworks.dating != 0 GROUP BY dating ORDER BY RANDOM() LIMIT 3")
-    fun loadDatingQuestion(): List<ArtworkDetailDb>?
+    @RawQuery
+    fun loadQuestion(query: SupportSQLiteQuery): List<ArtworkDetailDb>?
 }
 
 @Dao

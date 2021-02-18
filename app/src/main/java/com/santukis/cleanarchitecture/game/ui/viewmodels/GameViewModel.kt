@@ -4,7 +4,6 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
-import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.domain.model.Answer
@@ -27,7 +26,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
 
     override val di: DI by di()
 
-    private val artworkDataSource: ArtworkDataSource by di.instance("local")
     private val gameDataSource: GameDataSource by di.instance("local")
 
     private val _gameHistory: MutableLiveData<Response<GameHistory>> = MutableLiveData()
@@ -54,7 +52,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
 
     fun loadQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
-            _question.postValue(artworkDataSource.loadQuestion(Random.nextInt(0, 3)))
+            _question.postValue(gameDataSource.loadQuestion(Random.nextInt(0, 3)))
             _screen.postValue(QUESTION_SCREEN)
         }
     }

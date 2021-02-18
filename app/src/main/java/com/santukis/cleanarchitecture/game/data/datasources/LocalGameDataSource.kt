@@ -2,12 +2,18 @@ package com.santukis.cleanarchitecture.game.data.datasources
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.santukis.cleanarchitecture.BuildConfig
+import com.santukis.cleanarchitecture.artwork.data.mappers.fromQuestionTypeToSqlQuery
+import com.santukis.cleanarchitecture.artwork.data.mappers.toQuestion
+import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
 import com.santukis.cleanarchitecture.game.domain.model.GameScore
+import com.santukis.cleanarchitecture.game.domain.model.Question
 
-class LocalGameDataSource(context: Context): GameDataSource {
+class LocalGameDataSource(context: Context,
+                          private val database: AppDatabase): GameDataSource {
 
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("${BuildConfig.APPLICATION_ID}.game_stats", Context.MODE_PRIVATE)
@@ -41,4 +47,13 @@ class LocalGameDataSource(context: Context): GameDataSource {
 
     private fun getSuccess(gameScoreName: String): Int =
         sharedPreferences.getInt("${gameScoreName}_success", 0)
+
+    override suspend fun loadQuestion(type: Int): Response<Question> {
+        val items = database.artworkDao().loadQuestion(SimpleSQLiteQuery(fromQuestionTypeToSqlQuery(type)))
+
+        return when(val question = items?.toQuestion(type)) {
+            null -> super.loadQuestion(type)
+            else -> Response.Success(question)
+        }
+    }
 }

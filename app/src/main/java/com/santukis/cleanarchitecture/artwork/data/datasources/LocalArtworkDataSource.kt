@@ -4,7 +4,6 @@ import com.santukis.cleanarchitecture.artwork.data.mappers.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
@@ -39,18 +38,5 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
         database.materialsDao().saveItems(artwork.materials.map { it.toMaterialDb(artwork.id) })
         database.techniquesDao().saveItems(artwork.techniques.map { it.toTechniqueDb(artwork.id) })
         return Response.Success(artwork)
-    }
-
-    override suspend fun loadQuestion(type: Int): Response<Question> {
-        val items = when(type) {
-            0 -> database.artworkDao().loadTitleQuestion()
-            1 -> database.artworkDao().loadAuthorQuestion()
-            else -> database.artworkDao().loadDatingQuestion()
-        }
-
-        return when(val question = items?.toQuestion(type)) {
-            null -> super.loadQuestion(type)
-            else -> Response.Success(question)
-        }
     }
 }

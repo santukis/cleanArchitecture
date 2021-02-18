@@ -131,6 +131,13 @@ fun ArtworkDetailDb.toAuthorAnswer() = Answer(artworkDb.image, artworkDb.author,
 
 fun ArtworkDetailDb.toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating.toString(), artworkDb.description)
 
+fun fromQuestionTypeToSqlQuery(type: Int): String =
+    when(type) {
+        0 -> "SELECT * FROM artworks WHERE artworks.title != '' GROUP BY title ORDER BY RANDOM() LIMIT 3"
+        1 -> "SELECT * FROM artworks WHERE artworks.author != '' GROUP BY author ORDER BY RANDOM() LIMIT 3"
+        else -> "SELECT * FROM artworks WHERE artworks.dating != 0 GROUP BY dating ORDER BY RANDOM() LIMIT 3"
+    }
+
 fun Artwork.toArtworkDb() =
     ArtworkDb(
         id = id,

@@ -40,6 +40,6 @@ class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSourc
         )
 
     } catch (exception: Exception) {
-        Response.Error<Artwork>(exception)
+        Response.Error(exception)
     }
 }

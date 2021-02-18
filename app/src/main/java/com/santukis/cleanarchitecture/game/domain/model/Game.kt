@@ -5,7 +5,6 @@ import com.santukis.cleanarchitecture.R
 import java.text.DecimalFormat
 import kotlin.random.Random
 
-
 class GameHistory(
     val titleScore: GameScore.TitleScore = GameScore.TitleScore(),
     val authorScore: GameScore.AuthorScore = GameScore.AuthorScore(),

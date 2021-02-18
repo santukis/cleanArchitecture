@@ -2,7 +2,6 @@ package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -15,6 +14,4 @@ interface ArtworkDataSource {
     suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> = Response.Error(Exception("Unable to load Artwork"))
 
     suspend fun saveArtwork(artwork: Artwork): Response<Artwork> = Response.Error(Exception("Unable to save Artwork"))
-
-    suspend fun loadQuestion(type: Int): Response<Question> = Response.Error(Exception("Unable to load Question"))
 }

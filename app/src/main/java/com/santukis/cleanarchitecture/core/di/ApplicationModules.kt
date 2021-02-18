@@ -41,5 +41,5 @@ fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
 }
 
 fun game() = DI.Module("game", allowSilentOverride = true) {
-    bind<GameDataSource>(tag = "local") with singleton { LocalGameDataSource(instance()) }
+    bind<GameDataSource>(tag = "local") with singleton { LocalGameDataSource(instance(), instance()) }
 }
