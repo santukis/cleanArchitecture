@@ -401,7 +401,7 @@ object ArtworkDataProvider {
             title = "title01",
             description = "description01",
             author = "author01",
-            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            dating = Dating(year = 1111),
             image = "image01"
         ),
         Artwork(
@@ -409,7 +409,7 @@ object ArtworkDataProvider {
             title = "title02",
             description = "description02",
             author = "author02",
-            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            dating = Dating(year = 1111),
             image = "image02"
         ),
         Artwork(
@@ -417,7 +417,7 @@ object ArtworkDataProvider {
             title = "title03",
             description = "description03",
             author = "author03",
-            dating = Dating(year = 1111, started = 1111, finished = 1112),
+            dating = Dating(year = 1111),
             image = "image03"
         )
     )

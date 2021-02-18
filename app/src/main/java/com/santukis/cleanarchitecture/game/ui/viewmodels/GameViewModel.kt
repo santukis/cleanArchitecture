@@ -16,6 +16,7 @@ import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
 import org.kodein.di.instance
+import kotlin.random.Random
 
 class GameViewModel(application: Application) : AndroidViewModel(application), DIAware {
 
@@ -53,7 +54,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application), D
 
     fun loadQuestion() {
         viewModelScope.launch(Dispatchers.IO) {
-            _question.postValue(artworkDataSource.loadQuestion())
+            _question.postValue(artworkDataSource.loadQuestion(Random.nextInt(0, 3)))
             _screen.postValue(QUESTION_SCREEN)
         }
     }

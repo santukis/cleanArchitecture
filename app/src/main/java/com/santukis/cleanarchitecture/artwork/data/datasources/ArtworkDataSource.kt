@@ -16,5 +16,5 @@ interface ArtworkDataSource {
 
     suspend fun saveArtwork(artwork: Artwork): Response<Artwork> = Response.Error(Exception("Unable to save Artwork"))
 
-    suspend fun loadQuestion(): Response<Question> = Response.Error(Exception("Unable to load Question"))
+    suspend fun loadQuestion(type: Int): Response<Question> = Response.Error(Exception("Unable to load Question"))
 }

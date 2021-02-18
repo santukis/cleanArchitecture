@@ -6,6 +6,9 @@ import com.santukis.cleanarchitecture.artwork.data.remote.ColorDto
 import com.santukis.cleanarchitecture.artwork.data.remote.DatingDto
 import com.santukis.cleanarchitecture.artwork.data.remote.DimensionDto
 import com.santukis.cleanarchitecture.artwork.domain.model.*
+import com.santukis.cleanarchitecture.core.domain.model.Response
+import com.santukis.cleanarchitecture.game.domain.model.Answer
+import com.santukis.cleanarchitecture.game.domain.model.Question
 
 fun ArtworkDto.toArtwork() =
     Artwork(
@@ -113,6 +116,20 @@ fun ArtworkDetailDb.toArtwork() =
         materials = materials.map { it.toMaterial() },
         techniques = techniques.map { it.toTechnique() }
     )
+
+fun List<ArtworkDetailDb>.toQuestion(type: Int): Question? =
+    when(type) {
+        0 -> Question.TitleQuestion(answers = map { it.toTitleAnswer() })
+        1 -> Question.AuthorQuestion(answers = map { it.toAuthorAnswer() })
+        2 -> Question.DatingQuestion(answers = map { it.toDatingAnswer() })
+        else -> null
+    }
+
+fun ArtworkDetailDb.toTitleAnswer() = Answer(artworkDb.image, artworkDb.title, artworkDb.description)
+
+fun ArtworkDetailDb.toAuthorAnswer() = Answer(artworkDb.image, artworkDb.author, artworkDb.description)
+
+fun ArtworkDetailDb.toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating.toString(), artworkDb.description)
 
 fun Artwork.toArtworkDb() =
     ArtworkDb(
