@@ -21,10 +21,11 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
                 }
             }
 
-    override suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> {
-        database.artworkDao().saveItems(artworks.map { it.toArtworkDb() })
-        return Response.Success(artworks)
-    }
+    override suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> =
+        when(database.artworkDao().saveItems(artworks.map { it.toArtworkDb() }).any { it != -1L }) {
+            true -> Response.Success(artworks)
+            false -> super.saveArtworks(artworks)
+        }
 
     override suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> =
         when(val item = database.artworkDao().loadArtwork(artworkId)) {

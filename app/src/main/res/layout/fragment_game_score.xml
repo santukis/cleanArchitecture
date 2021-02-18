@@ -25,30 +25,20 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintVertical_bias="0.1"
+            android:padding="@dimen/large_space"
             app:autoSizeMaxTextSize="112sp"
             app:autoSizeMinTextSize="72sp"
             app:autoSizeStepGranularity="1sp"
-            android:textSize="112sp"
+            android:textSize="90sp"
             tools:text="37%"
             android:text="@{history.totalScore.successPercentage}"
+            android:textColor="@color/colorPrimary"
             android:shadowDx="0"
             android:shadowDy="0"
-            android:shadowRadius="20"
-            android:shadowColor="@color/black"
+            android:shadowRadius="5"
+            android:shadowColor="@color/colorPrimaryDark"
             android:gravity="center"
             android:textStyle="bold"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/questions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/score"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_marginTop="@dimen/large_space"
-            tools:text="1500 Preguntas"
-            android:text="@{history.totalScore.questionCount}"/>
 
         <LinearLayout
             android:id="@+id/data_container"
@@ -59,9 +49,9 @@
             android:paddingTop="@dimen/large_space"
             android:paddingBottom="@dimen/large_space"
             android:background="@drawable/outlined_background"
-            app:layout_constraintTop_toBottomOf="@id/questions"
+            app:layout_constraintTop_toBottomOf="@id/score"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.1">
+            app:layout_constraintVertical_bias="0.2">
 
             <LinearLayout
                 android:layout_width="match_parent"

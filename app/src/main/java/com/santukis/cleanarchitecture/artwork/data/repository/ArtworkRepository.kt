@@ -30,7 +30,7 @@ class ArtworkRepository(
             remoteDataSource.loadArtworks(lastItem)
                 .collect { response ->
                     when(response) {
-                        is Response.Success -> localDataSource.saveArtworks(response.data)
+                        is Response.Success -> localDataSource.saveArtworks(response.data).takeIf { it is Response.Error }?.let { emit(it) }
                         is Response.Error -> emit(response)
                     }
                 }
