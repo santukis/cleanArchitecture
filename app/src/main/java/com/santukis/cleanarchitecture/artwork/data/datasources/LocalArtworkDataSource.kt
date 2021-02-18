@@ -49,4 +49,10 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
                     else -> Response.Success(items.map { artworkDb -> artworkDb.toArtwork() })
                 }
             }
+
+    override suspend fun toggleFavourite(artworkId: String): Response<Unit> =
+        when(database.favouritesDao().toggleFavourite(artworkId) > 0) {
+            true -> Response.Success(Unit)
+            false -> super.toggleFavourite(artworkId)
+        }
 }

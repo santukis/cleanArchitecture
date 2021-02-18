@@ -3,6 +3,7 @@ package com.santukis.cleanarchitecture.artwork.data.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
+import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 import kotlinx.coroutines.flow.Flow
@@ -37,3 +38,17 @@ interface MaterialDao: BaseDao<MaterialDb>
 
 @Dao
 interface TechniqueDao: BaseDao<TechniqueDb>
+
+@Dao
+interface FavouritesDao: BaseDao<FavouriteDb> {
+
+    @Query("SELECT * FROM artworks WHERE id = :artworkId")
+    fun loadFavourite(artworkId: String): FavouriteDb?
+
+    @Transaction
+    fun toggleFavourite(artworkId: String): Int =
+        when(val favourite = loadFavourite(artworkId)) {
+            null -> saveItem(FavouriteDb(artworkId)).toInt()
+            else -> deleteItem(favourite)
+        }
+}

@@ -14,7 +14,7 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
         CategoryDb::class,
         MaterialDb::class,
         TechniqueDb::class,
-        Favourites::class
+        FavouriteDb::class
     ],
     exportSchema = true, version = 3
 )
@@ -31,6 +31,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun materialsDao(): MaterialDao
 
     abstract fun techniquesDao(): TechniqueDao
+
+    abstract fun favouritesDao(): FavouritesDao
 
     companion object {
         @Volatile

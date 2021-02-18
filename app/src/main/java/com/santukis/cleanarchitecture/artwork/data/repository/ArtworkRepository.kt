@@ -53,4 +53,7 @@ class ArtworkRepository(
 
     override suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> =
         localDataSource.loadFavouriteArtworks()
+
+    override suspend fun toggleFavourite(artworkId: String): Response<Unit> =
+        localDataSource.toggleFavourite(artworkId)
 }

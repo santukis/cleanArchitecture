@@ -151,7 +151,7 @@ data class ArtworkDetailDb(
             )
         ]
 )
-data class Favourites(
+data class FavouriteDb(
     @PrimaryKey()
     val id: String
 )
