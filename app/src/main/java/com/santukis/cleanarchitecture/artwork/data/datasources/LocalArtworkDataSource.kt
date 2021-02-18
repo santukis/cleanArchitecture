@@ -39,4 +39,14 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
         database.techniquesDao().saveItems(artwork.techniques.map { it.toTechniqueDb(artwork.id) })
         return Response.Success(artwork)
     }
+
+    override suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> =
+        database.artworkDao().loadFavouriteArtworks()
+            .distinctUntilChanged()
+            .map { items ->
+                when {
+                    items.isNullOrEmpty() -> Response.Error(Exception("No favourites"))
+                    else -> Response.Success(items.map { artworkDb -> artworkDb.toArtwork() })
+                }
+            }
 }

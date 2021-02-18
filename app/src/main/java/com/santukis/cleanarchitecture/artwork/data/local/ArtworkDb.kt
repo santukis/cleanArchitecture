@@ -139,3 +139,19 @@ data class ArtworkDetailDb(
         entityColumn = "parentId"
     ) val techniques: List<TechniqueDb>
 )
+
+@Entity(tableName = "favourites",
+        foreignKeys = [
+            androidx.room.ForeignKey(
+                entity = ArtworkDb::class,
+                parentColumns = ["id"],
+                childColumns = ["id"],
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.NO_ACTION
+            )
+        ]
+)
+data class Favourites(
+    @PrimaryKey()
+    val id: String
+)

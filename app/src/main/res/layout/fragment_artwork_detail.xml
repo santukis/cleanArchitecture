@@ -141,6 +141,15 @@
                 android:padding="@dimen/normal_space"
                 app:showTechniques="@{artwork.techniques}"/>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/favourites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="@dimen/large_space"
+                android:src="@drawable/ic_favourite"/>
+
             <ProgressBar
                 android:id="@+id/progress"
                 android:layout_width="wrap_content"

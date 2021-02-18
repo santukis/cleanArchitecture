@@ -14,4 +14,6 @@ interface ArtworkDataSource {
     suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> = Response.Error(Exception("Unable to load Artwork"))
 
     suspend fun saveArtwork(artwork: Artwork): Response<Artwork> = Response.Error(Exception("Unable to save Artwork"))
+
+    suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> = emptyFlow()
 }

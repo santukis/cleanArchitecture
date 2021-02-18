@@ -13,7 +13,8 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
         ColorDb::class,
         CategoryDb::class,
         MaterialDb::class,
-        TechniqueDb::class
+        TechniqueDb::class,
+        Favourites::class
     ],
     exportSchema = true, version = 3
 )

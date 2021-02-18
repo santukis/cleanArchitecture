@@ -50,4 +50,7 @@ class ArtworkRepository(
             is Response.Success -> localDataSource.saveArtwork(response.data)
             else -> Response.Success(artwork)
         }
+
+    override suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> =
+        localDataSource.loadFavouriteArtworks()
 }

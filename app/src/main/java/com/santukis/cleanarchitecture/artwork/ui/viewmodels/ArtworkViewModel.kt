@@ -24,9 +24,11 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
 
     val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
     val artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
+    val favourites: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
 
     init {
         loadArtworks(0)
+        loadFavourites()
     }
 
     fun loadArtworks(lastVisible: Int = 0) {
@@ -43,6 +45,16 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
         viewModelScope.launch(Dispatchers.IO) {
             artwork.postValue(Response.Loading())
             artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId))
+        }
+    }
+
+    private fun loadFavourites() {
+        viewModelScope.launch {
+            artworkDataSource.loadFavouriteArtworks()
+                .flowOn(Dispatchers.IO)
+                .onStart { favourites.postValue(Response.Loading()) }
+                .catch { exception -> favourites.postValue(Response.Error(exception)) }
+                .collect { favourites.postValue(it) }
         }
     }
 }
