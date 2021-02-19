@@ -56,4 +56,7 @@ class ArtworkRepository(
 
     override suspend fun toggleFavourite(artworkId: String): Response<Unit> =
         localDataSource.toggleFavourite(artworkId)
+
+    override suspend fun isArtworkFavourite(artworkId: String): Boolean =
+        localDataSource.isArtworkFavourite(artworkId)
 }

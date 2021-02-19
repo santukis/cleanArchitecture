@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.ui.viewmodels
 
 import android.app.Application
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
@@ -25,6 +26,7 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
     val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
     val artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     val favourites: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
+    var isFavourite: ObservableBoolean = ObservableBoolean()
 
     init {
         loadArtworks(0)
@@ -45,6 +47,7 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
         viewModelScope.launch(Dispatchers.IO) {
             artwork.postValue(Response.Loading())
             artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId))
+            isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }
 
@@ -61,6 +64,7 @@ class ArtworkViewModel(application: Application): AndroidViewModel(application),
     fun toggleFavourite(artworkId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             artworkDataSource.toggleFavourite(artworkId)
+            isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }
 }

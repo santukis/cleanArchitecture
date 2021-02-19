@@ -42,7 +42,7 @@ interface TechniqueDao: BaseDao<TechniqueDb>
 @Dao
 interface FavouritesDao: BaseDao<FavouriteDb> {
 
-    @Query("SELECT * FROM favourites WHERE id = :artworkId")
+    @Query("SELECT * FROM favourites WHERE id = :artworkId LIMIT 1")
     fun loadFavourite(artworkId: String): FavouriteDb?
 
     @Transaction

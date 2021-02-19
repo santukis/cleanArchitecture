@@ -152,8 +152,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_margin="@dimen/large_space"
+                app:backgroundTint="@color/white"
+                app:fabSize="mini"
                 android:onClick="@{() -> viewmodel.toggleFavourite(artwork.id)}"
-                android:src="@drawable/ic_favourite"/>
+                android:src="@{viewmodel.isFavourite() ? @drawable/ic_favourite : @drawable/ic_unfavourite}"/>
 
             <ProgressBar
                 android:id="@+id/progress"

@@ -55,4 +55,8 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
             true -> Response.Success(Unit)
             false -> super.toggleFavourite(artworkId)
         }
+
+    override suspend fun isArtworkFavourite(artworkId: String): Boolean =
+        database.favouritesDao().loadFavourite(artworkId) != null
+
 }

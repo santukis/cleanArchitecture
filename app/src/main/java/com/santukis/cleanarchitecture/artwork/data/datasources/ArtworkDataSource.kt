@@ -18,4 +18,6 @@ interface ArtworkDataSource {
     suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> = emptyFlow()
 
     suspend fun toggleFavourite(artworkId: String): Response<Unit> = Response.Error(Exception("Unable to toggle Favourite status"))
+
+    suspend fun isArtworkFavourite(artworkId: String): Boolean = false
 }
