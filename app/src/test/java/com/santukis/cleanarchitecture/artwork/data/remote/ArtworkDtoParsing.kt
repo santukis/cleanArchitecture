@@ -47,7 +47,7 @@ class ArtworkDtoParsing {
         assertEquals("Samplers checked the quality of dyed cloth. Here Rembrandt shows them at work, distracted for a moment and looking up. One syndic is about to sit, or stand, so not all the heads are at the same level. A clever trick which, with the confident brushwork and subtle use of light, make this one of the liveliest group portraits of the 17th century. Originally painted for the sampling hall (Staalhof), in 1771 it was acquired by Amsterdam’s town hall.", item?.description)
         assertEquals("Rembrandt van Rijn", item?.author)
         assertEquals("https://lh3.googleusercontent.com/gShVRyvLLbwVB8jeIPghCXgr96wxTHaM4zqfmxIWRsUpMhMn38PwuUU13o1mXQzLMt5HFqX761u8Tgo4L_JG1XLATvw=s0", item?.image?.url)
-        assertEquals(DatingDto(1662, 1662, 1662), item?.dating)
+        assertEquals(DatingDto(1662), item?.dating)
         assertEquals(2, item?.dimensions?.size)
         assertEquals(DimensionDto(type = "height", unit = "cm", value = "191.5"), item?.dimensions?.getOrNull(0))
         assertEquals(6, item?.colors?.size)
