@@ -13,13 +13,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
 import org.kodein.di.instance
 
-class ArtworkViewModel(application: Application): AndroidViewModel(application), DIAware {
-
-    override val di: DI by di()
+class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(application) {
 
     private val artworkDataSource: ArtworkDataSource by di.instance("repository")
 

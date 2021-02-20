@@ -29,8 +29,8 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
-    bind<ViewModel>(tag = ArtworkViewModel::class.java.simpleName) with provider { ArtworkViewModel(instance()) }
-    bind<ViewModel>(tag = GameViewModel::class.java.simpleName) with provider { GameViewModel(instance()) }
+    bind<ViewModel>(tag = ArtworkViewModel::class.java.simpleName) with provider { ArtworkViewModel(instance(), di) }
+    bind<ViewModel>(tag = GameViewModel::class.java.simpleName) with provider { GameViewModel(instance(), di) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di) }
 }
 

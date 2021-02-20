@@ -12,19 +12,15 @@ import com.santukis.cleanarchitecture.game.domain.model.Question
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
 import org.kodein.di.instance
 import kotlin.random.Random
 
-class GameViewModel(application: Application) : AndroidViewModel(application), DIAware {
+class GameViewModel(application: Application, di: DI) : AndroidViewModel(application) {
 
     companion object {
         const val QUESTION_SCREEN = 0
         const val ANSWER_SCREEN = 1
     }
-
-    override val di: DI by di()
 
     private val gameDataSource: GameDataSource by di.instance("local")
 
