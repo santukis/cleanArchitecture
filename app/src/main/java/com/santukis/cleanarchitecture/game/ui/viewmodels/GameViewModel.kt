@@ -4,13 +4,12 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
+import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
 import com.santukis.cleanarchitecture.game.domain.model.Question
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.kodein.di.DI
 import org.kodein.di.instance
 import kotlin.random.Random
@@ -22,6 +21,7 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         const val ANSWER_SCREEN = 1
     }
 
+    private val executor: Executor by di.instance(tag = "executor", arg = viewModelScope)
     private val gameDataSource: GameDataSource by di.instance("local")
 
     private val _gameHistory: MutableLiveData<Response<GameHistory>> = MutableLiveData()
@@ -47,14 +47,14 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     }
 
     fun loadQuestion() {
-        viewModelScope.launch(Dispatchers.IO) {
+        executor.execute {
             _question.postValue(gameDataSource.loadQuestion(Random.nextInt(0, 3)))
             _screen.postValue(QUESTION_SCREEN)
         }
     }
 
     fun loadGameHistory() {
-        viewModelScope.launch {
+        executor.execute {
             _gameHistory.postValue(gameDataSource.loadGameHistory())
         }
     }
@@ -63,7 +63,7 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         (_question.value as? Response.Success)?.data?.checkAnswer(answer)
 
     private fun updateGameHistory(question: Question) {
-        viewModelScope.launch {
+        executor.execute {
             gameDataSource.addScore(question.getScore())
         }
     }

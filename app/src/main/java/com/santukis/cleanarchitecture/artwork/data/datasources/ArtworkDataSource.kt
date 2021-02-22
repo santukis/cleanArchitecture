@@ -15,7 +15,7 @@ interface ArtworkDataSource {
 
     suspend fun saveArtwork(artwork: Artwork): Response<Artwork> = Response.Error(Exception("Unable to save Artwork"))
 
-    suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> = emptyFlow()
+    suspend fun loadFavourites(): Flow<Response<List<Artwork>>> = emptyFlow()
 
     suspend fun toggleFavourite(artworkId: String): Response<Unit> = Response.Error(Exception("Unable to toggle Favourite status"))
 

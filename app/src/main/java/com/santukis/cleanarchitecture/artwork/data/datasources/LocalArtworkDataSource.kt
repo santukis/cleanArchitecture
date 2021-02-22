@@ -40,7 +40,7 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
         return Response.Success(artwork)
     }
 
-    override suspend fun loadFavouriteArtworks(): Flow<Response<List<Artwork>>> =
+    override suspend fun loadFavourites(): Flow<Response<List<Artwork>>> =
         database.artworkDao().loadFavouriteArtworks()
             .distinctUntilChanged()
             .map { items ->

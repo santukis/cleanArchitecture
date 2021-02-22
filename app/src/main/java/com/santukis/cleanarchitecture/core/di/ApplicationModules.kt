@@ -11,10 +11,13 @@ import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
+import com.santukis.cleanarchitecture.core.domain.executors.AsyncExecutor
+import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.data.datasources.LocalGameDataSource
 import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
+import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.*
 import org.kodein.di.android.x.androidXModule
 
@@ -26,6 +29,11 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
     import(artwork(), allowOverride = true)
     import(game(), allowOverride = true)
     import(viewmodels(), allowOverride = true)
+    import(executors(), allowOverride = true)
+}
+
+fun executors() = DI.Module(name = "executors", allowSilentOverride = true) {
+    bind<Executor>(tag = "executor") with factory { scope: CoroutineScope -> AsyncExecutor(scope) }
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
