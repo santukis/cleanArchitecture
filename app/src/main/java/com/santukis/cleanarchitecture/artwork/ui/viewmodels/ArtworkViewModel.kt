@@ -7,10 +7,8 @@ import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -26,14 +24,13 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     var isFavourite: ObservableBoolean = ObservableBoolean()
 
     init {
-        loadArtworks(0)
+        loadArtworks()
         loadFavourites()
     }
 
     fun loadArtworks(lastVisible: Int = 0) {
         executor.execute {
             artworkDataSource.loadArtworks(lastVisible)
-                    .flowOn(Dispatchers.IO)
                     .onStart { artworks.postValue(Response.Loading()) }
                     .catch { exception -> artworks.postValue(Response.Error(exception)) }
                     .collect { artworks.postValue(it) }
@@ -51,7 +48,6 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     private fun loadFavourites() {
         executor.execute {
             artworkDataSource.loadFavourites()
-                    .flowOn(Dispatchers.IO)
                     .onStart { favourites.postValue(Response.Loading()) }
                     .catch { exception -> favourites.postValue(Response.Error(exception)) }
                     .collect { favourites.postValue(it) }
