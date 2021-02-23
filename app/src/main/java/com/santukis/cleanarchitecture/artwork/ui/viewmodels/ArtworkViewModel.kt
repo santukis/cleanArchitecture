@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.ui.viewmodels
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
@@ -45,7 +46,8 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
         }
     }
 
-    private fun loadFavourites() {
+    @VisibleForTesting
+    fun loadFavourites() {
         executor.execute {
             artworkDataSource.loadFavourites()
                     .onStart { favourites.postValue(Response.Loading()) }
