@@ -157,20 +157,6 @@
                 android:onClick="@{() -> viewmodel.toggleFavourite(artwork.id)}"
                 android:src="@{viewmodel.isFavourite() ? @drawable/ic_favourite : @drawable/ic_unfavourite}"/>
 
-            <ProgressBar
-                android:id="@+id/progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_space"
-                android:layout_marginTop="@dimen/normal_space"
-                android:layout_marginEnd="@dimen/normal_space"
-                android:layout_marginBottom="@dimen/normal_space"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.3" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
