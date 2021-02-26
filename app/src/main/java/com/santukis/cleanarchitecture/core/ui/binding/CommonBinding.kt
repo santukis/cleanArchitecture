@@ -39,6 +39,7 @@ object CommonBinding {
                         setColorSchemeColors(ContextCompat.getColor(view.context, R.color.colorAccent))
                         start()
                     })
+                .error(R.drawable.no_image)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .override(512)
                 .into(view)
