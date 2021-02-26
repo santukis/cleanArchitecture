@@ -23,34 +23,34 @@ object ArtworkBinding {
     @BindingAdapter("app:showColors")
     @JvmStatic
     fun showColors(view: RecyclerView, colors: List<Color>?) {
-        if (colors.isNullOrEmpty()) return
+        colors?.let {
+            if (view.adapter == null) {
+                view.adapter = ItemsAdapter(ViewHolderProvider { parent, viewType ->
+                    ColorViewHolder(ElementColorItemBinding.inflate(LayoutInflater.from(view.context), parent, false))
+                })
+                view.addItemDecoration(MarginItemDecoration(left = 10))
+            }
 
-        if (view.adapter == null) {
-            view.adapter = ItemsAdapter(ViewHolderProvider { parent, viewType ->
-                ColorViewHolder(ElementColorItemBinding.inflate(LayoutInflater.from(view.context), parent, false))
-            })
-            view.addItemDecoration(MarginItemDecoration(left = 10))
+            (view.adapter as? ItemsAdapter<Color>)?.showItems(colors)
         }
-
-        (view.adapter as? ItemsAdapter<Color>)?.showItems(colors)
     }
 
     @BindingAdapter("app:showMaterials")
     @JvmStatic
     fun showMaterials(view: ChipGroup, materials: List<Material>?) {
-        if (materials.isNullOrEmpty()) return
-
-        view.removeAllViews()
-        materials.forEach { view.addView(view.context.createChipFor(it.material)) }
+        materials?.let {
+            view.removeAllViews()
+            materials.forEach { view.addView(view.context.createChipFor(it.material)) }
+        }
     }
 
     @BindingAdapter("app:showTechniques")
     @JvmStatic
     fun showTechniques(view: ChipGroup, techniques: List<Technique>?) {
-        if (techniques.isNullOrEmpty()) return
-
-        view.removeAllViews()
-        techniques.forEach { view.addView(view.context.createChipFor(it.technique)) }
+        techniques?.let {
+            view.removeAllViews()
+            techniques.forEach { view.addView(view.context.createChipFor(it.technique)) }
+        }
     }
 
     private fun Context.createChipFor(text: String) = Chip(this).apply {
