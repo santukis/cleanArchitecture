@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.*
 class RemoteArtworkDataSource(private val client: HttpClient) : ArtworkDataSource {
 
     companion object {
-        const val MAX_ITEM_SIZE = 20
+        const val MAX_ITEM_SIZE = 50
     }
 
     override suspend fun loadArtworks(lastItem: Int): Flow<Response<List<Artwork>>> =

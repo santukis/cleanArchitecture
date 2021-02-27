@@ -89,7 +89,7 @@ class RemoteArtworkDataSourceTest {
             artworkDataSource.loadArtworks().collect()
 
             val request = mockWebServer.takeRequest()
-            assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&ps=20&p=1", request.path)
+            assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&toppieces=true&s=objecttype&ps=50&p=1", request.path)
         }
     }
 
@@ -101,7 +101,7 @@ class RemoteArtworkDataSourceTest {
             artworkDataSource.loadArtworks(lastItem = 320).collect()
 
             val request = mockWebServer.takeRequest()
-            assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&ps=20&p=17", request.path)
+            assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&toppieces=true&s=objecttype&ps=50&p=7", request.path)
         }
     }
 }

@@ -10,6 +10,8 @@ interface ArtworkService {
     @GET("api/en/collection")
     suspend fun loadArtworks(@Query("key") apiKey: String,
                              @Query("imgonly") withImage: Boolean = true,
+                             @Query("toppieces") topPieces: Boolean = true,
+                             @Query("s") sortByType: String = "objecttype",
                              @QueryMap fields: Map<String, String>): ArtworkResponse
 
     @GET("api/en/collection/{artworkId}")
