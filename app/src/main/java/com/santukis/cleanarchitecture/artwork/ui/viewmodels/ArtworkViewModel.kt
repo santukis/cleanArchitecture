@@ -31,7 +31,7 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
 
     fun loadArtworks(lastVisible: Int = 0) {
         executor.execute {
-            artworkDataSource.loadArtworks(lastVisible)
+            artworkDataSource.loadArtworks(, lastVisible)
                     .onStart { artworks.postValue(Response.Loading()) }
                     .catch { exception -> artworks.postValue(Response.Error(exception)) }
                     .collect { artworks.postValue(it) }
@@ -41,7 +41,7 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     fun loadArtworkDetail(artworkId: String) {
         executor.execute {
             artwork.postValue(Response.Loading())
-            artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId))
+            artwork.postValue(artworkDataSource.loadArtworkDetail(, artworkId))
             isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }

@@ -24,7 +24,7 @@ class RemoteArtworkDataSourceTest {
     fun setup() {
         mockWebServer = MockWebServer()
         val client = HttpClient(mockWebServer.url("").toString())
-        artworkDataSource = RemoteArtworkDataSource(client)
+        artworkDataSource = RijksmuseumArtworkDataSource(client)
     }
 
     @After
@@ -98,7 +98,7 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
-            artworkDataSource.loadArtworks(lastItem = 320).collect()
+            artworkDataSource.loadArtworks(, lastItem = 320).collect()
 
             val request = mockWebServer.takeRequest()
             assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&toppieces=true&s=objecttype&ps=50&p=7", request.path)
