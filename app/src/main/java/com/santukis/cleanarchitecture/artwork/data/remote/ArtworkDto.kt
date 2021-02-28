@@ -21,7 +21,8 @@ data class ArtworkDto(
     @Json(name = "colorsWithNormalization") val colors: List<ColorDto>? = emptyList(),
     @Json(name = "objectTypes") val categories: List<String>? = emptyList(),
     @Json(name = "materials") val materials: List<String>? = emptyList(),
-    @Json(name = "techniques") val techniques: List<String>? = emptyList()
+    @Json(name = "techniques") val techniques: List<String>? = emptyList(),
+    @Json(name = "label") val resume: LabelDto? = LabelDto.EMPTY
 ) {
     companion object {
         val EMPTY = ArtworkDto()
@@ -54,3 +55,14 @@ data class ColorDto(
     @Json(name = "originalHex") val color: String? = "#000000",
     @Json(name = "normalizedHex") val normalizedColor: String? = "#000000"
 )
+
+@JsonClass(generateAdapter = true)
+data class LabelDto(
+    @Json(name = "title") val title: String? = "",
+    @Json(name = "markerLine") val subtitle: String? = "",
+    @Json(name = "description") val description: String? = ""
+) {
+    companion object {
+        val EMPTY = LabelDto()
+    }
+}

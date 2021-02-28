@@ -6,15 +6,14 @@ import com.santukis.cleanarchitecture.artwork.data.remote.ColorDto
 import com.santukis.cleanarchitecture.artwork.data.remote.DatingDto
 import com.santukis.cleanarchitecture.artwork.data.remote.DimensionDto
 import com.santukis.cleanarchitecture.artwork.domain.model.*
-import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.Question
 
 fun ArtworkDto.toArtwork() =
     Artwork(
         id = id ?: "",
-        title = title ?: "",
-        description = description ?: "",
+        title = title.takeIf { !it.isNullOrEmpty() } ?: resume?.title ?: "",
+        description = description.takeIf { !it.isNullOrEmpty() } ?: resume?.description ?: "",
         author = author ?: "",
         image = image?.url ?: "",
         dating = dating?.toDating() ?: Dating.EMPTY,
@@ -35,7 +34,7 @@ fun DimensionDto.toDimension() = when(type) {
 
 fun DatingDto.toDating() =
     Dating(
-        year = year ?: 0
+        year = year
     )
 
 fun ColorDto.toColor() =
