@@ -34,7 +34,7 @@ fun DimensionDto.toDimension() = when(type) {
 
 fun DatingDto.toDating() =
     Dating(
-        year = year
+        year = year ?: 0
     )
 
 fun ColorDto.toColor() =

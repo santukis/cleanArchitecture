@@ -12,9 +12,6 @@ data class Artwork(
     var categories: List<Category> = emptyList(),
     var materials: List<Material> = emptyList(),
     var techniques: List<Technique> = emptyList(),
-    var creditLine: String = "",
-    var collection: Collection = Collection.Unknown,
-    var url: String = "",
     var shouldBeUpdated: Boolean = false
 ) {
     companion object {
@@ -23,7 +20,7 @@ data class Artwork(
 }
 
 data class Dating(
-    val year: String = "",
+    val year: Int = 0
 ) {
     companion object {
         val EMPTY = Dating()
@@ -70,7 +67,3 @@ data class Material(
 data class Technique(
     val technique: String = ""
 )
-
-enum class Collection {
-    Unknown, Rijksmuseum, Met, Chicago, Cleveland, Hardvard, Walters
-}
