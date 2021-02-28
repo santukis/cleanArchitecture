@@ -12,6 +12,10 @@ data class Artwork(
     var categories: List<Category> = emptyList(),
     var materials: List<Material> = emptyList(),
     var techniques: List<Technique> = emptyList(),
+    var creditLine: String = "",
+    var url: String = "",
+    var collection: Collection = Collection.Unknown,
+    var museum: String = "",
     var shouldBeUpdated: Boolean = false
 ) {
     companion object {

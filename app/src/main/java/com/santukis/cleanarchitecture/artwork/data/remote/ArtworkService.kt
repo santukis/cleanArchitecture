@@ -12,9 +12,9 @@ interface ArtworkService {
                              @Query("imgonly") withImage: Boolean = true,
                              @Query("toppieces") topPieces: Boolean = true,
                              @Query("s") sortByType: String = "objecttype",
-                             @QueryMap fields: Map<String, String>): ArtworkResponse
+                             @QueryMap fields: Map<String, String>): RijksMuseumResponse
 
     @GET("api/en/collection/{artworkId}")
     suspend fun loadArtworkDetail(@Path("artworkId") artworkId: String,
-                                  @Query("key") apiKey: String): ArtworkResponse
+                                  @Query("key") apiKey: String): RijksMuseumResponse
 }

@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.santukis.cleanarchitecture.BuildConfig
+import com.santukis.cleanarchitecture.artwork.data.local.toQuestion
 import com.santukis.cleanarchitecture.artwork.data.mappers.fromQuestionTypeToSqlQuery
-import com.santukis.cleanarchitecture.artwork.data.mappers.toQuestion
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory

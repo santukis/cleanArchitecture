@@ -27,7 +27,7 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
 
     override suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> =
         when(val item = database.artworkDao().loadArtwork(artworkId)) {
-            null -> super.loadArtworkDetail(, artworkId)
+            null -> super.loadArtworkDetail(collection, artworkId)
             else -> Response.Success(item.toArtwork())
         }
 
