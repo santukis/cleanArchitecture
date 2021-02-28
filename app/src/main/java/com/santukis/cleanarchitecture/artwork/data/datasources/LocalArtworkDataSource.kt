@@ -2,13 +2,14 @@ package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.data.mappers.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
-    override suspend fun loadArtworks(lastItem: Int): Flow<Response<List<Artwork>>> =
+    override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
         database.artworkDao().loadArtworks()
             .distinctUntilChanged()
             .map { items ->
@@ -24,9 +25,9 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
             false -> super.saveArtworks(artworks)
         }
 
-    override suspend fun loadArtworkDetail(artworkId: String): Response<Artwork> =
+    override suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> =
         when(val item = database.artworkDao().loadArtwork(artworkId)) {
-            null -> super.loadArtworkDetail(artworkId)
+            null -> super.loadArtworkDetail(, artworkId)
             else -> Response.Success(item.toArtwork())
         }
 

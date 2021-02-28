@@ -67,7 +67,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<Artwork>>()
             viewModel?.artwork?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworkDetail(any())).thenReturn(Response.Success(expectedResponse))
+            whenever(mockedArtworkDataSource.loadArtworkDetail(, any())).thenReturn(Response.Success(expectedResponse))
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
             viewModel?.loadArtworkDetail("anyId")
@@ -87,7 +87,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<Artwork>>()
             viewModel?.artwork?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworkDetail(any())).thenReturn(expectedResponse)
+            whenever(mockedArtworkDataSource.loadArtworkDetail(, any())).thenReturn(expectedResponse)
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
             viewModel?.loadArtworkDetail("anyId")
@@ -107,7 +107,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<List<Artwork>>>()
             viewModel?.artworks?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworks(any())).thenReturn(flow { emit(expectedResponse) } )
+            whenever(mockedArtworkDataSource.loadArtworks(, any())).thenReturn(flow { emit(expectedResponse) } )
 
             viewModel?.loadArtworks()
 
@@ -126,7 +126,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<List<Artwork>>>()
             viewModel?.artworks?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworks(any())).thenReturn(flow { emit(expectedResponse) } )
+            whenever(mockedArtworkDataSource.loadArtworks(, any())).thenReturn(flow { emit(expectedResponse) } )
 
             viewModel?.loadArtworks()
 
