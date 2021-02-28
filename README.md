@@ -1,5 +1,6 @@
 # cleanArchitecture
-This is a Sample project for implementing clean Architecture with Android jetpack libraries
+This is a Sample project for implementing clean Architecture with Android jetpack libraries.
+Data collected from Rijksmuseum api https://www.rijksmuseum.nl/en/research/conduct-research/data
 
 Some screen captures to show the app functions
 
