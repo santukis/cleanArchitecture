@@ -45,8 +45,9 @@ fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "met") with singleton { MetArtworkDataSource() }
     bind<ArtworkDataSource>(tag = "chicago") with singleton { ChicagoArtworkDataSource() }
     bind<ArtworkDataSource>(tag = "cleveland") with singleton { ClevelandArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "hardvard") with singleton { HardvardArtworkDataSource() }
    // bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource() }
-    bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("cleveland")) }
+    bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("hardvard")) }
 }
 
 fun game() = DI.Module("game", allowSilentOverride = true) {
