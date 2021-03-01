@@ -12,6 +12,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.utils.SyncExecutor
@@ -67,7 +68,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<Artwork>>()
             viewModel?.artwork?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworkDetail(, any())).thenReturn(Response.Success(expectedResponse))
+            whenever(mockedArtworkDataSource.loadArtworkDetail(Collection.Unknown, "anyId")).thenReturn(Response.Success(expectedResponse))
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
             viewModel?.loadArtworkDetail("anyId")
@@ -87,7 +88,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<Artwork>>()
             viewModel?.artwork?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworkDetail(, any())).thenReturn(expectedResponse)
+            whenever(mockedArtworkDataSource.loadArtworkDetail(Collection.Unknown, "")).thenReturn(expectedResponse)
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
             viewModel?.loadArtworkDetail("anyId")
@@ -107,7 +108,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<List<Artwork>>>()
             viewModel?.artworks?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworks(, any())).thenReturn(flow { emit(expectedResponse) } )
+            whenever(mockedArtworkDataSource.loadArtworks(Collection.Unknown, 0)).thenReturn(flow { emit(expectedResponse) } )
 
             viewModel?.loadArtworks()
 
@@ -126,7 +127,7 @@ class ArtworkViewModelTest {
             val observer = createObserver<Response<List<Artwork>>>()
             viewModel?.artworks?.observeForever(observer)
 
-            whenever(mockedArtworkDataSource.loadArtworks(, any())).thenReturn(flow { emit(expectedResponse) } )
+            whenever(mockedArtworkDataSource.loadArtworks(Collection.Unknown, 0)).thenReturn(flow { emit(expectedResponse) } )
 
             viewModel?.loadArtworks()
 

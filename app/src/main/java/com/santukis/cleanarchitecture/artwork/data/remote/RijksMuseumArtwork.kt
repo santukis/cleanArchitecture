@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
 import com.santukis.cleanarchitecture.artwork.domain.model.*
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.threeten.bp.LocalDateTime
@@ -46,6 +47,7 @@ data class RijksMuseumArtwork(
             materials = materials?.map { Material(it) } ?: emptyList(),
             techniques = techniques?.map { Technique(it) } ?: emptyList(),
             creditLine = creditLine.toString(),
+            collection = Collection.Rijksmuseum,
             url = links.url ?: ""
     )
 }
