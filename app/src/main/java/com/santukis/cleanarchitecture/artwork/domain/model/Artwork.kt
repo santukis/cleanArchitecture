@@ -1,5 +1,8 @@
 package com.santukis.cleanarchitecture.artwork.domain.model
 
+import androidx.annotation.StringRes
+import com.santukis.cleanarchitecture.R
+
 data class Artwork(
     val id: String = "",
     val title: String = "",
@@ -24,7 +27,7 @@ data class Artwork(
 }
 
 data class Dating(
-    val year: Int = 0
+    val year: String = "",
 ) {
     companion object {
         val EMPTY = Dating()
@@ -71,3 +74,13 @@ data class Material(
 data class Technique(
     val technique: String = ""
 )
+
+enum class Collection(@StringRes val nameRes: Int) {
+    Unknown(R.string.empty),
+    Rijksmuseum(R.string.rijksmuseum),
+    Met(R.string.met),
+    Chicago(R.string.chicago),
+    Cleveland(R.string.cleveland),
+    Hardvard(R.string.hardvard),
+    Walters(R.string.walters)
+}
