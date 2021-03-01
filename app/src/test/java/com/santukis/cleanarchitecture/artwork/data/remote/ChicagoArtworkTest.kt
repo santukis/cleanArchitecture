@@ -7,11 +7,7 @@ class ChicagoArtworkTest {
 
     @Test
     fun extractDimensionsShouldReturnExpectedValuesAreThree() {
-        val chicagoArtwork = ChicagoArtwork(dimensions = "160.0 × 120.2 × 56.3 cm (63 × 47 5/16 × 22 3/16 in.)")
-
-        val dimensions = chicagoArtwork.extractDimensions()
-
-        print(dimensions.toString())
+        val dimensions = "160.0 × 120.2 × 56.3 cm (63 × 47 5/16 × 22 3/16 in.)".extractDimensions()
 
         assertEquals(3, dimensions.size)
         assertEquals(160.0, dimensions[0].value, 0.0)
@@ -22,11 +18,7 @@ class ChicagoArtworkTest {
 
     @Test
     fun extractDimensionsShouldReturnExpectedValuesWhenDimensionsAreTwo() {
-        val chicagoArtwork = ChicagoArtwork(dimensions = "73.6 × 92.3 cm (29 × 36 5/8 in.)")
-
-        val dimensions = chicagoArtwork.extractDimensions()
-
-        print(dimensions.toString())
+        val dimensions = "73.6 × 92.3 cm (29 × 36 5/8 in.)".extractDimensions()
 
         assertEquals(2, dimensions.size)
         assertEquals(73.6, dimensions[0].value, 0.0)
