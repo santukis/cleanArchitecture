@@ -6,6 +6,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.catch
@@ -31,7 +32,7 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
 
     fun loadArtworks(lastVisible: Int = 0) {
         executor.execute {
-            artworkDataSource.loadArtworks(, lastVisible)
+            artworkDataSource.loadArtworks(Collection.Met, lastVisible)
                     .onStart { artworks.postValue(Response.Loading()) }
                     .catch { exception -> artworks.postValue(Response.Error(exception)) }
                     .collect { artworks.postValue(it) }
@@ -41,7 +42,7 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     fun loadArtworkDetail(artworkId: String) {
         executor.execute {
             artwork.postValue(Response.Loading())
-            artwork.postValue(artworkDataSource.loadArtworkDetail(, artworkId))
+            artwork.postValue(artworkDataSource.loadArtworkDetail(Collection.Met, artworkId))
             isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }

@@ -17,7 +17,7 @@ data class MetArtwork(
     @Json(name = "artistDisplayName") val author: String? = "",
     @Json(name = "primaryImage") val image: String? = "",
     @Json(name = "objectDate") val dating: String? = "",
-    @Json(name = "dimensions") val dimensions: List<MetDimension>? = emptyList(),
+    @Json(name = "measurements") val dimensions: List<MetDimension>? = emptyList(),
     @Json(name = "objectName") val category: String? = "",
     @Json(name = "medium") val material: String? = "",
     @Json(name = "creditLine") val creditLine: String? = "",

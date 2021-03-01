@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.data.datasources.LocalArtworkDataSource
+import com.santukis.cleanarchitecture.artwork.data.datasources.MetArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.data.datasources.RijksmuseumArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
@@ -24,7 +25,7 @@ import org.kodein.di.android.x.androidXModule
 fun applicationModules(application: Application) = DI.Module("appModule", allowSilentOverride = true) {
     import(androidXModule(application))
     bind<AppDatabase>() with eagerSingleton { AppDatabase.getInstance(instance()) }
-    bind<HttpClient>() with provider { HttpClient(BuildConfig.END_POINT) }
+    bind<HttpClient>() with provider { HttpClient("") }
 
     import(artwork(), allowOverride = true)
     import(game(), allowOverride = true)
@@ -44,7 +45,7 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
 
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
-    bind<ArtworkDataSource>(tag = "remote") with singleton { RijksmuseumArtworkDataSource(instance()) }
+    bind<ArtworkDataSource>(tag = "remote") with singleton { MetArtworkDataSource() }
     bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
 }
 
