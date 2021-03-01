@@ -1,6 +1,5 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
-import androidx.annotation.VisibleForTesting
 import com.santukis.cleanarchitecture.artwork.domain.model.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.squareup.moshi.Json
@@ -35,10 +34,10 @@ data class ChicagoArtwork(
         Artwork(
             id = id?.toString() ?: "",
             title = title ?: "",
-            description = description.plus(" ").plus(provenanceText),
+            description = description.plus("\n").plus(provenanceText),
             author = author ?: "",
             dating = Dating(year = dating ?: ""),
-            dimensions = extractDimensions(),
+            dimensions = dimensions?.extractDimensions() ?: emptyList(),
             image = image?.takeIf { it.isNotEmpty() }?.let { "https://www.artic.edu/iiif/2/$it/full/843,/0/default.jpg" } ?: "",
             categories = categories?.map { Category(category = it) } ?: emptyList(),
             materials = materials?.map { Material(material = it) } ?: emptyList(),
@@ -48,27 +47,5 @@ data class ChicagoArtwork(
             department = department ?: "",
             shouldBeUpdated = false
         )
-
-    @VisibleForTesting
-    fun extractDimensions(): List<Dimension> {
-        val dimensions = mutableListOf<Dimension>()
-
-        this.dimensions?.takeIf { it.isNotEmpty() }?.let {
-            val fields = it.substringBefore("(").split("×")
-            val unit = fields.lastOrNull()?.trim()?.substringAfterLast(" ") ?: ""
-            fields.forEachIndexed { index, field ->
-                val dimension = when(index) {
-                    0 -> Dimension.Width(value = field.trim().substringBeforeLast(" ").toDoubleOrNull() ?: 0.0, unit = MeasureUnit(unit = unit))
-                    1 -> Dimension.Height(value = field.trim().substringBeforeLast(" ").toDoubleOrNull() ?: 0.0, unit = MeasureUnit(unit = unit))
-                    2 -> Dimension.Depth(value = field.trim().substringBeforeLast(" ").toDoubleOrNull() ?: 0.0, unit = MeasureUnit(unit = unit))
-                    else -> Dimension.Unknown(value = field.trim().substringBeforeLast(" ").toDoubleOrNull() ?: 0.0, unit = MeasureUnit(unit = unit))
-                }
-
-                dimensions.add(dimension)
-            }
-        }
-
-        return dimensions
-    }
 }
 
