@@ -29,4 +29,11 @@ interface ArtworkService {
                                     @Query("fields") fields: String = "id,title,date_display,artist_title,dimensions,credit_line,provenance_text,description,category_titles,material_titles,techniques_titles,image_id",
                                     @Query("page") page: Int,
                                     @Query("limit") size: Int): ChicagoResponse
+
+    @GET("api/artworks")
+    suspend fun loadClevelandArtworks(@Query("cc0") publicDomain: Boolean = true,
+                                      @Query("hasImage") hasImage: Boolean = true,
+                                      @Query("currently_on_view") onView: Boolean = true,
+                                      @Query("skip") skip: Int,
+                                      @Query("limit") size: Int): ClevelandResponse
 }
