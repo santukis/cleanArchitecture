@@ -17,6 +17,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.santukis.cleanarchitecture.R
+import com.santukis.cleanarchitecture.artwork.domain.model.Category
 import com.santukis.cleanarchitecture.artwork.domain.model.Color
 import com.santukis.cleanarchitecture.artwork.domain.model.Material
 import com.santukis.cleanarchitecture.artwork.domain.model.Technique
@@ -57,15 +58,12 @@ object ArtworkBinding {
         }
     }
 
-    @SuppressWarnings("NewApi")
-    @BindingAdapter("app:showHtmlText")
+    @BindingAdapter("app:showCategories")
     @JvmStatic
-    fun showHtmlText(view: AppCompatTextView, text: String?) {
-        text?.let { html ->
-            view.text = when(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                true -> Html.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
-                else -> Html.fromHtml(html)
-            }
+    fun showCategories(view: ChipGroup, techniques: List<Category>?) {
+        techniques?.let {
+            view.removeAllViews()
+            techniques.forEach { view.addView(view.context.createChipFor(it.category)) }
         }
     }
 
@@ -76,5 +74,17 @@ object ArtworkBinding {
         chipBackgroundColor = ContextCompat.getColorStateList(this@createChipFor, android.R.color.transparent)
         shapeAppearanceModel = ShapeAppearanceModel.Builder().setAllCorners(CornerFamily.ROUNDED, resources.getDimension(R.dimen.large_radius)).build()
         this.text = text
+    }
+
+    @SuppressWarnings("NewApi")
+    @BindingAdapter("app:showHtmlText")
+    @JvmStatic
+    fun showHtmlText(view: AppCompatTextView, text: String?) {
+        text?.let { html ->
+            view.text = when(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                true -> Html.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                else -> Html.fromHtml(html)
+            }
+        }
     }
 }
