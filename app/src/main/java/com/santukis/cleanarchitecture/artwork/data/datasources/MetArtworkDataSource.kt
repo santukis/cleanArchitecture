@@ -46,7 +46,7 @@ class MetArtworkDataSource(private val client: HttpClient = HttpClient(host = Bu
 
     override suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> =
         try {
-            Response.Success(client.artworkService.loadMetArtworkDetail(artworkId).toArtwork())
+            Response.Success(client.artworkService.loadMetArtworkDetail(artworkId).toArtwork().apply { shouldBeUpdated = false })
 
         } catch (exception: Exception) {
             exception.printStackTrace()
