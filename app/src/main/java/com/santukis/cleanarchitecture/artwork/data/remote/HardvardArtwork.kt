@@ -19,12 +19,11 @@ data class HardvardArtwork(
     @Json(name = "primaryimageurl") val image: String? = "",
     @Json(name = "dated") val dating: String? = "",
     @Json(name = "dimensions") val dimensions: String? = "",
-    @Json(name = "type") val category: String? = "",
+    @Json(name = "division") val category: String? = "",
     @Json(name = "technique") val technique: String? = "",
     @Json(name = "creditline") val creditLine: String? = "",
     @Json(name = "url") val url: String? = "",
     @Json(name = "colors") val colors: List<HardvardColor>? = emptyList(),
-    @Json(name = "provenance") val collection: String? = "",
     @Json(name = "department") val department: String? = "",
     @Json(name = "provenance") val provenance: String? = "",
     @Json(name = "copyright") val copyright: String? = ""
@@ -37,16 +36,16 @@ data class HardvardArtwork(
         Artwork(
             id = id?.toString() ?: "",
             title = title ?: "",
-            description = description.plus("\n").plus(copyright),
+            description = (description ?: "").plus("\n").plus(copyright ?: ""),
             author = author?.firstOrNull()?.name ?: "",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
-            image = image ?: "",
+            image = image?.plus("?height=512&width=512") ?: "",
+            colors = colors?.map { Color(normalizedColor = it.color ?: "", color = it.color?.toRGB() ?: 0) } ?: emptyList(),
             categories = category?.takeIf { it.isNotEmpty() }?.let { listOf(Category(category = it)) } ?: emptyList(),
             techniques = technique?.takeIf { it.isNotEmpty() }?.let { listOf(Technique(technique = it)) } ?: emptyList(),
             creditLine = creditLine ?: "",
-            museum = collection ?: "",
-            collection = Collection.Cleveland,
+            collection = Collection.Hardvard,
             url = url ?: "",
             department = department ?: "",
             shouldBeUpdated = false
@@ -60,6 +59,16 @@ data class HardvardAuthor(
 ) {
     companion object {
         val EMPTY = HardvardAuthor()
+    }
+}
+
+@JsonClass(generateAdapter = true)
+data class HardvardImage(
+    @Json(name = "iiifbaseuri") val iifUrl: String? = "",
+    @Json(name = "baseimageurl") val url: String? = ""
+) {
+    companion object {
+        val EMPTY = HardvardImage()
     }
 }
 

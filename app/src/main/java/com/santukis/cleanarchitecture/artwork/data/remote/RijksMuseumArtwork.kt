@@ -93,15 +93,15 @@ data class RijksMuseumColor(
             normalizedColor = normalizedColor ?: "#000000",
             color = color?.trim()?.toRGB() ?: android.graphics.Color.BLACK
         )
+}
 
-    fun String.toRGB(): Int = try {
-        when (isNullOrEmpty()) {
-            false -> android.graphics.Color.parseColor(this)
-            true -> android.graphics.Color.BLACK
-        }
-    } catch (exception: Exception) {
-        android.graphics.Color.BLACK
+fun String.toRGB(): Int = try {
+    when (isNullOrEmpty()) {
+        false -> android.graphics.Color.parseColor(this)
+        true -> android.graphics.Color.BLACK
     }
+} catch (exception: Exception) {
+    android.graphics.Color.BLACK
 }
 
 @JsonClass(generateAdapter = true)
