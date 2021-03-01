@@ -24,10 +24,11 @@ data class ChicagoArtwork(
     @Json(name = "category_titles") val categories: List<String>? = emptyList(),
     @Json(name = "material_titles") val materials: List<String>? = emptyList(),
     @Json(name = "techniques_titles") val techniques: List<String>? = emptyList(),
-    @Json(name = "credit_line") val creditLine: String? = ""
+    @Json(name = "credit_line") val creditLine: String? = "",
+    @Json(name = "gallery_title") val department: String? = ""
 ) {
     companion object {
-        val EMPTY = RijksMuseumArtwork()
+        val EMPTY = ChicagoArtwork()
     }
 
     fun toArtwork() =
@@ -44,6 +45,7 @@ data class ChicagoArtwork(
             creditLine = creditLine ?: "",
             collection = Collection.Chicago,
             url = "https://www.artic.edu/artworks/$id",
+            department = department ?: "",
             shouldBeUpdated = false
         )
 

@@ -20,6 +20,7 @@ data class ArtworkDb(
     val url: String,
     val collection: Collection,
     val museum: String,
+    val department: String,
     var shouldBeUpdated: Boolean = false
 ) {
 
@@ -35,6 +36,7 @@ data class ArtworkDb(
             url = url,
             collection = collection,
             museum = museum,
+            department = department,
             shouldBeUpdated = shouldBeUpdated
         )
 
@@ -60,6 +62,7 @@ data class ArtworkDb(
             categories = categories,
             materials = materials,
             techniques = techniques,
+            department = department,
             shouldBeUpdated = shouldBeUpdated
         )
 }

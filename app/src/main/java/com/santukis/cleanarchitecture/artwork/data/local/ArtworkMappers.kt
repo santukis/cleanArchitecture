@@ -25,6 +25,7 @@ fun Artwork.toArtworkDb() =
         url = url,
         collection = collection,
         museum = museum,
+        department = department,
         shouldBeUpdated = shouldBeUpdated
     )
 

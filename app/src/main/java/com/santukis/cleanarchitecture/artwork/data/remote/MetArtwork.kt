@@ -23,10 +23,11 @@ data class MetArtwork(
     @Json(name = "medium") val material: String? = "",
     @Json(name = "creditLine") val creditLine: String? = "",
     @Json(name = "repository") val museum: String? = "",
-    @Json(name = "objectURL") val url: String? = ""
+    @Json(name = "objectURL") val url: String? = "",
+    @Json(name = "department") val department: String? = ""
 ) {
     companion object {
-        val EMPTY = RijksMuseumArtwork()
+        val EMPTY = MetArtwork()
     }
 
     fun toArtwork() =
@@ -42,6 +43,7 @@ data class MetArtwork(
             creditLine = creditLine ?: "",
             museum = museum ?: "",
             collection = Collection.Met,
+            department = department ?: "",
             shouldBeUpdated = false,
             url = url ?: ""
         )

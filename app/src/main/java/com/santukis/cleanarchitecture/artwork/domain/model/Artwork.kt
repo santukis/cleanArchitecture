@@ -19,7 +19,8 @@ data class Artwork(
     var url: String = "",
     var collection: Collection = Collection.Unknown,
     var museum: String = "",
-    var shouldBeUpdated: Boolean = false
+    var shouldBeUpdated: Boolean = false,
+    var department: String = ""
 ) {
     companion object {
         val EMPTY = Artwork()
