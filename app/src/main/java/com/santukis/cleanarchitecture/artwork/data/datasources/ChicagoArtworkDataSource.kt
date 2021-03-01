@@ -18,7 +18,7 @@ class ChicagoArtworkDataSource(private val client: HttpClient = HttpClient(host 
         flow {
             try {
                 val artworks = client.artworkService.loadChicagoArtworks(
-                    page = (lastItem / MAX_ITEM_SIZE) + 1,
+                    page = ((lastItem + 1) / MAX_ITEM_SIZE) + 1,
                     size = MAX_ITEM_SIZE
                 ).data
 

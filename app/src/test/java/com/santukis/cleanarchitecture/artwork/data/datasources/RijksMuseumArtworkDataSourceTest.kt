@@ -25,7 +25,7 @@ class RijksMuseumArtworkDataSourceTest {
     fun setup() {
         mockWebServer = MockWebServer()
         val client = HttpClient(mockWebServer.url("").toString())
-        artworkDataSource = RijksmuseumArtworkDataSource(client)
+        artworkDataSource = RijksMuseumArtworkDataSource(client)
     }
 
     @After
