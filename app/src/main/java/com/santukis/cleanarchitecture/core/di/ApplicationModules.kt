@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.santukis.cleanarchitecture.BuildConfig
-import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
-import com.santukis.cleanarchitecture.artwork.data.datasources.LocalArtworkDataSource
-import com.santukis.cleanarchitecture.artwork.data.datasources.MetArtworkDataSource
-import com.santukis.cleanarchitecture.artwork.data.datasources.RijksmuseumArtworkDataSource
+import com.santukis.cleanarchitecture.artwork.data.datasources.*
 import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
@@ -45,8 +42,11 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
 
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
-    bind<ArtworkDataSource>(tag = "remote") with singleton { MetArtworkDataSource() }
-    bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("remote")) }
+    bind<ArtworkDataSource>(tag = "rijks") with singleton { RijksmuseumArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "met") with singleton { MetArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "chicago") with singleton { ChicagoArtworkDataSource() }
+   // bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("chicago")) }
 }
 
 fun game() = DI.Module("game", allowSilentOverride = true) {
