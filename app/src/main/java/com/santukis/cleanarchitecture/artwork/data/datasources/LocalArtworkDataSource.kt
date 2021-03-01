@@ -19,11 +19,15 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
                 }
             }
 
-    override suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> =
-        when(database.artworkDao().saveItems(artworks.map { it.toArtworkDb() }).any { it != -1L }) {
+    override suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> {
+        val saved = database.artworkDao().saveItems(artworks.map { it.toArtworkDb() }).any { it != -1L }
+        artworks.forEach { artwork -> saveArtworkDetail(artwork) }
+
+        return when(saved) {
             true -> Response.Success(artworks)
             false -> super.saveArtworks(artworks)
         }
+    }
 
     override suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> =
         when(val item = database.artworkDao().loadArtwork(artworkId)) {
@@ -33,12 +37,16 @@ class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSour
 
     override suspend fun saveArtwork(artwork: Artwork): Response<Artwork> {
         database.artworkDao().updateItem(artwork.toArtworkDb())
+        saveArtworkDetail(artwork)
+        return Response.Success(artwork)
+    }
+
+    private fun saveArtworkDetail(artwork: Artwork) {
         database.dimensionsDao().saveItems(artwork.dimensions.map { it.toDimensionDb(artwork.id) })
         database.colorsDao().saveItems(artwork.colors.map { it.toColorDb(artwork.id) })
         database.categoriesDao().saveItems(artwork.categories.map { it.toCategoryDb(artwork.id) })
         database.materialsDao().saveItems(artwork.materials.map { it.toMaterialDb(artwork.id) })
         database.techniquesDao().saveItems(artwork.techniques.map { it.toTechniqueDb(artwork.id) })
-        return Response.Success(artwork)
     }
 
     override suspend fun loadFavourites(): Flow<Response<List<Artwork>>> =
