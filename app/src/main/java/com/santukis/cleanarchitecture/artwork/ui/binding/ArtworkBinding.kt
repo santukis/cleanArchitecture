@@ -1,8 +1,12 @@
 package com.santukis.cleanarchitecture.artwork.ui.binding
 
 import android.content.Context
+import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.frikiplanet.proteo.ItemsAdapter
@@ -50,6 +54,18 @@ object ArtworkBinding {
         techniques?.let {
             view.removeAllViews()
             techniques.forEach { view.addView(view.context.createChipFor(it.technique)) }
+        }
+    }
+
+    @SuppressWarnings("NewApi")
+    @BindingAdapter("app:showHtmlText")
+    @JvmStatic
+    fun showHtmlText(view: AppCompatTextView, text: String?) {
+        text?.let { html ->
+            view.text = when(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                true -> Html.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT)
+                else -> Html.fromHtml(html)
+            }
         }
     }
 
