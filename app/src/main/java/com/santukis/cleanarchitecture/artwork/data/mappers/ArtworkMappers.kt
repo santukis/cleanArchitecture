@@ -20,7 +20,12 @@ fun Artwork.toArtworkDb() =
         description = description,
         author = author,
         image = image,
-        dating = dating.year
+        dating = dating.year,
+        creditLine = creditLine,
+        url = url,
+        collection = collection,
+        museum = museum,
+        shouldBeUpdated = shouldBeUpdated
     )
 
 fun Dimension.toDimensionDb(parentId: String): DimensionDb =

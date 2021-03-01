@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.artwork.data.local
 
 import androidx.room.*
 import com.santukis.cleanarchitecture.artwork.domain.model.*
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.Question
 
@@ -15,7 +16,11 @@ data class ArtworkDb(
     val author: String,
     val image: String,
     val dating: String,
-    var updatedAt: Long = 0L
+    val creditLine: String,
+    val url: String,
+    val collection: Collection,
+    val museum: String,
+    var shouldBeUpdated: Boolean = false
 ) {
 
     fun toArtwork() =
@@ -26,7 +31,11 @@ data class ArtworkDb(
             author = author,
             image = image,
             dating = Dating(year = dating),
-            shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
+            creditLine = creditLine,
+            url = url,
+            collection = collection,
+            museum = museum,
+            shouldBeUpdated = shouldBeUpdated
         )
 
     fun toArtwork(
@@ -42,12 +51,16 @@ data class ArtworkDb(
             author = author,
             image = image,
             dating = Dating(year = dating),
+            creditLine = creditLine,
+            url = url,
+            collection = collection,
+            museum = museum,
             dimensions = dimensions,
             colors = colors,
             categories = categories,
             materials = materials,
             techniques = techniques,
-            shouldBeUpdated = (System.currentTimeMillis() - updatedAt) >= 24 * 60  * 60* 1000L
+            shouldBeUpdated = shouldBeUpdated
         )
 }
 

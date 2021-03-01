@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.santukis.cleanarchitecture.artwork.data.local.*
 
 @Database(
@@ -18,6 +19,7 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
     ],
     exportSchema = true, version = 3
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun artworkDao(): ArtworkDao

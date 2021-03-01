@@ -19,7 +19,7 @@ class RijksmuseumArtworkDataSource(private val client: HttpClient = HttpClient(h
                 val artworks = client.artworkService.loadRijksMuseumArtworks(
                     apiKey = BuildConfig.RIJKSMUSEUM_API_KEY,
                     fields = mapOf("ps" to MAX_ITEM_SIZE.toString(), "p" to (((lastItem + 1) / MAX_ITEM_SIZE) + 1).toString())
-                ).items.map { it.toArtwork() }
+                ).items.map { it.toArtwork().apply { shouldBeUpdated = true } }
 
                 when (artworks.isNullOrEmpty()) {
                     true -> emit(Response.Error<List<Artwork>>(Exception("No more items")))
@@ -36,7 +36,7 @@ class RijksmuseumArtworkDataSource(private val client: HttpClient = HttpClient(h
             client.artworkService.loadRijksMuseumArtworkDetail(
                 apiKey = BuildConfig.RIJKSMUSEUM_API_KEY,
                 artworkId = artworkId
-            ).item.toArtwork()
+            ).item.toArtwork().apply { shouldBeUpdated = false }
         )
 
     } catch (exception: Exception) {
