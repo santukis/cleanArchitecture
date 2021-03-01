@@ -7,7 +7,7 @@ import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
 
-class RijksmuseumArtworkDataSource(private val client: HttpClient = HttpClient(host = BuildConfig.RIJKSMUSEUM_END_POINT)) : ArtworkDataSource {
+class RijksMuseumArtworkDataSource(private val client: HttpClient = HttpClient(host = BuildConfig.RIJKSMUSEUM_END_POINT)) : ArtworkDataSource {
 
     companion object {
         const val MAX_ITEM_SIZE = 50
