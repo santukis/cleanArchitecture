@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
 import com.santukis.cleanarchitecture.artwork.domain.model.*
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -40,6 +41,8 @@ data class MetArtwork(
             materials = listOf(Material(material = material ?: "")),
             creditLine = creditLine ?: "",
             museum = museum ?: "",
+            collection = Collection.Met,
+            shouldBeUpdated = false,
             url = url ?: ""
         )
 }

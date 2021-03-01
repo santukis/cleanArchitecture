@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.artwork.domain.model.Color
 import com.santukis.cleanarchitecture.artwork.domain.model.Dating
 import com.santukis.cleanarchitecture.artwork.domain.model.Dimension
@@ -15,7 +16,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class RemoteArtworkDataSourceTest {
+class RijksMuseumArtworkDataSourceTest {
 
     private lateinit var mockWebServer: MockWebServer
     private lateinit var artworkDataSource: ArtworkDataSource
@@ -38,10 +39,10 @@ class RemoteArtworkDataSourceTest {
 
     @Test
     fun `loadArtworks should return success when response is Ok`() {
-        mockWebServer.enqueue(MockResponse().setBody(ArtworkDataProvider.artWorkResponseMultipleItems))
+        mockWebServer.enqueue(MockResponse().setBody(ArtworkDataProvider.rijksMuseumResponseMultipleItems))
 
         runBlocking {
-            artworkDataSource.loadArtworks()
+            artworkDataSource.loadArtworks(collection = Collection.Rijksmuseum)
                 .catch { fail() }
                 .onEmpty { fail() }
                 .collect {
@@ -71,7 +72,7 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(500))
 
         runBlocking {
-            artworkDataSource.loadArtworks()
+            artworkDataSource.loadArtworks(collection = Collection.Rijksmuseum)
                 .onEmpty {
                     fail()
                 }
@@ -86,7 +87,7 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
-            artworkDataSource.loadArtworks().collect()
+            artworkDataSource.loadArtworks(collection = Collection.Rijksmuseum).collect()
 
             val request = mockWebServer.takeRequest()
             assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&toppieces=true&s=objecttype&ps=50&p=1", request.path)
@@ -98,7 +99,7 @@ class RemoteArtworkDataSourceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
         runBlocking {
-            artworkDataSource.loadArtworks(, lastItem = 320).collect()
+            artworkDataSource.loadArtworks(collection = Collection.Rijksmuseum, lastItem = 320).collect()
 
             val request = mockWebServer.takeRequest()
             assertEquals("/api/en/collection?key=YtHr5uf6&imgonly=true&toppieces=true&s=objecttype&ps=50&p=7", request.path)

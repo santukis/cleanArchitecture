@@ -1,14 +1,14 @@
 package com.santukis.cleanarchitecture.artwork.data.remote
 
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
-import com.santukis.cleanarchitecture.artwork.data.mappers.toArtwork
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Dating
 import com.squareup.moshi.Moshi
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class ArtworkDtoParsing {
+class RijksMuseumArtworkTest {
 
     private lateinit var moshi: Moshi
 
@@ -21,7 +21,7 @@ class ArtworkDtoParsing {
     fun artWorkResponseAdapterShouldReturnExpectedItemsWhenResponseContainsMultipleItems() {
         val adapter = moshi.adapter(RijksMuseumResponse::class.java).lenient()
 
-        val items = adapter.fromJson(ArtworkDataProvider.artWorkResponseMultipleItems)?.items
+        val items = adapter.fromJson(ArtworkDataProvider.rijksMuseumResponseMultipleItems)?.items
         assertEquals(2, items?.size)
 
         val sampleItem = items?.getOrNull(0)
@@ -39,7 +39,7 @@ class ArtworkDtoParsing {
     @Test
     fun artWorkResponseAdapterShouldReturnExpectedItemWhenResponseContainsOneItem() {
         val adapter = moshi.adapter(RijksMuseumResponse::class.java).lenient()
-        val item =  adapter.fromJson(ArtworkDataProvider.artworkResponseSingleItem)?.item
+        val item =  adapter.fromJson(ArtworkDataProvider.rijksMuseumResponseSingleItem)?.item
 
         assertNotEquals(RijksMuseumArtwork.EMPTY, item)
         assertEquals("SK-C-6", item?.id)
@@ -47,7 +47,7 @@ class ArtworkDtoParsing {
         assertEquals("Samplers checked the quality of dyed cloth. Here Rembrandt shows them at work, distracted for a moment and looking up. One syndic is about to sit, or stand, so not all the heads are at the same level. A clever trick which, with the confident brushwork and subtle use of light, make this one of the liveliest group portraits of the 17th century. Originally painted for the sampling hall (Staalhof), in 1771 it was acquired by Amsterdam’s town hall.", item?.description)
         assertEquals("Rembrandt van Rijn", item?.author)
         assertEquals("https://lh3.googleusercontent.com/gShVRyvLLbwVB8jeIPghCXgr96wxTHaM4zqfmxIWRsUpMhMn38PwuUU13o1mXQzLMt5HFqX761u8Tgo4L_JG1XLATvw=s0", item?.image?.url)
-        assertEquals(RijksMuseumDating(1662), item?.dating)
+        assertEquals(RijksMuseumDating("1662"), item?.dating)
         assertEquals(2, item?.dimensions?.size)
         assertEquals(RijksMuseumDimension(type = "height", unit = "cm", value = "191.5"), item?.dimensions?.getOrNull(0))
         assertEquals(6, item?.colors?.size)
@@ -57,7 +57,7 @@ class ArtworkDtoParsing {
     @Test
     fun artWorkResponseAdapterShouldReturnNullValuesWhenResponseFieldsAreNulls() {
         val adapter = moshi.adapter(RijksMuseumResponse::class.java).lenient()
-        val item =  adapter.fromJson(ArtworkDataProvider.artworkResponseSingleItemWithNulls)?.item
+        val item =  adapter.fromJson(ArtworkDataProvider.rijksMuseumResponseSingleItemWithNulls)?.item
 
         assertEquals("SK-C-6", item?.id)
         assertNull(item?.title)
@@ -65,7 +65,7 @@ class ArtworkDtoParsing {
     }
 
     @Test
-    fun toArtWorkShouldReturnDefaultValuesWhenDtoValuesAreNull() {
+    fun toArtWorkShouldReturnDefaultValuesWhenRijksMuseumArtworkValuesAreNull() {
         val artworkDto = RijksMuseumArtwork(
             id = null,
             title = null,
@@ -77,6 +77,14 @@ class ArtworkDtoParsing {
             colors = null
         )
 
-        assertEquals(Artwork.EMPTY, artworkDto.toArtwork())
+        val result = artworkDto.toArtwork()
+        assertEquals("", result.id)
+        assertEquals("", result.title)
+        assertEquals("", result.description)
+        assertEquals("", result.image)
+        assertEquals(Dating.EMPTY, result.dating)
+        assertEquals("", result.author)
+        assertTrue(result.dimensions.isEmpty())
+        assertTrue(result.colors.isEmpty())
     }
 }

@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
 import com.santukis.cleanarchitecture.artwork.data.mappers.toArtworkDb
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
@@ -35,7 +36,7 @@ class LocalArtworkDataSourceTest {
     @Test
     fun loadArtworksShouldReturnErrorWhenThereIsNoItemsStoredInDatabase() {
         runBlocking {
-            artworkDataSource.loadArtworks()
+            artworkDataSource.loadArtworks(collection = Collection.Unknown)
                 .catch { fail() }
                 .onEmpty { fail() }
                 .take(1)
@@ -52,7 +53,7 @@ class LocalArtworkDataSourceTest {
     fun loadArtworksShouldReturnSuccessWhenThereAreItemsStoredInDatabase() {
         runBlocking {
             database.artworkDao().saveItems(ArtworkDataProvider.artworks.map { it.toArtworkDb() })
-            artworkDataSource.loadArtworks()
+            artworkDataSource.loadArtworks(collection = Collection.Unknown)
                 .catch { fail() }
                 .onEmpty { fail() }
                 .take(1)
