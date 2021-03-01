@@ -46,6 +46,18 @@
                 app:layout_constraintBottom_toBottomOf="@id/image"
                 android:background="@drawable/gradient_black" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/credit_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                android:paddingStart="@dimen/normal_space"
+                android:paddingEnd="@dimen/normal_space"
+                tools:text="The Milkmaid"
+                android:textIsSelectable="true"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:text="@{artwork.creditLine}"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/colors"
                 android:layout_width="match_parent"
@@ -53,7 +65,7 @@
                 android:layout_marginTop="@dimen/small_space"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/image"
+                app:layout_constraintTop_toBottomOf="@+id/credit_line"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:listitem="@layout/element_color_item"
                 tools:itemCount="3"
@@ -144,6 +156,49 @@
                 app:layout_constraintTop_toBottomOf="@id/technique_title"
                 android:padding="@dimen/normal_space"
                 app:showTechniques="@{artwork.techniques}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/categories_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/technique_container"
+                android:padding="@dimen/normal_space"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:visibility="@{artwork.categories.size() == 0 ? View.GONE : View.VISIBLE}"
+                android:text="@string/categories" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/categories_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/categories_title"
+                android:padding="@dimen/normal_space"
+                app:showCategories="@{artwork.categories}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/museum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/categories_container"
+                android:paddingStart="@dimen/normal_space"
+                android:paddingEnd="@dimen/normal_space"
+                tools:text="The Milkmaid"
+                android:textIsSelectable="true"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:text="@{artwork.museum}"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/collection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/museum"
+                android:paddingStart="@dimen/normal_space"
+                android:paddingEnd="@dimen/normal_space"
+                tools:text="The Milkmaid"
+                android:textIsSelectable="true"
+                android:layout_marginTop="@dimen/normal_space"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:text="@{artwork.collection.name()}"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/favourites"
