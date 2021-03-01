@@ -17,4 +17,11 @@
     <string name="dating">Dating</string>
     <string name="game_score">Game Score</string>
     <string name="categories">Categories</string>
+    <string name="empty"/>
+    <string name="rijksmuseum">Rijksmuseum</string>
+    <string name="met">The Metropolitan Museum of Art</string>
+    <string name="chicago">The Art Institute of Chicago</string>
+    <string name="cleveland">The Cleveland Museum of Art</string>
+    <string name="hardvard">Hardvard Art Museums</string>
+    <string name="walters">The Walters Art Museum</string>
 </resources>

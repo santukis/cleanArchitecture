@@ -25,7 +25,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/large_space">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image"
@@ -55,6 +56,7 @@
                 android:paddingEnd="@dimen/normal_space"
                 tools:text="The Milkmaid"
                 android:textIsSelectable="true"
+                android:layout_marginTop="@dimen/normal_space"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:text="@{artwork.creditLine}"/>
 
@@ -198,7 +200,7 @@
                 android:textIsSelectable="true"
                 android:layout_marginTop="@dimen/normal_space"
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:text="@{artwork.collection.name()}"/>
+                app:setTextResource="@{artwork.collection.nameRes}"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/favourites"
