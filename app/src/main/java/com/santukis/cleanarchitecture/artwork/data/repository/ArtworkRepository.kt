@@ -13,22 +13,22 @@ class ArtworkRepository(
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
         when(lastItem) {
-            0 -> loadArtworksFromLocal()
-            else -> loadArtworksFromRemote(lastItem)
+            0 -> loadArtworksFromLocal(collection)
+            else -> loadArtworksFromRemote(collection, lastItem)
         }
 
-    private suspend fun loadArtworksFromLocal(): Flow<Response<List<Artwork>>> =
-        localDataSource.loadArtworks()
+    private suspend fun loadArtworksFromLocal(collection: Collection): Flow<Response<List<Artwork>>> =
+        localDataSource.loadArtworks(collection)
             .flatMapConcat { response ->
                 when(response) {
                     is Response.Success -> flowOf(response)
-                    else -> loadArtworksFromRemote(0)
+                    else -> loadArtworksFromRemote(collection)
                 }
             }
 
-    private suspend fun loadArtworksFromRemote(lastItem: Int = 0): Flow<Response<List<Artwork>>> =
+    private suspend fun loadArtworksFromRemote(collection: Collection, lastItem: Int = 0): Flow<Response<List<Artwork>>> =
         flow {
-            remoteDataSource.loadArtworks(, lastItem)
+            remoteDataSource.loadArtworks(collection, lastItem)
                 .collect { response ->
                     when(response) {
                         is Response.Success -> localDataSource.saveArtworks(response.data).takeIf { it is Response.Error }?.let { emit(it) }
@@ -38,16 +38,16 @@ class ArtworkRepository(
         }
 
     override suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> {
-        val response = localDataSource.loadArtworkDetail(, artworkId)
+        val response = localDataSource.loadArtworkDetail(collection, artworkId)
 
         return when {
-            response is Response.Success && response.data.shouldBeUpdated -> loadArtworkDetailFromRemote(response.data)
+            response is Response.Success && response.data.shouldBeUpdated -> loadArtworkDetailFromRemote(collection, response.data)
             else -> response
         }
     }
 
-    private suspend fun loadArtworkDetailFromRemote(artwork: Artwork): Response<Artwork> =
-        when(val response = remoteDataSource.loadArtworkDetail(, artwork.id)) {
+    private suspend fun loadArtworkDetailFromRemote(collection: Collection, artwork: Artwork): Response<Artwork> =
+        when(val response = remoteDataSource.loadArtworkDetail(collection, artwork.id)) {
             is Response.Success -> localDataSource.saveArtwork(response.data)
             else -> Response.Success(artwork)
         }

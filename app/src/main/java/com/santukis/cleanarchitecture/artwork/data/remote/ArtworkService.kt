@@ -8,13 +8,21 @@ import retrofit2.http.QueryMap
 interface ArtworkService {
 
     @GET("api/en/collection")
-    suspend fun loadArtworks(@Query("key") apiKey: String,
-                             @Query("imgonly") withImage: Boolean = true,
-                             @Query("toppieces") topPieces: Boolean = true,
-                             @Query("s") sortByType: String = "objecttype",
-                             @QueryMap fields: Map<String, String>): RijksMuseumResponse
+    suspend fun loadRijksMuseumArtworks(@Query("key") apiKey: String,
+                                        @Query("imgonly") withImage: Boolean = true,
+                                        @Query("toppieces") topPieces: Boolean = true,
+                                        @Query("s") sortByType: String = "objecttype",
+                                        @QueryMap fields: Map<String, String>): RijksMuseumResponse
 
     @GET("api/en/collection/{artworkId}")
-    suspend fun loadArtworkDetail(@Path("artworkId") artworkId: String,
-                                  @Query("key") apiKey: String): RijksMuseumResponse
+    suspend fun loadRijksMuseumArtworkDetail(@Path("artworkId") artworkId: String,
+                                             @Query("key") apiKey: String): RijksMuseumResponse
+
+    @GET("public/collection/v1/objects")
+    suspend fun loadMetArtworks(@Query("departmentIds") departmentId: String,
+                                @Query("hasImages") hasImages: Boolean = true,
+                                @Query("isHighlight") isHighlight: Boolean = true): MetResponse
+
+    @GET("public/collection/v1/objects/{artworkId}")
+    suspend fun loadMetArtworkDetail(@Path("artworkId") artworkId: String): MetArtwork
 }

@@ -44,7 +44,7 @@ sealed class Question(
     @StringRes var title: Int
 ) {
 
-    private val rightOption: Int = Random.nextInt(0, answers.size)
+    private val rightOption: Int = Random.nextInt(0, answers.size.takeIf { it > 0 } ?: 1)
 
     var successfullyAnswered: Boolean = false
 

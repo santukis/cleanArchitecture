@@ -28,19 +28,27 @@ android {
                                      "$projectDir/schemas".toString()]
             }
         }
+
+        buildConfigField "String", "RIJKSMUSEUM_API_KEY", credentialsProperties['rijksMuseumApiKey']
+        buildConfigField "String", "RIJKSMUSEUM_END_POINT", '"https://www.rijksmuseum.nl/"'
+        buildConfigField "String", "MET_END_POINT", '"https://collectionapi.metmuseum.org/"'
+        buildConfigField "String", "CHICAGO_END_POINT", '"https://api.artic.edu/"'
+        buildConfigField "String", "CLEVELAND_END_POINT", '"https://openaccess-api.clevelandart.org/"'
+        buildConfigField "String", "HARDVARD_API_KEY", credentialsProperties['harvardApiKey']
+        buildConfigField "String", "HARDVARD_END_POINT", '"https://api.harvardartmuseums.org/"'
+        buildConfigField "String", "WALTERS_API_KEY", credentialsProperties['waltersApiKey']
+        buildConfigField "String", "WALTERS_END_POINT", '"http://api.thewalters.org/"'
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_KEY", credentialsProperties['apiKey']
-            buildConfigField "String", "END_POINT", '"https://www.rijksmuseum.nl/"'
+
 
         }
         debug {
-            buildConfigField "String", "API_KEY", credentialsProperties['apiKey']
-            buildConfigField "String", "END_POINT", '"https://www.rijksmuseum.nl/"'
+
         }
     }
 

@@ -3,12 +3,15 @@ package com.santukis.cleanarchitecture.artwork.data.mappers
 import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.domain.model.*
 
-fun fromQuestionTypeToSqlQuery(type: Int): String =
-    when(type) {
-        0 -> "SELECT * FROM artworks WHERE artworks.title != '' GROUP BY title ORDER BY RANDOM() LIMIT 3"
-        1 -> "SELECT * FROM artworks WHERE artworks.author != '' GROUP BY author ORDER BY RANDOM() LIMIT 3"
-        else -> "SELECT * FROM artworks WHERE artworks.dating != 0 GROUP BY dating ORDER BY RANDOM() LIMIT 3"
+fun fromQuestionTypeToSqlQuery(type: Int): String {
+    val key = when(type) {
+        0 -> "artworks.title"
+        1 -> "artworks.author"
+        else -> "artworks.dating"
     }
+
+    return "SELECT * FROM artworks WHERE $key != '' GROUP BY dating ORDER BY RANDOM() LIMIT 3"
+}
 
 fun Artwork.toArtworkDb() =
     ArtworkDb(
