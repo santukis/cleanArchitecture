@@ -57,13 +57,10 @@ interface ArtworkService {
         @Query("size") size: Int
     ): HardvardResponse
 
-    @GET("object")
+    @GET("v1/objects")
     suspend fun loadWaltersArtworks(
         @Query("apikey") apiKey: String,
-        @Query("hasimage") hasImage: Int = 1,
-        @Query("fields") fields: String = "id,creditline,copyright,description,people,primaryimageurl,dated,dimensions,division,technique,url,colors,provenance,department,title",
-        @Query("gallery") onView: String = "any",
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("pageSize") size: Int
     ): WaltersResponse
 }

@@ -39,7 +39,7 @@ data class WaltersArtwork(
             author = author ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
-            image = image?.medium ?: image?.large ?: image?.small ?: "",
+            image = image?.large ?: image?.medium ?: image?.small ?: "",
             categories = category?.takeIf { it.isNotEmpty() }?.let { it.split(";").map { Category(it) } } ?: emptyList(),
             materials = material?.takeIf { it.isNotEmpty() }?.let { listOf(Material(material = it)) } ?: emptyList(),
             creditLine = creditLine ?: "",
