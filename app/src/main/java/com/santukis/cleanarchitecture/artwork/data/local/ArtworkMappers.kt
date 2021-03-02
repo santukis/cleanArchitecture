@@ -4,13 +4,13 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.domain.model.*
 
 fun fromQuestionTypeToSqlQuery(type: Int): String {
-    val key = when(type) {
-        0 -> "artworks.title"
-        1 -> "artworks.author"
-        else -> "artworks.dating"
+    val (search, orderBy) = when(type) {
+        0 -> "artworks.title" to "title"
+        1 -> "artworks.author" to "author"
+        else -> "artworks.dating" to "dating"
     }
 
-    return "SELECT * FROM artworks WHERE $key != '' GROUP BY dating ORDER BY RANDOM() LIMIT 3"
+    return "SELECT * FROM artworks WHERE $search != '' GROUP BY $orderBy ORDER BY RANDOM() LIMIT 3"
 }
 
 fun Artwork.toArtworkDb() =
