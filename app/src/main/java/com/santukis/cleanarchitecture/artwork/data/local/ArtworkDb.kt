@@ -8,7 +8,8 @@ import com.santukis.cleanarchitecture.game.domain.model.Question
 
 @Entity(
     tableName = "artworks",
-    indices = [Index("title", "title"), Index("author", "author")])
+    indices = [Index("title", "title"), Index("author", "author")]
+)
 data class ArtworkDb(
     @PrimaryKey val id: String,
     val title: String,
@@ -19,8 +20,8 @@ data class ArtworkDb(
     val creditLine: String,
     val url: String,
     val collection: Collection,
-    val museum: String,
     val department: String,
+    val style: String,
     var shouldBeUpdated: Boolean = false
 ) {
 
@@ -34,8 +35,8 @@ data class ArtworkDb(
             dating = Dating(year = dating),
             creditLine = creditLine,
             url = url,
+            style = style,
             collection = collection,
-            museum = museum,
             department = department,
             shouldBeUpdated = shouldBeUpdated
         )
@@ -45,7 +46,8 @@ data class ArtworkDb(
         colors: List<Color>,
         categories: List<Category>,
         materials: List<Material>,
-        techniques: List<Technique>) =
+        techniques: List<Technique>
+    ) =
         Artwork(
             id = id,
             title = title,
@@ -55,8 +57,8 @@ data class ArtworkDb(
             dating = Dating(year = dating),
             creditLine = creditLine,
             url = url,
+            style = style,
             collection = collection,
-            museum = museum,
             dimensions = dimensions,
             colors = colors,
             categories = categories,
@@ -77,7 +79,7 @@ data class ArtworkDb(
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
-                  ],
+    ],
     indices = [Index("parentId", "parentId"), Index("value", "value")]
 )
 data class DimensionDb(
@@ -88,7 +90,7 @@ data class DimensionDb(
     val type: String
 ) {
     fun toDimension() =
-        when(type) {
+        when (type) {
             Dimension.Height::class.java.name -> Dimension.Height(value = value, unit = unit.toMeasureUnit())
             Dimension.Width::class.java.name -> Dimension.Width(value = value, unit = unit.toMeasureUnit())
             Dimension.Depth::class.java.name -> Dimension.Depth(value = value, unit = unit.toMeasureUnit())
@@ -110,7 +112,7 @@ data class MeasureUnitDb(val unit: String) {
             childColumns = ["parentId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
-        ) ],
+        )],
     indices = [Index("parentId", "parentId"), Index("color", "color")]
 )
 data class ColorDb(
@@ -135,7 +137,7 @@ data class ColorDb(
             childColumns = ["parentId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
-        ) ],
+        )],
     indices = [Index("parentId", "parentId"), Index("category", "category")]
 )
 data class CategoryDb(
@@ -155,7 +157,7 @@ data class CategoryDb(
             childColumns = ["parentId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
-        ) ],
+        )],
     indices = [Index("parentId", "parentId"), Index("material", "material")]
 )
 data class MaterialDb(
@@ -175,7 +177,7 @@ data class MaterialDb(
             childColumns = ["parentId"],
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
-        ) ],
+        )],
     indices = [Index("parentId", "parentId"), Index("technique", "technique")]
 )
 data class TechniqueDb(
@@ -231,23 +233,24 @@ data class ArtworkDetailDb(
 }
 
 fun List<ArtworkDetailDb>.toQuestion(type: Int): Question? =
-    when(type) {
+    when (type) {
         0 -> Question.TitleQuestion(answers = map { it.toTitleAnswer() })
         1 -> Question.AuthorQuestion(answers = map { it.toAuthorAnswer() })
         2 -> Question.DatingQuestion(answers = map { it.toDatingAnswer() })
         else -> null
     }
 
-@Entity(tableName = "favourites",
-        foreignKeys = [
-            androidx.room.ForeignKey(
-                entity = ArtworkDb::class,
-                parentColumns = ["id"],
-                childColumns = ["id"],
-                onDelete = ForeignKey.CASCADE,
-                onUpdate = ForeignKey.NO_ACTION
-            )
-        ]
+@Entity(
+    tableName = "favourites",
+    foreignKeys = [
+        androidx.room.ForeignKey(
+            entity = ArtworkDb::class,
+            parentColumns = ["id"],
+            childColumns = ["id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.NO_ACTION
+        )
+    ]
 )
 data class FavouriteDb(
     @PrimaryKey()

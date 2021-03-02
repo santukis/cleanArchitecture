@@ -4,7 +4,7 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
-import com.santukis.cleanarchitecture.artwork.data.mappers.toArtworkDb
+import com.santukis.cleanarchitecture.artwork.data.local.toArtworkDb
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response

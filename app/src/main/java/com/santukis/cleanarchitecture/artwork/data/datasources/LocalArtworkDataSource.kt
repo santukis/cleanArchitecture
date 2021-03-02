@@ -1,6 +1,6 @@
 package com.santukis.cleanarchitecture.artwork.data.datasources
 
-import com.santukis.cleanarchitecture.artwork.data.mappers.*
+import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase

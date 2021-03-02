@@ -25,6 +25,8 @@ data class WaltersArtwork(
     @Json(name = "ResourceURL") val url: String? = "",
     @Json(name = "Collection") val collection: String? = "",
     @Json(name = "DisplayLocation") val department: String? = "",
+    @Json(name = "Style") val style: String? = "",
+    @Json(name = "Culture") val culture: String? = "",
     @Json(name = "Provenance") val provenance: String? = ""
 ) {
     companion object {
@@ -45,6 +47,7 @@ data class WaltersArtwork(
             creditLine = creditLine ?: "",
             collection = Collection.Walters,
             url = url ?: "",
+            style = (style ?: "").plus(" ").plus(culture ?: ""),
             department = (collection ?: "").plus(", ").plus(department ?: ""),
             shouldBeUpdated = false
         )
