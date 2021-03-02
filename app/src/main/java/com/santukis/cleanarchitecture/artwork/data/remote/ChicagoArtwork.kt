@@ -35,7 +35,7 @@ data class ChicagoArtwork(
             id = id?.toString() ?: "",
             title = title ?: "",
             description = description.plus("\n").plus(provenanceText),
-            author = author ?: "",
+            author = author ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
             image = image?.takeIf { it.isNotEmpty() }?.let { "https://www.artic.edu/iiif/2/$it/full/843,/0/default.jpg" } ?: "",

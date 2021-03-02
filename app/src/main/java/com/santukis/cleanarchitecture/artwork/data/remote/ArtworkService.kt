@@ -50,8 +50,8 @@ interface ArtworkService {
     @GET("object")
     suspend fun loadHardvardArtworks(
         @Query("apikey") apiKey: String,
-        @Query("hasImage") hasImage: Int = 1,
-        @Query("fields") fields: String = "id,creditline,copyright,description,people,primaryimageurl,dated,dimensions,division,technique,url,colors,provenance,department",
+        @Query("hasimage") hasImage: Int = 1,
+        @Query("fields") fields: String = "id,creditline,copyright,description,people,primaryimageurl,dated,dimensions,division,technique,url,colors,provenance,department,title",
         @Query("gallery") onView: String = "any",
         @Query("page") page: Int,
         @Query("size") size: Int

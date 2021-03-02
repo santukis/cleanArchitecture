@@ -34,7 +34,7 @@ data class MetArtwork(
         Artwork(
             id = id?.toString() ?: "",
             title = title ?: "",
-            author = author ?: "",
+            author = author ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.firstOrNull { it.type == "Overall" }?.toDimension() ?: emptyList(),
             image = image ?: "",

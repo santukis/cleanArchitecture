@@ -38,7 +38,7 @@ data class RijksMuseumArtwork(
             id = id ?: "",
             title = title.takeIf { !it.isNullOrEmpty() } ?: resume?.title ?: "",
             description = description.takeIf { !it.isNullOrEmpty() } ?: resume?.description ?: "",
-            author = author ?: "",
+            author = author ?: "Anonymous",
             image = image?.url ?: "",
             dating = dating?.toDating() ?: Dating.EMPTY,
             dimensions = dimensions?.map { it.toDimension() } ?: emptyList(),
