@@ -10,6 +10,7 @@ import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.addEndlessScrollListener
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.artwork.ui.binding.ArtworkViewHolder
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
@@ -18,6 +19,8 @@ import com.santukis.cleanarchitecture.databinding.FragmentArtworksBinding
 import kotlinx.coroutines.flow.collect
 
 class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
+
+    private var selectedCollection: Collection = Collection.Unknown
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentArtworksBinding =
         FragmentArtworksBinding.inflate(inflater, container, false)
@@ -35,7 +38,7 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
         super.initializeViewListeners(binding)
         lifecycleScope.launchWhenStarted {
             binding.recycler.addEndlessScrollListener(threshold = 3).collect { lastItemPosition ->
-                artworkViewModel?.loadArtworks(lastItemPosition)
+                artworkViewModel?.loadArtworks(selectedCollection, lastItemPosition)
             }
         }
 
@@ -46,6 +49,18 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
                 is Response.Success -> artworksAdapter.showItems(response.data) { a1, a2 -> a1.id == a2.id }
                 is Response.Error -> Toast.makeText(binding.root.context, "Unable to load Artworks", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        loadData()
+    }
+
+    private fun loadData() {
+        arguments?.getString("collectionId")?.apply {
+            selectedCollection = Collection.valueOf(this)
+            artworkViewModel?.loadArtworks(selectedCollection)
         }
     }
 

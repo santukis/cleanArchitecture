@@ -2,17 +2,49 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/artworksFragment">
+    app:startDestination="@id/collectionsFragment">
 
     <fragment
-        android:id="@+id/artworksFragment"
-        android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment"
+        android:id="@+id/collectionsFragment"
+        android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.CollectionsFragment"
         android:label="Collections">
+
+        <action
+            android:id="@+id/openCollectionDetail"
+            app:destination="@id/collectionDetail"
+            app:popUpTo="@id/collectionsFragment"
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="collectionId"
+                android:defaultValue=""
+                app:argType="string" />
+
+        </action>
 
         <action
             android:id="@+id/openArtworkDetail"
             app:destination="@id/artworkDetailFragment"
-            app:popUpTo="@id/artworksFragment"
+            app:popUpTo="@id/collectionDetail"
+            app:popUpToInclusive="false">
+
+            <argument
+                android:name="artworkId"
+                android:defaultValue=""
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectionDetail"
+        android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment">
+
+        <action
+            android:id="@+id/openArtworkDetail"
+            app:destination="@id/artworkDetailFragment"
+            app:popUpTo="@id/collectionDetail"
             app:popUpToInclusive="false">
 
             <argument
@@ -31,7 +63,7 @@
 
         <action
             android:id="@+id/action_artworkDetailFragment_pop"
-            app:popUpTo="@id/artworksFragment"
+            app:popUpTo="@id/collectionDetail"
             app:popUpToInclusive="true" />
 
     </fragment>

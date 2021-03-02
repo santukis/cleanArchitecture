@@ -17,13 +17,25 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.santukis.cleanarchitecture.R
-import com.santukis.cleanarchitecture.artwork.domain.model.Category
-import com.santukis.cleanarchitecture.artwork.domain.model.Color
-import com.santukis.cleanarchitecture.artwork.domain.model.Material
-import com.santukis.cleanarchitecture.artwork.domain.model.Technique
+import com.santukis.cleanarchitecture.artwork.domain.model.*
+import com.santukis.cleanarchitecture.databinding.ElementArtworkItemBinding
 import com.santukis.cleanarchitecture.databinding.ElementColorItemBinding
 
 object ArtworkBinding {
+
+    @BindingAdapter("app:showArtworks")
+    @JvmStatic
+    fun showArtworks(view: RecyclerView, artworks: List<Artwork>?) {
+        artworks?.let {
+            if (view.adapter == null) {
+                view.adapter = ItemsAdapter(ViewHolderProvider { parent, viewType ->
+                    ArtworkViewHolder(ElementArtworkItemBinding.inflate(LayoutInflater.from(view.context), parent, false))
+                })
+            }
+
+            (view.adapter as? ItemsAdapter<Artwork>)?.showItems(artworks)
+        }
+    }
 
     @BindingAdapter("app:showColors")
     @JvmStatic
