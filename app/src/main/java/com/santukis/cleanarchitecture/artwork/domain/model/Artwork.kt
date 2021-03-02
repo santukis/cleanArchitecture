@@ -8,19 +8,19 @@ data class Artwork(
     val title: String = "",
     val description: String = "",
     val author: String = "",
+    val image: String = "",
     val dating: Dating = Dating.EMPTY,
     var dimensions: List<Dimension> = emptyList(),
-    val image: String = "",
     var colors: List<Color> = emptyList(),
     var categories: List<Category> = emptyList(),
     var materials: List<Material> = emptyList(),
     var techniques: List<Technique> = emptyList(),
+    val style: String = "",
     var creditLine: String = "",
     var url: String = "",
+    var department: String = "",
     var collection: Collection = Collection.Unknown,
-    var museum: String = "",
     var shouldBeUpdated: Boolean = false,
-    var department: String = ""
 ) {
     companion object {
         val EMPTY = Artwork()

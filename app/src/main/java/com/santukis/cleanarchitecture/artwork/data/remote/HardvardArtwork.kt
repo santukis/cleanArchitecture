@@ -21,11 +21,14 @@ data class HardvardArtwork(
     @Json(name = "dimensions") val dimensions: String? = "",
     @Json(name = "division") val category: String? = "",
     @Json(name = "technique") val technique: String? = "",
+    @Json(name = "medium") val material: String? = "",
     @Json(name = "creditline") val creditLine: String? = "",
     @Json(name = "url") val url: String? = "",
     @Json(name = "colors") val colors: List<HardvardColor>? = emptyList(),
     @Json(name = "department") val department: String? = "",
     @Json(name = "provenance") val provenance: String? = "",
+    @Json(name = "style") val style: String? = "",
+    @Json(name = "culture") val culture: String? = "",
     @Json(name = "copyright") val copyright: String? = ""
 ) {
     companion object {
@@ -44,9 +47,11 @@ data class HardvardArtwork(
             colors = colors?.map { Color(normalizedColor = it.color ?: "", color = it.color?.toRGB() ?: 0) } ?: emptyList(),
             categories = category?.takeIf { it.isNotEmpty() }?.let { listOf(Category(category = it)) } ?: emptyList(),
             techniques = technique?.takeIf { it.isNotEmpty() }?.let { listOf(Technique(technique = it)) } ?: emptyList(),
+            materials = material?.takeIf { it.isNotEmpty() }?.let { listOf(Material(material = it)) } ?: emptyList(),
             creditLine = creditLine ?: "",
             collection = Collection.Hardvard,
             url = url ?: "",
+            style = (style ?: "").plus(" ").plus(culture ?: ""),
             department = department ?: "",
             shouldBeUpdated = false
         )

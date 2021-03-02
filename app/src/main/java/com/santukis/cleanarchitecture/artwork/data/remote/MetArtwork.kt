@@ -22,8 +22,9 @@ data class MetArtwork(
     @Json(name = "objectName") val category: String? = "",
     @Json(name = "medium") val material: String? = "",
     @Json(name = "creditLine") val creditLine: String? = "",
-    @Json(name = "repository") val museum: String? = "",
+    @Json(name = "repository") val repository: String? = "",
     @Json(name = "objectURL") val url: String? = "",
+    @Json(name = "culture") val culture: String? = "",
     @Json(name = "department") val department: String? = ""
 ) {
     companion object {
@@ -40,11 +41,11 @@ data class MetArtwork(
             image = image ?: "",
             categories = listOf(Category(category = category ?: "")),
             materials = listOf(Material(material = material ?: "")),
-            creditLine = creditLine ?: "",
-            museum = museum ?: "",
+            creditLine = (creditLine ?: "").plus(" ").plus(repository ?: ""),
             collection = Collection.Met,
             department = department ?: "",
             shouldBeUpdated = false,
+            style = culture ?: "",
             url = url ?: ""
         )
 }

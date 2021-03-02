@@ -16,7 +16,7 @@ data class ChicagoArtwork(
     @Json(name = "title") val title: String? = "",
     @Json(name = "description") val description: String? = "",
     @Json(name = "provenance_text") val provenanceText: String? = "",
-    @Json(name = "artist_title") val author: String? = "",
+    @Json(name = "artist_display") val author: String? = "",
     @Json(name = "image_id") val image: String? = "",
     @Json(name = "date_display") val dating: String? = "",
     @Json(name = "dimensions") val dimensions: String? = "",
@@ -24,7 +24,8 @@ data class ChicagoArtwork(
     @Json(name = "material_titles") val materials: List<String>? = emptyList(),
     @Json(name = "techniques_titles") val techniques: List<String>? = emptyList(),
     @Json(name = "credit_line") val creditLine: String? = "",
-    @Json(name = "gallery_title") val department: String? = ""
+    @Json(name = "department_title") val department: String? = "",
+    @Json(name = "style_title") val style: String? = ""
 ) {
     companion object {
         val EMPTY = ChicagoArtwork()
@@ -45,6 +46,7 @@ data class ChicagoArtwork(
             collection = Collection.Chicago,
             url = "https://www.artic.edu/artworks/$id",
             department = department ?: "",
+            style = style ?: "",
             shouldBeUpdated = false
         )
 }

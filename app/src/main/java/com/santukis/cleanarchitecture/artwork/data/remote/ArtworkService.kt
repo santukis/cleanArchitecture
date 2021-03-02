@@ -33,7 +33,7 @@ interface ArtworkService {
     @GET("api/v1/artworks/search")
     suspend fun loadChicagoArtworks(
         @Query("query[term][is_public_domain]") publicDomain: Boolean = true,
-        @Query("fields") fields: String = "id,title,date_display,artist_title,dimensions,credit_line,provenance_text,description,category_titles,material_titles,techniques_titles,image_id",
+        @Query("fields") fields: String = "id,title,date_display,artist_display,dimensions,credit_line,provenance_text,description,category_titles,material_titles,techniques_titles,department_title,style_title,image_id",
         @Query("page") page: Int,
         @Query("limit") size: Int
     ): ChicagoResponse
@@ -51,7 +51,7 @@ interface ArtworkService {
     suspend fun loadHardvardArtworks(
         @Query("apikey") apiKey: String,
         @Query("hasimage") hasImage: Int = 1,
-        @Query("fields") fields: String = "id,creditline,copyright,description,people,primaryimageurl,dated,dimensions,division,technique,url,colors,provenance,department,title",
+        @Query("fields") fields: String = "id,creditline,copyright,description,people,primaryimageurl,dated,dimensions,division,technique,url,colors,provenance,department,title,style,culture",
         @Query("gallery") onView: String = "any",
         @Query("page") page: Int,
         @Query("size") size: Int

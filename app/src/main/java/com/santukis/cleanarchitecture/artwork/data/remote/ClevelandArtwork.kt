@@ -25,7 +25,8 @@ data class ClevelandArtwork(
     @Json(name = "url") val url: String? = "",
     @Json(name = "collection") val collection: String? = "",
     @Json(name = "department") val department: String? = "",
-    @Json(name = "fun_fact") val funFact: String? = ""
+    @Json(name = "fun_fact") val funFact: String? = "",
+    @Json(name = "culture") val culture: List<String>? = emptyList()
 ) {
     companion object {
         val EMPTY = ClevelandArtwork()
@@ -35,7 +36,7 @@ data class ClevelandArtwork(
         Artwork(
             id = id?.toString() ?: "",
             title = title ?: "",
-            description = description.plus("\n").plus(funFact),
+            description = description.plus("\n").plus(funFact ?: ""),
             author = author?.firstOrNull()?.name ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
@@ -43,10 +44,10 @@ data class ClevelandArtwork(
             categories = category?.takeIf { it.isNotEmpty() }?.let { listOf(Category(category = it)) } ?: emptyList(),
             techniques = technique?.takeIf { it.isNotEmpty() }?.let { listOf(Technique(technique = it)) } ?: emptyList(),
             creditLine = creditLine ?: "",
-            museum = collection ?: "",
             collection = Collection.Cleveland,
             url = url ?: "",
-            department = department ?: "",
+            style = culture?.joinToString(", ") ?: "",
+            department = (department ?: "").plus(" ").plus(collection ?: ""),
             shouldBeUpdated = false
         )
 }

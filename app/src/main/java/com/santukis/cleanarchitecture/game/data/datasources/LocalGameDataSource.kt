@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.local.toQuestion
-import com.santukis.cleanarchitecture.artwork.data.mappers.fromQuestionTypeToSqlQuery
+import com.santukis.cleanarchitecture.artwork.data.local.fromQuestionTypeToSqlQuery
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
@@ -51,7 +51,8 @@ class LocalGameDataSource(context: Context,
     override suspend fun loadQuestion(type: Int): Response<Question> {
         val items = database.artworkDao().loadQuestion(SimpleSQLiteQuery(fromQuestionTypeToSqlQuery(type)))
 
-        return when(val question = items?.toQuestion(type)) {
+        return if (items.isNullOrEmpty()) loadQuestion(type)
+        else when(val question = items.toQuestion(type)) {
             null -> super.loadQuestion(type)
             else -> Response.Success(question)
         }

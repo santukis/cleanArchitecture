@@ -1,6 +1,5 @@
-package com.santukis.cleanarchitecture.artwork.data.mappers
+package com.santukis.cleanarchitecture.artwork.data.local
 
-import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.domain.model.*
 
 fun fromQuestionTypeToSqlQuery(type: Int): String {
@@ -23,8 +22,8 @@ fun Artwork.toArtworkDb() =
         dating = dating.year,
         creditLine = creditLine,
         url = url,
+        style = style,
         collection = collection,
-        museum = museum,
         department = department,
         shouldBeUpdated = shouldBeUpdated
     )

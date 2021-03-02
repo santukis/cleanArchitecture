@@ -3,7 +3,7 @@ package com.santukis.cleanarchitecture.game.data.datasources
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
-import com.santukis.cleanarchitecture.artwork.data.mappers.toArtworkDb
+import com.santukis.cleanarchitecture.artwork.data.local.toArtworkDb
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.Question
