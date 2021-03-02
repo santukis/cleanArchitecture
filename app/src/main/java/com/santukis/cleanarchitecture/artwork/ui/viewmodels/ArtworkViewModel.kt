@@ -63,4 +63,8 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
             isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }
+
+    fun showMoreInfo(url: String?) {
+
+    }
 }

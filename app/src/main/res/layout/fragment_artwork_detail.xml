@@ -202,6 +202,19 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 app:setTextResource="@{artwork.collection.nameRes}"/>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/more_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/collection"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="@dimen/normal_space"
+                android:visibility="@{artwork.url == null || artwork.url.isEmpty() ? View.GONE : View.VISIBLE}"
+                android:onClick="@{() -> viewmodel.showMoreInfo(artwork.url) }"
+                android:text="@string/more_info"/>
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/favourites"
                 android:layout_width="wrap_content"
