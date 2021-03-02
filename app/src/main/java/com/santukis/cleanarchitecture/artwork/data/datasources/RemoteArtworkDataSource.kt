@@ -1,10 +1,10 @@
 package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.ArtworkCollection
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.*
 
 class RemoteArtworkDataSource(
     private val rijksmuseumArtworkDataSource: ArtworkDataSource,
@@ -14,6 +14,19 @@ class RemoteArtworkDataSource(
     private val waltersArtworkDataSource: ArtworkDataSource,
     private val hardvardArtworkDataSource: ArtworkDataSource
 ): ArtworkDataSource {
+
+    override suspend fun loadCollections(): Flow<Response<List<ArtworkCollection>>> =
+        flow {
+            Collection.values().forEach { collection ->
+                loadArtworks(collection, 0)
+                    .collect { response ->
+                        when(response) {
+                            is Response.Success -> emit(Response.Success(listOf(ArtworkCollection(collection, response.data))))
+                            is Response.Error -> emit(Response.Error<List<ArtworkCollection>>(response.error))
+                        }
+                    }
+            }
+        }
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
         when(collection) {

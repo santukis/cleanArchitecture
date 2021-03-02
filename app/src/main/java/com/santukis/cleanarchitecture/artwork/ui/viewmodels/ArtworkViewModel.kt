@@ -6,6 +6,7 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
 import com.santukis.cleanarchitecture.artwork.data.datasources.ArtworkDataSource
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.ArtworkCollection
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
@@ -20,19 +21,29 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     private val executor: Executor by di.instance(tag = "executor", arg = viewModelScope)
     private val artworkDataSource: ArtworkDataSource by di.instance(tag = "repository")
 
+    val collections: MutableLiveData<Response<List<ArtworkCollection>>> = MutableLiveData()
     val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
     val artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     val favourites: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     var isFavourite: ObservableBoolean = ObservableBoolean()
 
     init {
-        loadArtworks()
+        loadCollections()
         loadFavourites()
     }
 
-    fun loadArtworks(lastVisible: Int = 0) {
+    private fun loadCollections() {
         executor.execute {
-            artworkDataSource.loadArtworks(Collection.Met, lastVisible)
+            artworkDataSource.loadCollections()
+                .onStart { collections.postValue(Response.Loading()) }
+                .catch { exception -> collections.postValue(Response.Error(exception)) }
+                .collect { collections.postValue(it) }
+        }
+    }
+
+    fun loadArtworks(collection: Collection, lastVisible: Int = 0) {
+        executor.execute {
+            artworkDataSource.loadArtworks(collection, lastVisible)
                     .onStart { artworks.postValue(Response.Loading()) }
                     .catch { exception -> artworks.postValue(Response.Error(exception)) }
                     .collect { artworks.postValue(it) }
@@ -42,7 +53,7 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     fun loadArtworkDetail(artworkId: String) {
         executor.execute {
             artwork.postValue(Response.Loading())
-            artwork.postValue(artworkDataSource.loadArtworkDetail(Collection.Met, artworkId))
+            artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId = artworkId))
             isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
     }

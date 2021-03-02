@@ -76,6 +76,11 @@ data class Technique(
     val technique: String = ""
 )
 
+data class ArtworkCollection(
+    val collection: Collection,
+    val artworks: List<Artwork>
+)
+
 enum class Collection(@StringRes val nameRes: Int) {
     Unknown(R.string.empty),
     Rijksmuseum(R.string.rijksmuseum),

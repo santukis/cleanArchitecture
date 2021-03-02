@@ -1,6 +1,7 @@
 package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.ArtworkCollection
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ interface ArtworkDataSource {
 
     suspend fun saveArtworks(artworks: List<Artwork>): Response<List<Artwork>> = Response.Error(Exception("Unable to save Artworks"))
 
-    suspend fun loadArtworkDetail(collection: Collection, artworkId: String): Response<Artwork> = Response.Error(Exception("Unable to load Artwork"))
+    suspend fun loadArtworkDetail(collection: Collection = Collection.Unknown, artworkId: String): Response<Artwork> = Response.Error(Exception("Unable to load Artwork"))
 
     suspend fun saveArtwork(artwork: Artwork): Response<Artwork> = Response.Error(Exception("Unable to save Artwork"))
 
@@ -21,4 +22,8 @@ interface ArtworkDataSource {
     suspend fun toggleFavourite(artworkId: String): Response<Unit> = Response.Error(Exception("Unable to toggle Favourite status"))
 
     suspend fun isArtworkFavourite(artworkId: String): Boolean = false
+
+    suspend fun loadCollections(): Flow<Response<List<ArtworkCollection>>> = emptyFlow()
+
+    suspend fun saveCollections(collections: List<ArtworkCollection>): Response<List<ArtworkCollection>> = Response.Error(Exception("Unable to save Artworks"))
 }

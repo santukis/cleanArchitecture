@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ArtworkDao: BaseDao<ArtworkDb> {
 
+    @Query("SELECT * FROM artworks")
+    fun loadCollections(): Flow<List<ArtworkDb>>
+
     @Query("SELECT * FROM artworks WHERE collection = :collection")
     fun loadArtworks(collection: Collection): Flow<List<ArtworkDb>>
 

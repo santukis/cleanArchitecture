@@ -2,12 +2,28 @@ package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import com.santukis.cleanarchitecture.artwork.data.local.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
+import com.santukis.cleanarchitecture.artwork.domain.model.ArtworkCollection
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import kotlinx.coroutines.flow.*
 
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
+
+    override suspend fun loadCollections(): Flow<Response<List<ArtworkCollection>>> =
+        database.artworkDao().loadCollections()
+            .distinctUntilChanged()
+            .map { items ->
+                when {
+                    items.isNullOrEmpty() -> Response.Error(Exception("No Items"))
+                    else -> Response.Success(items.groupBy { it.collection }.map { ArtworkCollection(it.key, it.value.map { it.toArtwork() }) })
+                }
+            }
+
+    override suspend fun saveCollections(collections: List<ArtworkCollection>): Response<List<ArtworkCollection>> {
+        collections.forEach { collection -> saveArtworks(collection.artworks) }
+        return Response.Success(collections)
+    }
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
         database.artworkDao().loadArtworks(collection)
