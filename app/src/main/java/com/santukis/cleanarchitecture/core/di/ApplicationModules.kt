@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.santukis.cleanarchitecture.artwork.data.datasources.*
 import com.santukis.cleanarchitecture.artwork.data.repository.ArtworkRepository
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
+import com.santukis.cleanarchitecture.core.data.datasources.LocalPagingDataSource
+import com.santukis.cleanarchitecture.core.data.datasources.PagingDataSource
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.executors.AsyncExecutor
@@ -24,6 +26,7 @@ fun applicationModules(application: Application) = DI.Module("appModule", allowS
     bind<HttpClient>() with provider { HttpClient("") }
 
     import(artwork(), allowOverride = true)
+    import(paging(), allowOverride = true)
     import(game(), allowOverride = true)
     import(viewmodels(), allowOverride = true)
     import(executors(), allowOverride = true)
@@ -39,13 +42,17 @@ fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di) }
 }
 
+fun paging() = DI.Module("paging", allowSilentOverride = true) {
+    bind<PagingDataSource>() with singleton { LocalPagingDataSource(instance()) }
+}
+
 fun artwork() = DI.Module("artworks", allowSilentOverride = true) {
     bind<ArtworkDataSource>(tag = "local") with singleton { LocalArtworkDataSource(instance()) }
-    bind<ArtworkDataSource>(tag = "rijks") with singleton { RijksMuseumArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "rijks") with singleton { RijksMuseumArtworkDataSource(pagingDataSource = instance()) }
     bind<ArtworkDataSource>(tag = "met") with singleton { MetArtworkDataSource() }
-    bind<ArtworkDataSource>(tag = "chicago") with singleton { ChicagoArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "chicago") with singleton { ChicagoArtworkDataSource(pagingDataSource = instance()) }
     bind<ArtworkDataSource>(tag = "cleveland") with singleton { ClevelandArtworkDataSource() }
-    bind<ArtworkDataSource>(tag = "hardvard") with singleton { HardvardArtworkDataSource() }
+    bind<ArtworkDataSource>(tag = "hardvard") with singleton { HardvardArtworkDataSource(pagingDataSource = instance()) }
    // bind<ArtworkDataSource>(tag = "remote") with singleton { RemoteArtworkDataSource() }
     bind<ArtworkDataSource>(tag = "repository") with singleton { ArtworkRepository(instance("local"), instance("hardvard")) }
 }

@@ -36,7 +36,7 @@ data class ClevelandArtwork(
             id = id?.toString() ?: "",
             title = title ?: "",
             description = description.plus("\n").plus(funFact),
-            author = author?.firstOrNull()?.name ?: "",
+            author = author?.firstOrNull()?.name ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
             image = image?.takeIf { it != ClevelandImage.EMPTY }?.let { it.webFields?.getOrElse("url", { "" }) } ?: "",

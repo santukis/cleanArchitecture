@@ -64,7 +64,7 @@
                 android:id="@+id/colors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/small_space"
+                android:layout_marginTop="@dimen/normal_space"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/credit_line"

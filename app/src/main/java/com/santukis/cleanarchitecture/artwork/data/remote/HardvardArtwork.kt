@@ -37,7 +37,7 @@ data class HardvardArtwork(
             id = id?.toString() ?: "",
             title = title ?: "",
             description = (description ?: "").plus("\n").plus(copyright ?: ""),
-            author = author?.firstOrNull()?.name ?: "",
+            author = author?.firstOrNull()?.name ?: "Anonymous",
             dating = Dating(year = dating ?: ""),
             dimensions = dimensions?.extractDimensions() ?: emptyList(),
             image = image?.plus("?height=512&width=512") ?: "",
