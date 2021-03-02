@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.*
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
-        database.artworkDao().loadArtworks()
+        database.artworkDao().loadArtworks(collection)
             .distinctUntilChanged()
             .map { items ->
                 when {
