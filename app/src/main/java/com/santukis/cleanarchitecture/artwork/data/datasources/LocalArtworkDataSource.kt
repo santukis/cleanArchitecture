@@ -11,18 +11,20 @@ import kotlinx.coroutines.flow.*
 class LocalArtworkDataSource(private val database: AppDatabase): ArtworkDataSource {
 
     override suspend fun loadCollections(): Flow<Response<List<ArtworkCollection>>> =
-        database.artworkDao().loadCollections()
-            .distinctUntilChanged()
-            .map { items ->
-                when {
-                    items.isNullOrEmpty() -> Response.Error(Exception("No Items"))
-                    else -> Response.Success(items.groupBy { it.collection }.map { ArtworkCollection(it.key, it.value.map { it.toArtwork() }) })
-                }
-            }
+        flow { emit(loadCollectionsFromDatabase()) }
+
+    private fun loadCollectionsFromDatabase(): Response<List<ArtworkCollection>> {
+        val items = database.artworkDao().loadCollections()
+
+        return when {
+            items.isNullOrEmpty() -> Response.Error(Exception("No Items"))
+            else -> Response.Success(items.groupBy { it.collection }.map { ArtworkCollection(it.key, it.value.map { it.toArtwork() }) })
+        }
+    }
 
     override suspend fun saveCollections(collections: List<ArtworkCollection>): Response<List<ArtworkCollection>> {
         collections.forEach { collection -> saveArtworks(collection.artworks) }
-        return Response.Success(collections)
+        return loadCollectionsFromDatabase()
     }
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =

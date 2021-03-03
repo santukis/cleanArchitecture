@@ -48,10 +48,10 @@ sealed class Question(
 
     var successfullyAnswered: Boolean = false
 
-    fun getRightAnswer() = answers[rightOption]
+    fun getRightAnswer() = answers.getOrNull(rightOption)
 
     fun checkAnswer(artwork: Answer): Question {
-        successfullyAnswered = getRightAnswer().text == artwork.text
+        successfullyAnswered = getRightAnswer()?.text == artwork.text
         return this
     }
 

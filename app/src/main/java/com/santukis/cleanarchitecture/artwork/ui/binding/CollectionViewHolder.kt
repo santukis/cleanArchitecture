@@ -14,7 +14,7 @@ class CollectionViewHolder(binding: ElementCollectionBinding): ItemsAdapter.Item
     }
 
     override fun setOnItemClickListener(onItemClickListener: OnItemClickListener?, item: ArtworkCollection, position: Int) {
-        binding.name.setOnClickListener {
+        binding.more.setOnClickListener {
             it.findNavController().navigate(CollectionsFragmentDirections.openCollectionDetail(item.collection.name))
         }
     }
