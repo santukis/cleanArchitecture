@@ -7,7 +7,7 @@ import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentGameQuestionBinding
 
-class QuestionFragment: BaseFragment<FragmentGameQuestionBinding>() {
+class QuizQuestionFragment: BaseFragment<FragmentGameQuestionBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentGameQuestionBinding =
         FragmentGameQuestionBinding.inflate(inflater, container, false)

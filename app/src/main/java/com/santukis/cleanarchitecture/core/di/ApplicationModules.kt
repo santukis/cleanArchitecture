@@ -12,6 +12,7 @@ import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.data.remote.HttpClient
 import com.santukis.cleanarchitecture.core.domain.executors.AsyncExecutor
 import com.santukis.cleanarchitecture.core.domain.model.Executor
+import com.santukis.cleanarchitecture.core.ui.viewmodels.NavigationViewModel
 import com.santukis.cleanarchitecture.core.ui.viewmodels.ViewModelFactory
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.data.datasources.LocalGameDataSource
@@ -37,6 +38,7 @@ fun executors() = DI.Module(name = "executors", allowSilentOverride = true) {
 }
 
 fun viewmodels() = DI.Module("viewmodels", allowSilentOverride = true) {
+    bind<ViewModel>(tag = NavigationViewModel::class.java.simpleName) with provider { NavigationViewModel(instance()) }
     bind<ViewModel>(tag = ArtworkViewModel::class.java.simpleName) with provider { ArtworkViewModel(instance(), di) }
     bind<ViewModel>(tag = GameViewModel::class.java.simpleName) with provider { GameViewModel(instance(), di) }
     bind<ViewModelProvider.Factory>() with singleton { ViewModelFactory(di) }

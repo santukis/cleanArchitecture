@@ -5,27 +5,27 @@ import androidx.navigation.fragment.findNavController
 import com.frikiplanet.proteo.FragmentsAdapter
 import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
-import com.santukis.cleanarchitecture.databinding.FragmentGameBinding
+import com.santukis.cleanarchitecture.databinding.FragmentQuizGameBinding
 
-class GameFragment: BaseFragment<FragmentGameBinding>() {
+class QuizGameFragment: BaseFragment<FragmentQuizGameBinding>() {
 
     private var fragmentsAdapter: FragmentsAdapter? = null
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentGameBinding =
-        FragmentGameBinding.inflate(inflater, container, false)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentQuizGameBinding =
+        FragmentQuizGameBinding.inflate(inflater, container, false)
 
-    override fun initializeViewComponents(binding: FragmentGameBinding) {
+    override fun initializeViewComponents(binding: FragmentQuizGameBinding) {
         super.initializeViewComponents(binding)
 
         fragmentsAdapter = FragmentsAdapter(this)
         binding.fragmentContainer.adapter = fragmentsAdapter
         binding.fragmentContainer.isUserInputEnabled = false
-        fragmentsAdapter?.showFragments(listOf(QuestionFragment(), AnswerFragment()))
+        fragmentsAdapter?.showFragments(listOf(QuizQuestionFragment(), QuizAnswerFragment()))
 
         setHasOptionsMenu(true)
     }
 
-    override fun initializeViewListeners(binding: FragmentGameBinding) {
+    override fun initializeViewListeners(binding: FragmentQuizGameBinding) {
         super.initializeViewListeners(binding)
         gameViewModel?.screen?.observe(viewLifecycleOwner) { screen ->
             binding.fragmentContainer.setCurrentItem(screen, true)
