@@ -87,7 +87,7 @@
         <action
             android:id="@+id/openFavouriteDetail"
             app:destination="@id/artworkDetailFragment"
-            app:popUpTo="@id/artworksFragment"
+            app:popUpTo="@id/collectionsFragment"
             app:popUpToInclusive="false">
 
             <argument

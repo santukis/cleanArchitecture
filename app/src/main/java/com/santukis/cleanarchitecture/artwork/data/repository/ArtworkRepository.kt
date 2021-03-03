@@ -22,15 +22,13 @@ class ArtworkRepository(
             }
 
     private suspend fun loadCollectionsFromRemote(): Flow<Response<List<ArtworkCollection>>> =
-        flow {
-            remoteDataSource.loadCollections()
-                .collect { response ->
-                    when(response) {
-                        is Response.Success -> localDataSource.saveCollections(response.data).takeIf { it is Response.Error }?.let { emit(it) }
-                        is Response.Error -> emit(response)
-                    }
+        remoteDataSource.loadCollections()
+            .map { response ->
+                when(response) {
+                    is Response.Success -> localDataSource.saveCollections(response.data)
+                    else -> response
                 }
-        }
+            }
 
     override suspend fun loadArtworks(collection: Collection, lastItem: Int): Flow<Response<List<Artwork>>> =
         when(lastItem) {

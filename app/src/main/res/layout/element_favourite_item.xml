@@ -46,10 +46,26 @@
             app:layout_constraintLeft_toRightOf="@+id/image"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/collection"
             tools:text="sample text"
             android:padding="@dimen/large_space"
             android:text="@{artwork.title}"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/collection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="sample text"
+            android:textAllCaps="true"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:gravity="bottom"
+            android:paddingStart="@dimen/large_space"
+            android:paddingEnd="@dimen/large_space"
+            app:setTextResource="@{artwork.collection.nameRes}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
