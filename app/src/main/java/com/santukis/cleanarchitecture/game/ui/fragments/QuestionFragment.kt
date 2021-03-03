@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.game.ui.fragments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentGameQuestionBinding
@@ -22,7 +23,7 @@ class QuestionFragment: BaseFragment<FragmentGameQuestionBinding>() {
         gameViewModel?.question?.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Success -> binding.setQuestion(response.data)
-                is Response.Error -> {}
+                is Response.Error -> binding.noInfoPanel.isVisible = true
             }
         }
     }

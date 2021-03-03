@@ -48,13 +48,16 @@ class LocalGameDataSource(context: Context,
     private fun getSuccess(gameScoreName: String): Int =
         sharedPreferences.getInt("${gameScoreName}_success", 0)
 
-    override suspend fun loadQuestion(type: Int): Response<Question> {
-        val items = database.artworkDao().loadQuestion(SimpleSQLiteQuery(fromQuestionTypeToSqlQuery(type)))
+    override suspend fun loadQuestion(type: Int): Response<Question> =
+        try {
+            val items = database.artworkDao().loadQuestion(SimpleSQLiteQuery(fromQuestionTypeToSqlQuery(type)))
 
-        return if (items.isNullOrEmpty()) loadQuestion(type)
-        else when(val question = items.toQuestion(type)) {
-            null -> super.loadQuestion(type)
-            else -> Response.Success(question)
+            when(val question = items?.toQuestion(type)) {
+                null -> super.loadQuestion(type)
+                else -> Response.Success(question)
+            }
+
+        } catch (exception: Exception) {
+            super.loadQuestion(type)
         }
-    }
 }
