@@ -7,7 +7,7 @@ import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentGameScoreBinding
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
 
-class GameScoreFragment: BaseFragment<FragmentGameScoreBinding>() {
+class QuizGameScoreFragment: BaseFragment<FragmentGameScoreBinding>() {
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentGameScoreBinding =
         FragmentGameScoreBinding.inflate(inflater, container, false)

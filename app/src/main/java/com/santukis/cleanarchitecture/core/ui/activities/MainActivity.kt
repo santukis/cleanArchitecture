@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
+import com.santukis.cleanarchitecture.core.ui.viewmodels.NavigationViewModel
 import com.santukis.cleanarchitecture.databinding.ActivityMainBinding
 import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
 import org.kodein.di.DI
@@ -30,12 +32,17 @@ class MainActivity: AppCompatActivity() , DIAware {
         ViewModelProvider(this, viewModelFactory).get(GameViewModel::class.java)
     }
 
+    val navigationViewModel: NavigationViewModel? by lazy {
+        ViewModelProvider(this, viewModelFactory).get(NavigationViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpActionBar()
         setUpNavigation()
+        observeNavigation()
     }
 
     private fun setUpActionBar() {
@@ -54,6 +61,15 @@ class MainActivity: AppCompatActivity() , DIAware {
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host_fragment).navigateUp()
+    }
+
+    private fun observeNavigation() {
+        navigationViewModel?.destiny?.observe(this) { destiny ->
+            when(destiny) {
+                -1 -> onSupportNavigateUp()
+                else -> findNavController(R.id.nav_host_fragment).navigate(destiny)
+            }
+        }
     }
 
 }
