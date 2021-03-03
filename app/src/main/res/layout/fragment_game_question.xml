@@ -70,6 +70,30 @@
                 android:overScrollMode="never"
                 tools:itemCount="3"/>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/no_info_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:background="@color/white">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="center"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_margin="@dimen/xlarge_space"
+                    app:layout_constraintVertical_bias="0.4"
+                    android:textColor="@color/colorPrimary"
+                    android:textAllCaps="true"
+                    android:text="@string/no_more_questions_info"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

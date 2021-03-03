@@ -25,4 +25,5 @@
     <string name="hardvard">Hardvard Art Museums</string>
     <string name="walters">The Walters Art Museum</string>
     <string name="more_info">More info</string>
+    <string name="no_more_questions_info">Sorry, but there is no Questions at this moment</string>
 </resources>
