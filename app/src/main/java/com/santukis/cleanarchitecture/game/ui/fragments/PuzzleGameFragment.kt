@@ -22,7 +22,7 @@ class PuzzleGameFragment: BaseFragment<FragmentPuzzleGameBinding>() {
         super.initializeViewListeners(binding)
         gameViewModel?.puzzle?.observe(this) { response ->
             when(response) {
-                is Response.Success -> binding.container.createPuzzle(response.data.image, Size(4, 3))
+                is Response.Success -> binding.container.createPuzzle(response.data.image, Size(8, 7))
             }
         }
     }
