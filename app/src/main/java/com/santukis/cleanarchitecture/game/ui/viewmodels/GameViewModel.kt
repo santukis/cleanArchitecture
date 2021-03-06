@@ -4,6 +4,7 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
@@ -30,6 +31,9 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     private val _question: MutableLiveData<Response<Question>> = MutableLiveData()
     val question: LiveData<Response<Question>> = _question
 
+    private val _puzzle: MutableLiveData<Response<Artwork>> = MutableLiveData()
+    val puzzle: LiveData<Response<Artwork>> = _puzzle
+
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
 
@@ -50,6 +54,12 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         executor.execute {
             _question.postValue(gameDataSource.loadQuestion(Random.nextInt(0, 3)))
             _screen.postValue(QUESTION_SCREEN)
+        }
+    }
+
+    fun loadPuzzle() {
+        executor.execute {
+            _puzzle.postValue(gameDataSource.loadPuzzle())
         }
     }
 

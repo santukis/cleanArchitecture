@@ -79,6 +79,12 @@
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true"/>
 
+        <action
+            android:id="@+id/openPuzzleFragment"
+            app:destination="@+id/puzzleGame"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true"/>
+
     </fragment>
 
     <fragment
@@ -89,6 +95,13 @@
         <action
             android:id="@+id/action_gameFragment_to_gameScoreFragment"
             app:destination="@id/gameScoreFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/puzzleGame"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzleGameFragment"
+        android:label="Game" >
 
     </fragment>
 

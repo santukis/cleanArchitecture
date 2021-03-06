@@ -6,6 +6,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.local.toQuestion
 import com.santukis.cleanarchitecture.artwork.data.local.fromQuestionTypeToSqlQuery
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
@@ -59,5 +60,15 @@ class LocalGameDataSource(context: Context,
 
         } catch (exception: Exception) {
             super.loadQuestion(type)
+        }
+
+    override suspend fun loadPuzzle(): Response<Artwork> =
+        try {
+            when(val item = database.artworkDao().loadRandomArtwork()) {
+                null -> super.loadPuzzle()
+                else -> Response.Success(item.toArtwork())
+            }
+        } catch (exception: Exception) {
+            Response.Error(exception)
         }
 }

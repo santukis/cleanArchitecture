@@ -1,5 +1,6 @@
 package com.santukis.cleanarchitecture.game.data.datasources
 
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
 import com.santukis.cleanarchitecture.game.domain.model.GameScore
@@ -13,4 +14,5 @@ interface GameDataSource {
 
     suspend fun loadQuestion(type: Int): Response<Question> = Response.Error(Exception("Unable to load Question"))
 
+    suspend fun loadPuzzle(): Response<Artwork> = Response.Error(Exception("Unable to load Question"))
 }

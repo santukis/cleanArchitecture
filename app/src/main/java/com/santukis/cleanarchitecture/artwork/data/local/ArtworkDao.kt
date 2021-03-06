@@ -21,6 +21,9 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
     fun loadArtwork(artworkId: String): ArtworkDetailDb?
 
+    @Query("SELECT * FROM artworks ORDER BY RANDOM() LIMIT 1")
+    fun loadRandomArtwork(): ArtworkDb?
+
     @Query("SELECT * FROM artworks INNER JOIN favourites ON artworks.id = favourites.id")
     fun loadFavouriteArtworks(): Flow<List<ArtworkDb>>
 
