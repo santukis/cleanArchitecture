@@ -29,6 +29,7 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private var scaleFactor = 1f
     private val isScaling = AtomicBoolean(false)
+    private val isDragging = AtomicBoolean(false)
 
     private var originalSize = Size(0, 0)
 
@@ -74,6 +75,7 @@ class PuzzleLayout @JvmOverloads constructor(
 
         override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
             super.onViewCaptured(capturedChild, activePointerId)
+            isDragging.getAndSet(true)
             capturedChild.animate().translationZ(50f).scaleX(scaleFactor + 0.1f).scaleY(scaleFactor + 0.1f).setDuration(100).start()
             capturedChild.alpha = 0.5f
             selectedPiece = capturedChild as PuzzleView
@@ -104,6 +106,8 @@ class PuzzleLayout @JvmOverloads constructor(
 
                 ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
             }
+
+            isDragging.getAndSet(false)
         }
 
         override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
