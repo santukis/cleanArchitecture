@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Size
+import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
 
@@ -11,10 +12,9 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
     : AppCompatImageView(context, attrs, defStyleAttr) {
 
     val coordinates = Point()
+    var size = Size(0, 0)
     var canMove: Boolean = true
 
-    var pieceWidth: Int = 0
-    var pieceHeight: Int = 0
 
     companion object {
         fun createPiece(context: Context, croppedBitmap: Bitmap, cell: Point, axisSize: Size, coordinates: Point, pieceSize: Size): PuzzleView {
@@ -48,8 +48,7 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
             piece.setImageBitmap(pieceBitmap)
             piece.coordinates.x = coordinates.x - offset.x
             piece.coordinates.y = coordinates.y - offset.y
-            piece.pieceWidth = pieceSize.width + offset.x
-            piece.pieceHeight = pieceSize.height + offset.y
+            piece.size = Size(pieceSize.width + offset.x, pieceSize.height + offset.y)
             return piece
         }
 
@@ -189,6 +188,18 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
             border.strokeWidth = 3.0f
             border.isDither = true
             canvas.drawPath(path, border)
+        }
+    }
+
+    override fun draw(canvas: Canvas?) {
+        super.draw(canvas)
+        updateZIndex()
+    }
+
+    private fun updateZIndex() {
+        z = when (canMove) {
+            true -> 10f
+            else -> 0f
         }
     }
 

@@ -4,11 +4,16 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.util.Size
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.widget.OverScroller
 import android.widget.RelativeLayout
+import androidx.core.graphics.xor
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import androidx.customview.widget.ViewDragHelper
@@ -33,6 +38,16 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private var originalSize = Size(0, 0)
 
+    private val AXIS_X_MIN = -300
+    private val AXIS_X_MAX = context.resources.displayMetrics.widthPixels  + 300
+    private val AXIS_Y_MIN = -300
+    private val AXIS_Y_MAX = context.resources.displayMetrics.heightPixels + 300
+    private val screenRect = Rect(AXIS_X_MIN, AXIS_Y_MIN, AXIS_X_MAX, AXIS_Y_MAX)
+    private val screenBackground = Paint().apply {
+        style = Paint.Style.FILL
+        color = Color.WHITE
+    }
+
     private val frame = Rect()
     private val frameContour = Paint().apply {
         style = Paint.Style.STROKE
@@ -44,6 +59,7 @@ class PuzzleLayout @JvmOverloads constructor(
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             scaleFactor *= detector.scaleFactor
             scaleFactor = max(0.5f, min(scaleFactor, 2.0f))
+            updateScreenRect()
             ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
             return true
         }
@@ -58,6 +74,14 @@ class PuzzleLayout @JvmOverloads constructor(
             ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
             super.onScaleEnd(detector)
         }
+    }
+
+    private fun updateScreenRect() {
+        screenRect.set(
+            min(AXIS_X_MIN, (AXIS_X_MIN * scaleFactor).toInt()),
+            min(AXIS_Y_MIN, (AXIS_Y_MIN * scaleFactor).toInt()),
+            max(AXIS_X_MAX, (AXIS_X_MAX * scaleFactor).toInt()),
+            max(AXIS_Y_MAX, (AXIS_Y_MAX * scaleFactor).toInt()))
     }
 
     private val scaleDetector = ScaleGestureDetector(context, scaleListener)
@@ -96,8 +120,6 @@ class PuzzleLayout @JvmOverloads constructor(
 
                 if (xDiff <= tolerance && yDiff <= tolerance) {
                     dragHelper.settleCapturedViewAt(weightedX, weightedY)
-                    isFocusableInTouchMode = false
-                    isClickable = false
                     canMove = false
 
                 } else {
@@ -117,9 +139,57 @@ class PuzzleLayout @JvmOverloads constructor(
         override fun clampViewPositionHorizontal(child: View, left: Int, dx: Int): Int {
             return left
         }
+
+        override fun getOrderedChildIndex(index: Int): Int =
+            if (pieces.getOrNull(index)?.canMove == false) 0 else index
     }
 
     private val dragHelper: ViewDragHelper = ViewDragHelper.create(this, 2f, dragCallback)
+
+    private val overScroller: OverScroller = OverScroller(context)
+
+    private val onGestureListener: GestureDetector.OnGestureListener = object : GestureDetector.SimpleOnGestureListener() {
+        override fun onDown(e: MotionEvent): Boolean {
+            overScroller.forceFinished(true)
+            position.x = e.getX(e.actionIndex).toInt()
+            position.y = e.getY(e.actionIndex).toInt()
+            return true
+        }
+
+//        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean =
+//            when (isScaling.get() && isDragging.get()) {
+//                true -> super.onScroll(e1, e2, distanceX, distanceY)
+//                else -> {
+//                    overScroller.startScroll(position.x, position.y, distanceX.toInt(), distanceY.toInt())
+//                    ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
+//                    true
+//                }
+//            }
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean =
+            when (isScaling.get() && isDragging.get()) {
+                true -> super.onFling(e1, e2, velocityX, velocityY)
+                else -> {
+                    overScroller.forceFinished(true)
+                    overScroller.fling(
+                        position.x,
+                        position.y,
+                        velocityX.toInt(),
+                        velocityY.toInt(),
+                        screenRect.left,
+                        screenRect.right,
+                        screenRect.top,
+                        screenRect.bottom,
+                        0,
+                        0
+                    )
+                    ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
+                    true
+                }
+            }
+    }
+
+    private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, onGestureListener)
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         val action = ev.actionMasked
@@ -133,12 +203,12 @@ class PuzzleLayout @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent): Boolean {
         scaleDetector.onTouchEvent(event)
         dragHelper.processTouchEvent(event)
-        return true
+        return gestureDetector.onTouchEvent(event)
     }
 
     override fun computeScroll() {
         super.computeScroll()
-        if (dragHelper.continueSettling(true)) ViewCompat.postInvalidateOnAnimation(this)
+        if (dragHelper.continueSettling(true) || overScroller.computeScrollOffset()) ViewCompat.postInvalidateOnAnimation(this)
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -146,10 +216,15 @@ class PuzzleLayout @JvmOverloads constructor(
 
         canvas?.apply {
             save()
+            drawBackground(canvas)
             drawFrame(canvas)
             drawPieces()
             restore()
         }
+    }
+
+    private fun drawBackground(canvas: Canvas) {
+        canvas.drawRect(screenRect, screenBackground)
     }
 
     private fun drawFrame(canvas: Canvas) {
@@ -171,6 +246,7 @@ class PuzzleLayout @JvmOverloads constructor(
     private fun drawPieces() {
         pieces.forEach { piece ->
             if (isScaling.get()) piece.updateScale(scaleFactor, frame)
+            else piece.invalidate()
         }
     }
 
@@ -232,8 +308,8 @@ class PuzzleLayout @JvmOverloads constructor(
         pieces.forEach { piece ->
             addView(piece)
             piece.layoutParams = (piece.layoutParams as? LayoutParams)?.apply {
-                leftMargin = Random.nextInt(0, this@PuzzleLayout.width - piece.pieceWidth)
-                topMargin = Random.nextInt(0, this@PuzzleLayout.height - piece.pieceHeight)
+                leftMargin = Random.nextInt(0, this@PuzzleLayout.width - piece.size.width)
+                topMargin = Random.nextInt(0, this@PuzzleLayout.height - piece.size.height)
             }
         }
     }
