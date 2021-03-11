@@ -98,12 +98,12 @@
 
     </fragment>
 
-    <fragment
+    <activity
         android:id="@+id/puzzleGame"
-        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzleGameFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.activities.PuzzleGameActivity"
         android:label="Game" >
 
-    </fragment>
+    </activity>
 
     <fragment
         android:id="@+id/favouritesFragment"
