@@ -74,8 +74,10 @@ class PuzzleLayout @JvmOverloads constructor(
 
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
             super.onViewPositionChanged(changedView, left, top, dx, dy)
-            selectedPiece?.position?.x = left
-            selectedPiece?.position?.y = top
+            selectedPiece?.apply {
+                position.x =  min(max(screenRect.left.toInt(), left), screenRect.right.toInt())
+                position.y = min(max(screenRect.top.toInt(), top), screenRect.bottom.toInt())
+            }
         }
 
         override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
@@ -201,10 +203,16 @@ class PuzzleLayout @JvmOverloads constructor(
     }
 
     private fun drawPieces() {
-        pieces.forEach { piece ->
+        pieces.forEachIndexed { index, piece ->
             if (isScaling.get()) piece.updateScale(scaleFactor)
 
-            if (!dragHelper.continueSettling(true)) piece.updatePosition(scaleFactor, frame)
+            if (!dragHelper.continueSettling(true)) piece.updatePosition(scaleFactor, frame, screenRect, scrollDistance)
+
+
+            if (index == 0) {
+                Log.d("Scale", "piece ${piece.left}, ${piece.top}, ${piece.right}, ${piece.bottom}")
+                Log.d("Scale", "frame ${frame.left}, ${frame.top}, ${frame.right}, ${frame.bottom}")
+            }
         }
     }
 

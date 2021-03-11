@@ -3,6 +3,7 @@ package com.santukis.cleanarchitecture.game.ui.views
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.util.Size
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
@@ -216,10 +217,17 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
         }
     }
 
-    fun updatePosition(scaleFactor: Float, frame: Rect) {
+    fun updatePosition(scaleFactor: Float, frame: Rect, screenRect: RectF, scrollDistance: PointF) {
         if (!canMove) {
             ViewCompat.offsetLeftAndRight(this, ((coordinates.x * scaleFactor) + frame.left - left).toInt())
             ViewCompat.offsetTopAndBottom(this, ((coordinates.y * scaleFactor) + frame.top - top).toInt())
+        } else {
+            position.x = min(max(screenRect.left, position.x + (scrollDistance.x)), screenRect.right).toInt()
+            position.y = min(max(screenRect.top, position.y + (scrollDistance.y)), screenRect.bottom).toInt()
+            left = position.x
+            top = position.y
+            right = left + size.width
+            bottom = top + size.height
         }
 
         ViewCompat.postInvalidateOnAnimation(this)
@@ -234,16 +242,14 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
         pivotY = pivot
         scaleX = scaleFactor
         scaleY = scaleFactor
-
-        ViewCompat.postInvalidateOnAnimation(this)
     }
 
     fun calculatePiecePosition(scaleFactor: Float, frame: Rect): Pair<Int, Int> {
         val tolerance: Double = sqrt(width.toDouble().pow(2.0) + height.toDouble().pow(2.0)) / 10
         val weightedX = (coordinates.x * scaleFactor).toInt() + frame.left
         val weightedY = (coordinates.y * scaleFactor).toInt() + frame.top
-        val xDiff: Int = abs(weightedX - left)
-        val yDiff: Int = abs(weightedY - top)
+        val xDiff: Int = abs(weightedX - position.x)
+        val yDiff: Int = abs(weightedY - position.y)
 
         return when(xDiff <= tolerance && yDiff <= tolerance) {
             true -> {
