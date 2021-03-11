@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -34,8 +33,6 @@ class PuzzleLayout @JvmOverloads constructor(
     private val isDragging = AtomicBoolean(false)
 
     private var imageSize = Size(0, 0)
-
-    private val screenRect = RectF()
 
     private val scrollDistance = PointF()
 
@@ -75,8 +72,8 @@ class PuzzleLayout @JvmOverloads constructor(
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
             super.onViewPositionChanged(changedView, left, top, dx, dy)
             selectedPiece?.apply {
-                position.x =  min(max(screenRect.left.toInt(), left), screenRect.right.toInt())
-                position.y = min(max(screenRect.top.toInt(), top), screenRect.bottom.toInt())
+                position.x =  left
+                position.y = top
             }
         }
 
@@ -94,7 +91,7 @@ class PuzzleLayout @JvmOverloads constructor(
             releasedChild.alpha = 1f
             selectedPiece?.apply {
                 val (x, y) = calculatePiecePosition(scaleFactor, frame)
-                dragHelper.smoothSlideViewTo(this, x, y)
+                dragHelper.settleCapturedViewAt(x, y)
 
                 ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
             }
@@ -165,7 +162,6 @@ class PuzzleLayout @JvmOverloads constructor(
 
         canvas?.apply {
             save()
-            updatePosition()
             drawBackground()
             drawFrame()
             drawPieces()
@@ -173,46 +169,37 @@ class PuzzleLayout @JvmOverloads constructor(
         }
     }
 
-    private fun updatePosition() {
-        screenRect.set(
-            min(max(screenRect.left + scrollDistance.x, -width.toFloat()), 0f),
-            min(max(screenRect.top + scrollDistance.y, -height.toFloat()), 0f),
-            max(min(screenRect.right + scrollDistance.x, width * 2f), width.toFloat()),
-            max(min(screenRect.bottom + scrollDistance.y, height * 2f), height.toFloat())
-        )
-    }
-
     private fun Canvas.drawBackground() {
         drawColor(Color.WHITE)
     }
 
     private fun Canvas.drawFrame() {
+        when(isScaling.get()) {
+            true -> scaleFrame(frame.centerX(), frame.centerY())
+            false -> frame.offset(scrollDistance.x.toInt(), scrollDistance.y.toInt())
+        }
+
+        drawRect(frame, frameContour)
+    }
+
+    private fun scaleFrame(centerX: Int, centerY: Int) {
         val halfWidth = (imageSize.width * scaleFactor).toInt() / 2
         val halfHeight = (imageSize.height * scaleFactor).toInt() / 2
-        val centerX = screenRect.centerX().toInt()
-        val centerY = screenRect.centerY().toInt()
 
-        drawRect(
-                frame.apply {
-                    left = centerX - halfWidth
-                    right = centerX + halfWidth
-                    top = centerY - halfHeight
-                    bottom = centerY + halfHeight
-                }, frameContour
+        frame.set(
+            centerX - halfWidth,
+            centerY - halfHeight,
+            centerX + halfWidth,
+            centerY + halfHeight
         )
     }
 
     private fun drawPieces() {
-        pieces.forEachIndexed { index, piece ->
+        pieces.forEach { piece ->
             if (isScaling.get()) piece.updateScale(scaleFactor)
 
-            if (!dragHelper.continueSettling(true)) piece.updatePosition(scaleFactor, frame, screenRect, scrollDistance)
-
-
-            if (index == 0) {
-                Log.d("Scale", "piece ${piece.left}, ${piece.top}, ${piece.right}, ${piece.bottom}")
-                Log.d("Scale", "frame ${frame.left}, ${frame.top}, ${frame.right}, ${frame.bottom}")
-            }
+            if (!dragHelper.continueSettling(true))
+                piece.updatePosition(scaleFactor, frame, scrollDistance)
         }
     }
 
@@ -245,6 +232,8 @@ class PuzzleLayout @JvmOverloads constructor(
                 if (aspectRatio < 1) max(size.width, size.height) else min(size.width, size.height))
 
         val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
+
+        scaleFrame(width / 2, height / 2)
         
         val coordinates = Point(0, 0)
         for (row in 0 until axisSize.height) {
@@ -281,15 +270,5 @@ class PuzzleLayout @JvmOverloads constructor(
         val targetWidth = if (aspectRatio >= 1) width else (resource.width * height.toFloat() / resource.height).toInt()
         val targetHeight = if (aspectRatio < 1) height else (resource.height * width.toFloat() / resource.width).toInt()
         return Bitmap.createScaledBitmap(resource, targetWidth, targetHeight, true)
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        screenRect.set(
-            -w / 2f,
-            -h / 2f,
-            w + w / 2f,
-            h + h / 2f
-        )
     }
 }

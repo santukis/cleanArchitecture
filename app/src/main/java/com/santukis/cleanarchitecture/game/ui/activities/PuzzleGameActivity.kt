@@ -15,7 +15,7 @@ class PuzzleGameActivity: BaseActivity<ActivityPuzzleGameBinding>() {
 
         gameViewModel?.puzzle?.observe(this) { response ->
             when(response) {
-                is Response.Success -> binding.container.createPuzzle(response.data.image, Size(8, 7))
+                is Response.Success -> binding.container.createPuzzle(response.data.image, Size(7, 8))
             }
         }
     }
