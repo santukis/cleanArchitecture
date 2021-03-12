@@ -1,4 +1,4 @@
-package com.santukis.cleanarchitecture.game.data.model
+package com.santukis.cleanarchitecture.game.data.local
 
 import android.graphics.Point
 import android.util.Size
