@@ -1,7 +1,10 @@
 package com.santukis.cleanarchitecture.game.data.local
 
+import androidx.room.Dao
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 
+@Dao
 interface PuzzleDao: BaseDao<PuzzleDb>
 
-interface PieceDao: BaseDao<PieceDao>
+@Dao
+interface PieceDao: BaseDao<PieceDb>
