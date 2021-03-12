@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.santukis.cleanarchitecture.artwork.data.local.*
+import com.santukis.cleanarchitecture.game.data.model.PieceDb
+import com.santukis.cleanarchitecture.game.data.model.PuzzleDb
 
 @Database(
     entities = [
@@ -15,7 +17,9 @@ import com.santukis.cleanarchitecture.artwork.data.local.*
         CategoryDb::class,
         MaterialDb::class,
         TechniqueDb::class,
-        FavouriteDb::class
+        FavouriteDb::class,
+        PuzzleDb::class,
+        PieceDb::class
     ],
     exportSchema = true, version = 3
 )

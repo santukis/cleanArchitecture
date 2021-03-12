@@ -229,7 +229,7 @@ data class ArtworkDetailDb(
 
     fun toAuthorAnswer() = Answer(artworkDb.image, artworkDb.author, artworkDb.description)
 
-    fun toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating.toString(), artworkDb.description)
+    fun toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating, artworkDb.description)
 }
 
 fun List<ArtworkDetailDb>.toQuestion(type: Int): Question? =
