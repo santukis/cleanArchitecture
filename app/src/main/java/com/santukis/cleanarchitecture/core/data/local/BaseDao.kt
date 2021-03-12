@@ -4,7 +4,7 @@ import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
-interface BaseDao<Item> {
+interface  BaseDao<Item> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveItem(item: Item): Long
