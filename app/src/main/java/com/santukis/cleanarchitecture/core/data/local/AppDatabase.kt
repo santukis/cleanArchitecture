@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.santukis.cleanarchitecture.artwork.data.local.*
-import com.santukis.cleanarchitecture.game.data.model.PieceDb
-import com.santukis.cleanarchitecture.game.data.model.PuzzleDb
+import com.santukis.cleanarchitecture.game.data.local.PieceDb
+import com.santukis.cleanarchitecture.game.data.local.PuzzleDb
 
 @Database(
     entities = [
