@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import kotlin.math.*
 import kotlin.random.Random
 
-class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
+class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     AppCompatImageView(context, attrs, defStyleAttr) {
 
     val position: Point = Point()
@@ -19,7 +19,7 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
 
     companion object {
-        fun createPiece(context: Context, croppedBitmap: Bitmap, cell: Point, axisSize: Size, coordinates: Point, pieceSize: Size, containerSize: Size): PuzzleView {
+        fun createPiece(context: Context, croppedBitmap: Bitmap, cell: Point, axisSize: Size, coordinates: Point, pieceSize: Size, containerSize: Size): PieceView {
             val offset = calculatePieceOffset(cell, pieceSize)
 
             val pieceBitmap = Bitmap.createBitmap(
@@ -51,8 +51,8 @@ class PuzzleView @JvmOverloads constructor(context: Context, attrs: AttributeSet
             return offset
         }
 
-        private fun createPiece(context: Context, pieceBitmap: Bitmap?, coordinates: Point, offset: Point, pieceSize: Size, containerSize: Size): PuzzleView {
-            val piece = PuzzleView(context)
+        private fun createPiece(context: Context, pieceBitmap: Bitmap?, coordinates: Point, offset: Point, pieceSize: Size, containerSize: Size): PieceView {
+            val piece = PieceView(context)
             piece.setImageBitmap(pieceBitmap)
             piece.coordinates.x = coordinates.x - offset.x
             piece.coordinates.y = coordinates.y - offset.y
