@@ -1,7 +1,10 @@
 package com.santukis.cleanarchitecture.game.domain.model
 
+import android.graphics.Point
+import android.util.Size
 import androidx.annotation.StringRes
 import com.santukis.cleanarchitecture.R
+import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import java.text.DecimalFormat
 import kotlin.random.Random
 
@@ -76,4 +79,17 @@ data class Answer(
     var image: String = "",
     var text: String = "",
     var explanation: String = ""
+)
+
+data class Puzzle(
+    val artwork: Artwork = Artwork.EMPTY,
+    val pieces: List<Piece> = emptyList(),
+    val size: Size = Size(4, 3)
+)
+
+data class Piece(
+    val position: Point = Point(),
+    val coordinates: Point = Point(),
+    var size: Size = Size(0, 0),
+    var canMove: Boolean = true
 )
