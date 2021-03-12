@@ -24,8 +24,8 @@ class PuzzleLayout @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    private var selectedPiece: PuzzleView? = null
-    private var pieces: MutableList<PuzzleView> = ArrayList()
+    private var selectedPiece: PieceView? = null
+    private var pieces: MutableList<PieceView> = ArrayList()
 
     private var scaleFactor = 1f
 
@@ -66,7 +66,7 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private val dragCallback = object : ViewDragHelper.Callback() {
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            return child is PuzzleView && child.canMove
+            return child is PieceView && child.canMove
         }
 
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
@@ -82,7 +82,7 @@ class PuzzleLayout @JvmOverloads constructor(
             isDragging.getAndSet(true)
             capturedChild.animate().translationZ(50f).scaleX(scaleFactor + 0.1f).scaleY(scaleFactor + 0.1f).setDuration(100).start()
             capturedChild.alpha = 0.5f
-            selectedPiece = capturedChild as PuzzleView
+            selectedPiece = capturedChild as PieceView
         }
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
@@ -239,7 +239,7 @@ class PuzzleLayout @JvmOverloads constructor(
         for (row in 0 until axisSize.height) {
             coordinates.x = 0
             for (col in 0 until axisSize.width) {
-                val piece = PuzzleView.createPiece(
+                val piece = PieceView.createPiece(
                         context,
                         scaledBitmap,
                         Point(col, row),
