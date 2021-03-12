@@ -6,7 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.santukis.cleanarchitecture.artwork.data.local.*
+import com.santukis.cleanarchitecture.game.data.local.PieceDao
 import com.santukis.cleanarchitecture.game.data.local.PieceDb
+import com.santukis.cleanarchitecture.game.data.local.PuzzleDao
 import com.santukis.cleanarchitecture.game.data.local.PuzzleDb
 
 @Database(
@@ -21,7 +23,7 @@ import com.santukis.cleanarchitecture.game.data.local.PuzzleDb
         PuzzleDb::class,
         PieceDb::class
     ],
-    exportSchema = true, version = 3
+    exportSchema = true, version = 4
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -39,6 +41,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun techniquesDao(): TechniqueDao
 
     abstract fun favouritesDao(): FavouritesDao
+
+    abstract fun puzzleDao(): PuzzleDao
+
+    abstract fun pieceDao(): PieceDao
 
     companion object {
         @Volatile
