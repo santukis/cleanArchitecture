@@ -15,6 +15,7 @@ fun Artwork.toArtworkDb() =
         style = style,
         collection = collection,
         department = department,
+        isPuzzle = categories.find { it.category.contains("paint", ignoreCase = true) } != null,
         shouldBeUpdated = shouldBeUpdated
     )
 

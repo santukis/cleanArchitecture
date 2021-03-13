@@ -18,7 +18,7 @@ interface ArtworkDao: BaseDao<ArtworkDb> {
     @Query("SELECT * FROM artworks WHERE collection = :collection")
     fun loadArtworks(collection: Collection): Flow<List<ArtworkDb>>
 
-    @Query("SELECT * FROM artworks WHERE image != '' ORDER BY RANDOM() LIMIT 20")
+    @Query("SELECT * FROM artworks WHERE isPuzzle = 1 ORDER BY RANDOM() LIMIT 50")
     fun loadArtworks(): List<ArtworkDb>
 
     @Query("SELECT * FROM artworks WHERE artworks.id = :artworkId LIMIT 1")
