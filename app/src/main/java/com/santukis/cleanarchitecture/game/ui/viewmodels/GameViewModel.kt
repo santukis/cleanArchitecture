@@ -4,12 +4,12 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
-import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
 import com.santukis.cleanarchitecture.game.domain.model.Answer
 import com.santukis.cleanarchitecture.game.domain.model.GameHistory
+import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.domain.model.Question
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -31,8 +31,11 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     private val _question: MutableLiveData<Response<Question>> = MutableLiveData()
     val question: LiveData<Response<Question>> = _question
 
-    private val _puzzle: MutableLiveData<Response<Artwork>> = MutableLiveData()
-    val puzzle: LiveData<Response<Artwork>> = _puzzle
+    private val _puzzles: MutableLiveData<Response<List<Puzzle>>> = MutableLiveData()
+    val puzzles: LiveData<Response<List<Puzzle>>> = _puzzles
+
+    private val _puzzle: MutableLiveData<Response<Puzzle>> = MutableLiveData()
+    val puzzle: LiveData<Response<Puzzle>> = _puzzle
 
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
@@ -57,9 +60,9 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         }
     }
 
-    fun loadPuzzle() {
+    fun loadPuzzle(puzzleId: String) {
         executor.execute {
-            _puzzle.postValue(gameDataSource.loadPuzzle())
+            _puzzle.postValue(gameDataSource.loadPuzzle(puzzleId,))
         }
     }
 
