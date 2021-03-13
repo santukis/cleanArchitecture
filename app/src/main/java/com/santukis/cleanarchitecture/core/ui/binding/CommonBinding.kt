@@ -21,7 +21,7 @@ object CommonBinding {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .centerInside()
                 .thumbnail(0.1f)
-                .override(200)
+                .sizeMultiplier(0.2f)
                 .into(view)
         }
     }
@@ -40,7 +40,8 @@ object CommonBinding {
                         start()
                     })
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .override(512)
+                .sizeMultiplier(0.4f)
+                .placeholder(R.color.light_gray)
                 .into(view)
         }
     }

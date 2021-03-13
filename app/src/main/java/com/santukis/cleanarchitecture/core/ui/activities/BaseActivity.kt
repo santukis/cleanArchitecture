@@ -40,6 +40,7 @@ abstract class BaseActivity<Binding: ViewBinding>: AppCompatActivity() , DIAware
         setContentView(binding.root)
         observeNavigation()
         initializeViewComponents()
+        initializeViewListeners()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -56,6 +57,10 @@ abstract class BaseActivity<Binding: ViewBinding>: AppCompatActivity() , DIAware
     }
 
     abstract fun initializeViewComponents()
+
+    open fun initializeViewListeners() {
+
+    }
 
     abstract fun getViewBinding(): Binding
 }

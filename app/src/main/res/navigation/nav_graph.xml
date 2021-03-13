@@ -81,7 +81,7 @@
 
         <action
             android:id="@+id/openPuzzleFragment"
-            app:destination="@+id/puzzleGame"
+            app:destination="@+id/puzzlesFragment"
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true"/>
 
@@ -95,6 +95,31 @@
         <action
             android:id="@+id/action_gameFragment_to_gameScoreFragment"
             app:destination="@id/gameScoreFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/puzzlesFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzlesFragment"
+        android:label="Puzzle Selection" >
+
+        <action
+            android:id="@+id/openPuzzleGame"
+            app:destination="@+id/puzzleGame"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true">
+
+            <argument
+                android:name="puzzleId"
+                android:defaultValue=""
+                app:argType="string" />
+
+            <argument
+                android:name="puzzleSize"
+                android:defaultValue="7x8"
+                app:argType="string" />
+
+        </action>
 
     </fragment>
 
