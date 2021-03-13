@@ -27,7 +27,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintDimensionRatio="H,1:1"
             android:scaleType="centerCrop"
-            app:showThumbnail="@{artwork.image}"
+            app:showImage= "@{artwork.image}"
+            app:multiplier="@{0.2f}"
             android:adjustViewBounds="true"/>
 
         <View
