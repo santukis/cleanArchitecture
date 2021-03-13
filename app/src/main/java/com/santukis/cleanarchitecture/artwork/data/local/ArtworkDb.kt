@@ -25,6 +25,7 @@ data class ArtworkDb(
     val collection: Collection,
     val department: String,
     val style: String,
+    val isPuzzle: Boolean,
     var shouldBeUpdated: Boolean = false
 ) {
 
