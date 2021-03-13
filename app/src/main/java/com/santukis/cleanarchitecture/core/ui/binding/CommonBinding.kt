@@ -7,28 +7,13 @@ import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.santukis.cleanarchitecture.R
 
 object CommonBinding {
 
-    @BindingAdapter("app:showThumbnail")
+    @BindingAdapter("app:showImage", "app:multiplier", requireAll = false)
     @JvmStatic
-    fun showThumbnail(view: AppCompatImageView, url: String?) {
-        url?.apply {
-            Glide.with(view.context)
-                .load(this)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .centerInside()
-                .thumbnail(0.1f)
-                .sizeMultiplier(0.2f)
-                .into(view)
-        }
-    }
-
-    @BindingAdapter("app:showImage")
-    @JvmStatic
-    fun showImage(view: AppCompatImageView, url: String?) {
+    fun showImage(view: AppCompatImageView, url: String?, multiplier: Float?) {
         url?.apply {
             Glide.with(view.context)
                 .load(this)
@@ -40,7 +25,7 @@ object CommonBinding {
                         start()
                     })
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .sizeMultiplier(0.4f)
+                .sizeMultiplier(multiplier ?: 1f)
                 .placeholder(R.color.light_gray)
                 .into(view)
         }

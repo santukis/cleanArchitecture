@@ -32,6 +32,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:showImage="@{question.getRightAnswer().image}"
+                app:multiplier="@{0.8f}"
                 app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintTop_toTopOf="parent" />
 

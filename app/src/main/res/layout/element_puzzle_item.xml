@@ -29,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="fitCenter"
             app:showImage="@{puzzle.image}"
+            app:multiplier="@{0.5f}"
             android:adjustViewBounds="true"/>
 
     </androidx.cardview.widget.CardView>

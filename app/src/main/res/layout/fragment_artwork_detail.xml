@@ -36,6 +36,7 @@
                 app:layout_constraintDimensionRatio="H,1:1"
                 android:scaleType="centerCrop"
                 app:showImage="@{artwork.image}"
+                app:multiplier="@{0.8f}"
                 android:adjustViewBounds="true"/>
 
             <View
