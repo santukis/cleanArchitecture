@@ -4,7 +4,6 @@ import android.graphics.Point
 import android.util.Size
 import androidx.annotation.StringRes
 import com.santukis.cleanarchitecture.R
-import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import java.text.DecimalFormat
 import kotlin.random.Random
 
@@ -82,12 +81,14 @@ data class Answer(
 )
 
 data class Puzzle(
-    val artwork: Artwork = Artwork.EMPTY,
-    val pieces: List<Piece> = emptyList(),
-    val size: Size = Size(4, 3)
+    val id: String = "",
+    val image: String = "",
+    val size: Size = Size(4, 3),
+    val pieces: List<Piece> = emptyList()
 )
 
 data class Piece(
+    val id: Long = 0,
     val position: Point = Point(),
     val coordinates: Point = Point(),
     var size: Size = Size(0, 0),

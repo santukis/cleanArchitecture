@@ -1,9 +1,12 @@
 package com.santukis.cleanarchitecture.artwork.data.local
 
+import android.util.Size
 import androidx.room.*
 import com.santukis.cleanarchitecture.artwork.domain.model.*
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
+import com.santukis.cleanarchitecture.game.data.local.PieceDb
 import com.santukis.cleanarchitecture.game.domain.model.Answer
+import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.domain.model.Question
 
 @Entity(
@@ -66,6 +69,12 @@ data class ArtworkDb(
             techniques = techniques,
             department = department,
             shouldBeUpdated = shouldBeUpdated
+        )
+
+    fun toPuzzle() =
+        Puzzle(
+            id = id,
+            image = image
         )
 }
 
@@ -230,6 +239,14 @@ data class ArtworkDetailDb(
     fun toAuthorAnswer() = Answer(artworkDb.image, artworkDb.author, artworkDb.description)
 
     fun toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating, artworkDb.description)
+
+    fun toPuzzle(size: Size, pieces: List<PieceDb>) =
+        Puzzle(
+            id = artworkDb.id,
+            image = artworkDb.image,
+            size = size,
+            pieces = pieces.map { it.toPiece() }
+        )
 }
 
 fun List<ArtworkDetailDb>.toQuestion(type: Int): Question? =

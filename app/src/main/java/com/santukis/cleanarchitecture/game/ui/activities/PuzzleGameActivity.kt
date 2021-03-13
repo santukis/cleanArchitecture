@@ -15,7 +15,7 @@ class PuzzleGameActivity: BaseActivity<ActivityPuzzleGameBinding>() {
 
     override fun initializeViewComponents() {
         hideSystemUI()
-        gameViewModel?.loadPuzzle()
+        gameViewModel?.loadPuzzle("")
 
         gameViewModel?.puzzle?.observe(this) { response ->
             when(response) {
