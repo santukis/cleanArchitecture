@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/puzzle_nav_graph"
+    app:startDestination="@id/puzzlesFragment">
+
+
+    <fragment
+        android:id="@+id/puzzlesFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzlesFragment"
+        tools:layout="@layout/fragment_puzzles"
+        android:label="Puzzle Selection" >
+
+        <action
+            android:id="@+id/openPuzzleGame"
+            app:destination="@+id/puzzleGameFragment">
+
+            <argument
+                android:name="puzzleId"
+                android:defaultValue=""
+                app:argType="string" />
+
+            <argument
+                android:name="difficulty"
+                android:defaultValue="1"
+                app:argType="integer" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/puzzleGameFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzleFragment"
+        tools:layout="@layout/fragment_puzzle_game">
+
+        <argument
+            android:name="puzzleId"
+            android:defaultValue=""
+            app:argType="string" />
+
+        <argument
+            android:name="difficulty"
+            android:defaultValue="1"
+            app:argType="integer" />
+
+    </fragment>
+
+</navigation>

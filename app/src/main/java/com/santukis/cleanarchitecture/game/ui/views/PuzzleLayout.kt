@@ -17,6 +17,8 @@ import androidx.customview.widget.ViewDragHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.santukis.cleanarchitecture.game.domain.model.Difficulty
+import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.*
 
@@ -24,6 +26,7 @@ class PuzzleLayout @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
+    private var puzzle: Puzzle? = null
     private var selectedPiece: PieceView? = null
     private var pieces: MutableList<PieceView> = ArrayList()
 
@@ -162,15 +165,10 @@ class PuzzleLayout @JvmOverloads constructor(
 
         canvas?.apply {
             save()
-            drawBackground()
             drawFrame()
             drawPieces()
             restore()
         }
-    }
-
-    private fun Canvas.drawBackground() {
-        drawColor(Color.WHITE)
     }
 
     private fun Canvas.drawFrame() {
@@ -203,14 +201,16 @@ class PuzzleLayout @JvmOverloads constructor(
         }
     }
 
-    fun createPuzzle(url: String, size: Size) {
+    fun createPuzzle(puzzle: Puzzle) {
         doOnLayout {
+            this.puzzle = puzzle
+
             Glide.with(this)
                     .asBitmap()
-                    .load(url)
+                    .load(puzzle.image)
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            createPieces(resource, size)
+                            createPieces(resource)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
@@ -220,26 +220,26 @@ class PuzzleLayout @JvmOverloads constructor(
         }
     }
 
-    private fun createPieces(resource: Bitmap, size: Size) {
+    private fun createPieces(resource: Bitmap) {
         pieces.clear()
 
-        val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
-        val scaledBitmap = scaleImage(resource, aspectRatio)
+        puzzle?.let {
+            val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
+            val scaledBitmap = scaleImage(resource, aspectRatio)
 
-        imageSize = Size(scaledBitmap.width, scaledBitmap.height)
+            imageSize = Size(scaledBitmap.width, scaledBitmap.height)
 
-        val axisSize = Size(if (aspectRatio >= 1) max(size.width, size.height) else min(size.width, size.height),
-                if (aspectRatio < 1) max(size.width, size.height) else min(size.width, size.height))
+            val axisSize = buildAxisSize(aspectRatio, it.difficulty)
 
-        val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
+            val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
 
-        scaleFrame(width / 2, height / 2)
-        
-        val coordinates = Point(0, 0)
-        for (row in 0 until axisSize.height) {
-            coordinates.x = 0
-            for (col in 0 until axisSize.width) {
-                val piece = PieceView.createPiece(
+            scaleFrame(width / 2, height / 2)
+
+            val coordinates = Point(0, 0)
+            for (row in 0 until axisSize.height) {
+                coordinates.x = 0
+                for (col in 0 until axisSize.width) {
+                    val piece = PieceView.createPiece(
                         context,
                         scaledBitmap,
                         Point(col, row),
@@ -247,14 +247,22 @@ class PuzzleLayout @JvmOverloads constructor(
                         coordinates,
                         pieceSize,
                         Size(width, height)
-                )
-                pieces.add(piece)
-                coordinates.x += pieceSize.width
+                    )
+                    pieces.add(piece)
+                    coordinates.x += pieceSize.width
+                }
+                coordinates.y += pieceSize.height
             }
-            coordinates.y += pieceSize.height
-        }
 
-        addPiecesToLayout()
+            addPiecesToLayout()
+        }
+    }
+
+    private fun buildAxisSize(aspectRatio: Float, difficulty: Difficulty): Size {
+        val width = sqrt(difficulty.maxSize * aspectRatio)
+        val height = sqrt(difficulty.maxSize / aspectRatio)
+
+        return Size(width.toInt(), height.toInt())
     }
 
     private fun addPiecesToLayout() {

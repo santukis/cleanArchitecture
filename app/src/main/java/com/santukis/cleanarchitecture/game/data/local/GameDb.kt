@@ -3,6 +3,7 @@ package com.santukis.cleanarchitecture.game.data.local
 import android.graphics.Point
 import android.util.Size
 import androidx.room.*
+import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 import com.santukis.cleanarchitecture.game.domain.model.Piece
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 
@@ -11,7 +12,7 @@ data class PuzzleDb(
     @PrimaryKey
     val id: String = "",
     val image: String = "",
-    val size: Size
+    val difficulty: Difficulty
 )
 
 @Entity(
@@ -57,7 +58,7 @@ data class PuzzleDetailDb(
         Puzzle(
             id = puzzleDb.id,
             image = puzzleDb.image,
-            size = puzzleDb.size,
+            difficulty = puzzleDb.difficulty,
             pieces = pieces.map { it.toPiece() }
         )
 }

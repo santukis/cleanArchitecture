@@ -9,11 +9,9 @@ import com.santukis.cleanarchitecture.artwork.data.local.toQuestion
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.local.PieceDb
+import com.santukis.cleanarchitecture.game.data.local.PuzzleDb
 import com.santukis.cleanarchitecture.game.data.local.fromQuestionTypeToSqlQuery
-import com.santukis.cleanarchitecture.game.domain.model.GameHistory
-import com.santukis.cleanarchitecture.game.domain.model.GameScore
-import com.santukis.cleanarchitecture.game.domain.model.Puzzle
-import com.santukis.cleanarchitecture.game.domain.model.Question
+import com.santukis.cleanarchitecture.game.domain.model.*
 
 class LocalGameDataSource(context: Context,
                           private val database: AppDatabase): GameDataSource {
@@ -77,10 +75,10 @@ class LocalGameDataSource(context: Context,
             Response.Error(exception)
         }
 
-    override suspend fun loadPuzzle(puzzleId: String, size: Size): Response<Puzzle> =
+    override suspend fun loadPuzzle(puzzleId: String, difficulty: Difficulty): Response<Puzzle> =
         try {
-            when(val item = database.puzzleDao().loadPuzzle(puzzleId, size)) {
-                null -> createPuzzle(puzzleId, size)
+            when(val item = database.puzzleDao().loadPuzzle(puzzleId, difficulty)) {
+                null -> createPuzzle(puzzleId, difficulty)
                 else -> Response.Success(item.toPuzzle())
             }
         } catch (exception: Exception) {
@@ -88,21 +86,24 @@ class LocalGameDataSource(context: Context,
         }
 
 
-    private suspend fun createPuzzle(puzzleId: String, size: Size): Response<Puzzle> =
+    private suspend fun createPuzzle(puzzleId: String, difficulty: Difficulty): Response<Puzzle> =
         try {
             when(val item = database.artworkDao().loadArtwork(puzzleId)) {
-                null -> super.loadPuzzle(puzzleId, size)
-                else -> Response.Success(item.toPuzzle(size, createPieces(puzzleId, size)))
+                null -> super.loadPuzzle(puzzleId, difficulty)
+                else -> {
+                    database.puzzleDao().saveItem(PuzzleDb(item.artworkDb.id, item.artworkDb.image, difficulty))
+                    Response.Success(item.toPuzzle(difficulty, createPieces(puzzleId, difficulty)))
+                }
             }
         } catch (exception: Exception) {
             Response.Error(exception)
         }
 
-    private fun createPieces(puzzleId: String, size: Size): List<PieceDb> =
+    private fun createPieces(puzzleId: String, difficulty: Difficulty): List<PieceDb> =
         try {
             val pieces = mutableListOf<PieceDb>()
 
-            for (index in 0 until size.width * size.height) {
+            for (index in 0 until difficulty.maxSize) {
                 val piece = PieceDb(parentId = puzzleId)
                 val pieceId = database.pieceDao().saveItem(piece)
                 pieces.add(piece.apply { id = pieceId })
