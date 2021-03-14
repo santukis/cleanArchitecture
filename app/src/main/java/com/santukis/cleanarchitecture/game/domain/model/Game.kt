@@ -83,9 +83,13 @@ data class Answer(
 data class Puzzle(
     val id: String = "",
     val image: String = "",
-    val size: Size = Size(4, 3),
+    val difficulty: Difficulty = Difficulty.Medium,
     val pieces: List<Piece> = emptyList()
 )
+
+enum class Difficulty(val maxSize: Int) {
+    Easy(24), Medium(64), Hard(128)
+}
 
 data class Piece(
     val id: Long = 0,

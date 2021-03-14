@@ -1,15 +1,15 @@
 package com.santukis.cleanarchitecture.game.data.local
 
-import android.util.Size
 import androidx.room.Dao
 import androidx.room.Query
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
+import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 
 @Dao
 interface PuzzleDao: BaseDao<PuzzleDb> {
 
-    @Query("SELECT * FROM puzzles WHERE puzzles.id = :puzzleId AND size = :size LIMIT 1")
-    fun loadPuzzle(puzzleId: String, size: Size): PuzzleDetailDb?
+    @Query("SELECT * FROM puzzles WHERE puzzles.id = :puzzleId AND difficulty = :difficulty LIMIT 1")
+    fun loadPuzzle(puzzleId: String, difficulty: Difficulty): PuzzleDetailDb?
 
 }
 

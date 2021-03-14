@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.util.Size
 import androidx.room.TypeConverter
 import com.santukis.cleanarchitecture.artwork.domain.model.Collection
+import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 
 class Converters {
 
@@ -27,4 +28,10 @@ class Converters {
     @TypeConverter
     fun fromStringToSize(size: String): Size =
         size.takeIf { it.isNotEmpty() }?.let { Size.parseSize(it) } ?: Size(0, 0)
+
+    @TypeConverter
+    fun fromDifficultyToInt(difficulty: Difficulty): Int = difficulty.ordinal
+
+    @TypeConverter
+    fun fromIntToDifficulty(difficulty: Int): Difficulty = Difficulty.values().getOrNull(difficulty) ?: Difficulty.Medium
 }

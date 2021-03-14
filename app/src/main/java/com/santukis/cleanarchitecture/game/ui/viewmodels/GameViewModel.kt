@@ -8,10 +8,7 @@ import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.core.domain.model.Executor
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.game.data.datasources.GameDataSource
-import com.santukis.cleanarchitecture.game.domain.model.Answer
-import com.santukis.cleanarchitecture.game.domain.model.GameHistory
-import com.santukis.cleanarchitecture.game.domain.model.Puzzle
-import com.santukis.cleanarchitecture.game.domain.model.Question
+import com.santukis.cleanarchitecture.game.domain.model.*
 import org.kodein.di.DI
 import org.kodein.di.instance
 import kotlin.random.Random
@@ -37,6 +34,8 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
 
     private val _puzzle: MutableLiveData<Response<Puzzle>> = MutableLiveData()
     val puzzle: LiveData<Response<Puzzle>> = _puzzle
+
+    private var difficulty: Difficulty = Difficulty.Medium
 
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
@@ -68,10 +67,10 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         }
     }
 
-    fun loadPuzzle(puzzleId: String, size: Size) {
+    fun loadPuzzle(puzzleId: String, difficulty: Difficulty) {
         executor.execute {
             _puzzle.postValue(Response.Loading())
-            _puzzle.postValue(gameDataSource.loadPuzzle(puzzleId, size))
+            _puzzle.postValue(gameDataSource.loadPuzzle(puzzleId, difficulty))
         }
     }
 

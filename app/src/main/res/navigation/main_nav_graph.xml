@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/collectionsFragment">
 
     <fragment
         android:id="@+id/collectionsFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.CollectionsFragment"
+        tools:layout="@layout/fragment_collections"
         android:label="Collections">
 
         <action
@@ -81,7 +83,7 @@
 
         <action
             android:id="@+id/openPuzzleFragment"
-            app:destination="@+id/puzzlesFragment"
+            app:destination="@+id/puzzleGameActivity"
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true"/>
 
@@ -98,37 +100,10 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/puzzlesFragment"
-        android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzlesFragment"
-        android:label="Puzzle Selection" >
-
-        <action
-            android:id="@+id/openPuzzleGame"
-            app:destination="@+id/puzzleGame"
-            app:popUpTo="@id/gameFragment"
-            app:popUpToInclusive="true">
-
-            <argument
-                android:name="puzzleId"
-                android:defaultValue=""
-                app:argType="string" />
-
-            <argument
-                android:name="puzzleSize"
-                android:defaultValue="7x8"
-                app:argType="string" />
-
-        </action>
-
-    </fragment>
-
     <activity
-        android:id="@+id/puzzleGame"
+        android:id="@+id/puzzleGameActivity"
         android:name="com.santukis.cleanarchitecture.game.ui.activities.PuzzleGameActivity"
-        android:label="Game" >
-
-    </activity>
+        android:label="Game"/>
 
     <fragment
         android:id="@+id/favouritesFragment"

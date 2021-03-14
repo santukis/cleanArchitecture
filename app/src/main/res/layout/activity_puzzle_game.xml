@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
-    <ImageView
-        android:id="@+id/image"
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center"
-        android:alpha="0"/>
+        app:navGraph="@navigation/puzzle_nav_graph" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
-</com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

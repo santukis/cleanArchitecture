@@ -28,4 +28,7 @@
     <string name="no_more_questions_info">Sorry, but there is no Questions at this moment</string>
     <string name="puzzle">Puzzle</string>
     <string name="quiz">Quiz</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
 </resources>
