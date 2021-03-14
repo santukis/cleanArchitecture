@@ -31,6 +31,7 @@ data class PieceDb(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
     val parentId: String = "",
+    val cell: Point = Point(),
     val position: Point = Point(),
     val coordinates: Point = Point(),
     val size: Size = Size(0, 0),
@@ -39,6 +40,7 @@ data class PieceDb(
     fun toPiece() =
         Piece(
             id = id ?: 0L,
+            cell = cell,
             position = position,
             coordinates = coordinates,
             size = size,
