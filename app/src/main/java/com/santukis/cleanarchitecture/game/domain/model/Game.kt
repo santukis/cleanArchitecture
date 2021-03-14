@@ -4,6 +4,7 @@ import android.graphics.Point
 import android.util.Size
 import androidx.annotation.StringRes
 import com.santukis.cleanarchitecture.R
+import com.santukis.cleanarchitecture.game.data.local.PieceDb
 import java.text.DecimalFormat
 import kotlin.random.Random
 
@@ -84,7 +85,7 @@ data class Puzzle(
     val id: String = "",
     val image: String = "",
     val difficulty: Difficulty = Difficulty.Medium,
-    val pieces: List<Piece> = emptyList()
+    var pieces: List<Piece> = emptyList()
 )
 
 enum class Difficulty(val maxSize: Int) {
@@ -93,8 +94,24 @@ enum class Difficulty(val maxSize: Int) {
 
 data class Piece(
     val id: Long = 0,
+    val cell: Point = Point(),
     val position: Point = Point(),
     val coordinates: Point = Point(),
     var size: Size = Size(0, 0),
     var canMove: Boolean = true
-)
+) {
+
+    companion object {
+        val EMPTY = Piece()
+    }
+
+    fun toPieceDb(puzzleId: String) =
+        PieceDb(
+            parentId = puzzleId,
+            cell = cell,
+            position = position,
+            coordinates = coordinates,
+            size = size,
+            canMove = canMove
+        )
+}

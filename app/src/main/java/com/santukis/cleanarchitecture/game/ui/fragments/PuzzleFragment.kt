@@ -18,6 +18,7 @@ import com.santukis.cleanarchitecture.databinding.FragmentPuzzleGameBinding
 import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.ui.binding.PuzzleViewHolder
+import com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout
 
 class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
 
@@ -33,6 +34,7 @@ class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
 
     override fun initializeViewListeners(binding: FragmentPuzzleGameBinding) {
         super.initializeViewListeners(binding)
+        gameViewModel?.apply { binding.container.addOnPuzzleStateChanged(this) }
         gameViewModel?.puzzle?.observe(this) { response ->
             binding.progress.isVisible = response is Response.Loading
 
@@ -44,10 +46,7 @@ class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.let {
-            it.actionBar?.hide()
-            hideSystemUI(window = it.window)
-        }
+        activity?.let { hideSystemUI(window = it.window) }
     }
 
     private fun hideSystemUI(window: Window) {

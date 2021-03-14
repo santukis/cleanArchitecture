@@ -92,25 +92,28 @@ class LocalGameDataSource(context: Context,
                 null -> super.loadPuzzle(puzzleId, difficulty)
                 else -> {
                     database.puzzleDao().saveItem(PuzzleDb(item.artworkDb.id, item.artworkDb.image, difficulty))
-                    Response.Success(item.toPuzzle(difficulty, createPieces(puzzleId, difficulty)))
+                    Response.Success(item.toPuzzle(difficulty))
                 }
             }
         } catch (exception: Exception) {
             Response.Error(exception)
         }
 
-    private fun createPieces(puzzleId: String, difficulty: Difficulty): List<PieceDb> =
+    override suspend fun createPuzzlePieces(puzzleId: String, pieces: List<Piece>) {
         try {
-            val pieces = mutableListOf<PieceDb>()
+            database.pieceDao().saveItems(pieces.map { it.toPieceDb(puzzleId) })
 
-            for (index in 0 until difficulty.maxSize) {
-                val piece = PieceDb(parentId = puzzleId)
-                val pieceId = database.pieceDao().saveItem(piece)
-                pieces.add(piece.apply { id = pieceId })
-            }
-
-            pieces
         } catch (exception: Exception) {
-            emptyList()
+            exception.printStackTrace()
         }
+    }
+
+    override suspend fun updatePuzzlePiece(puzzleId: String, piece: Piece) {
+        try {
+            database.pieceDao().saveItem(piece.toPieceDb(puzzleId))
+
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
 }

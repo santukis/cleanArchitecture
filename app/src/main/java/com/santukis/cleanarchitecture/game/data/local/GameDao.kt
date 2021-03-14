@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.game.data.local
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Update
 import com.santukis.cleanarchitecture.core.data.local.BaseDao
 import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 

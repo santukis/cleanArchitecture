@@ -241,12 +241,11 @@ data class ArtworkDetailDb(
 
     fun toDatingAnswer() = Answer(artworkDb.image, artworkDb.dating, artworkDb.description)
 
-    fun toPuzzle(difficulty: Difficulty, pieces: List<PieceDb>) =
+    fun toPuzzle(difficulty: Difficulty) =
         Puzzle(
             id = artworkDb.id,
             image = artworkDb.image,
-            difficulty = difficulty,
-            pieces = pieces.map { it.toPiece() }
+            difficulty = difficulty
         )
 }
 

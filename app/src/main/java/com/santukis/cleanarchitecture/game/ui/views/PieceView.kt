@@ -6,19 +6,37 @@ import android.util.AttributeSet
 import android.util.Size
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
+import com.santukis.cleanarchitecture.game.domain.model.Piece
 import kotlin.math.*
 import kotlin.random.Random
 
 class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     AppCompatImageView(context, attrs, defStyleAttr) {
 
-    val position: Point = Point()
-    val coordinates: Point = Point()
-    var size = Size(0, 0)
-    var canMove: Boolean = true
-
+    var piece: Piece = Piece()
 
     companion object {
+        fun createPiece(context: Context, croppedBitmap: Bitmap, axisSize: Size, pieceSize: Size, piece: Piece): PieceView {
+            val offset = calculatePieceOffset(piece.cell, pieceSize)
+
+            val pieceBitmap = Bitmap.createBitmap(
+                croppedBitmap,
+                piece.coordinates.x,
+                piece.coordinates.y,
+                piece.size.width,
+                piece.size.height
+            )
+
+            val pieceView = createPieceView(context, pieceBitmap, piece)
+
+            val puzzlePiece = Bitmap.createBitmap(pieceView.piece.size.width, pieceView.piece.size.height, Bitmap.Config.ARGB_8888)
+
+            drawPiece(puzzlePiece, axisSize, piece.cell, offset, pieceSize, pieceBitmap)
+
+            pieceView.setImageBitmap(puzzlePiece)
+            return pieceView
+        }
+
         fun createPiece(context: Context, croppedBitmap: Bitmap, cell: Point, axisSize: Size, coordinates: Point, pieceSize: Size, containerSize: Size): PieceView {
             val offset = calculatePieceOffset(cell, pieceSize)
 
@@ -29,14 +47,14 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 pieceSize.width + offset.x,
                 pieceSize.height + offset.y
             )
-            val piece = createPiece(context, pieceBitmap, coordinates, offset, pieceSize, containerSize)
+            val pieceView = createPieceView(context, pieceBitmap, coordinates, offset, pieceSize, cell, containerSize)
 
-            val puzzlePiece = Bitmap.createBitmap(pieceSize.width + offset.x, pieceSize.height + offset.y, Bitmap.Config.ARGB_8888)
+            val puzzlePiece = Bitmap.createBitmap(pieceView.piece.size.width, pieceView.piece.size.height, Bitmap.Config.ARGB_8888)
 
             drawPiece(puzzlePiece, axisSize, cell, offset, pieceSize, pieceBitmap)
 
-            piece.setImageBitmap(puzzlePiece)
-            return piece
+            pieceView.setImageBitmap(puzzlePiece)
+            return pieceView
         }
 
         private fun calculatePieceOffset(cell: Point, pieceSize: Size): Point {
@@ -51,15 +69,26 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             return offset
         }
 
-        private fun createPiece(context: Context, pieceBitmap: Bitmap?, coordinates: Point, offset: Point, pieceSize: Size, containerSize: Size): PieceView {
-            val piece = PieceView(context)
-            piece.setImageBitmap(pieceBitmap)
-            piece.coordinates.x = coordinates.x - offset.x
-            piece.coordinates.y = coordinates.y - offset.y
-            piece.size = Size(pieceSize.width + offset.x, pieceSize.height + offset.y)
-            piece.position.x = Random.nextInt(0, containerSize.width - piece.size.width / 2)
-            piece.position.y =  Random.nextInt(0, containerSize.height - piece.size.height / 2)
-            return piece
+        private fun createPieceView(context: Context, pieceBitmap: Bitmap?, coordinates: Point, offset: Point, pieceSize: Size, cell: Point, containerSize: Size): PieceView {
+            val pieceView = PieceView(context)
+            pieceView.setImageBitmap(pieceBitmap)
+            pieceView.piece.let {
+                it.coordinates.x = coordinates.x - offset.x
+                it.coordinates.y = coordinates.y - offset.y
+                it.size = Size(pieceSize.width + offset.x, pieceSize.height + offset.y)
+                it.position.x = Random.nextInt(0, containerSize.width - it.size.width / 2)
+                it.position.y =  Random.nextInt(0, containerSize.height - it.size.height / 2)
+                it.cell.x = cell.x
+                it.cell.y = cell.y
+            }
+            return pieceView
+        }
+
+        private fun createPieceView(context: Context, pieceBitmap: Bitmap?, piece: Piece): PieceView {
+            val pieceView = PieceView(context)
+            pieceView.setImageBitmap(pieceBitmap)
+            pieceView.piece = piece
+            return pieceView
         }
 
         private fun drawPiece(puzzlePiece: Bitmap, axisSize: Size, cell: Point, offset: Point, pieceSize: Size, pieceBitmap: Bitmap) {
@@ -210,21 +239,21 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     }
 
     private fun updateZIndex() {
-        z = when (canMove) {
+        z = when (piece.canMove) {
             true -> 10f
             else -> 0f
         }
     }
 
     fun updatePosition(scaleFactor: Float, frame: Rect, scrollDistance: PointF) {
-        when(canMove) {
+        when(piece.canMove) {
             true -> {
                 ViewCompat.offsetLeftAndRight(this, scrollDistance.x.toInt())
                 ViewCompat.offsetTopAndBottom(this, scrollDistance.y.toInt())
             }
             false -> {
-                ViewCompat.offsetLeftAndRight(this, ((coordinates.x * scaleFactor) + frame.left - left).toInt())
-                ViewCompat.offsetTopAndBottom(this, ((coordinates.y * scaleFactor) + frame.top - top).toInt())
+                ViewCompat.offsetLeftAndRight(this, ((piece.coordinates.x * scaleFactor) + frame.left - left).toInt())
+                ViewCompat.offsetTopAndBottom(this, ((piece.coordinates.y * scaleFactor) + frame.top - top).toInt())
             }
         }
 
@@ -232,7 +261,7 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     }
 
     fun updateScale(scaleFactor: Float) {
-        val pivot = when(canMove) {
+        val pivot = when(piece.canMove) {
             true -> 0.5f
             false -> 0f
         }
@@ -244,21 +273,21 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     fun calculatePiecePosition(scaleFactor: Float, frame: Rect): Pair<Int, Int> {
         val tolerance: Double = sqrt(width.toDouble().pow(2.0) + height.toDouble().pow(2.0)) / 10
-        val weightedX = (coordinates.x * scaleFactor).toInt() + frame.left
-        val weightedY = (coordinates.y * scaleFactor).toInt() + frame.top
-        val xDiff: Int = abs(weightedX - position.x)
-        val yDiff: Int = abs(weightedY - position.y)
+        val weightedX = (piece.coordinates.x * scaleFactor).toInt() + frame.left
+        val weightedY = (piece.coordinates.y * scaleFactor).toInt() + frame.top
+        val xDiff: Int = abs(weightedX - piece.position.x)
+        val yDiff: Int = abs(weightedY - piece.position.y)
 
         return when(xDiff <= tolerance && yDiff <= tolerance) {
             true -> {
-                canMove = false
+                piece.canMove = false
                 weightedX to weightedY
             }
-            else -> position.x to position.y
+            else -> piece.position.x to piece.position.y
         }
     }
 
     override fun layout(l: Int, t: Int, r: Int, b: Int) {
-        super.layout(position.x, position.y, position.x + size.width, position.y + size.height)
+        super.layout(piece.position.x, piece.position.y, piece.position.x + piece.size.width, piece.position.y + piece.size.height)
     }
 }

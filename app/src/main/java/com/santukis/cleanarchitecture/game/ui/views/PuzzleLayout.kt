@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.santukis.cleanarchitecture.game.domain.model.Difficulty
+import com.santukis.cleanarchitecture.game.domain.model.Piece
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.*
@@ -26,9 +27,16 @@ class PuzzleLayout @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
+    interface OnPuzzleStateChanged {
+        fun onPiecesCreated(puzzleId: String, pieces: List<Piece>) {}
+        fun onPieceChanged(puzzleId: String, piece: Piece)
+    }
+
     private var puzzle: Puzzle? = null
     private var selectedPiece: PieceView? = null
-    private var pieces: MutableList<PieceView> = ArrayList()
+    private var pieceViews: MutableList<PieceView> = ArrayList()
+
+    private var onPuzzleStateChanged: OnPuzzleStateChanged? = null
 
     private var scaleFactor = 1f
 
@@ -69,14 +77,14 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private val dragCallback = object : ViewDragHelper.Callback() {
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            return child is PieceView && child.canMove
+            return child is PieceView && child.piece.canMove
         }
 
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
             super.onViewPositionChanged(changedView, left, top, dx, dy)
             selectedPiece?.apply {
-                position.x =  left
-                position.y = top
+                piece.position.x =  left
+                piece.position.y = top
             }
         }
 
@@ -97,6 +105,8 @@ class PuzzleLayout @JvmOverloads constructor(
                 dragHelper.settleCapturedViewAt(x, y)
 
                 ViewCompat.postInvalidateOnAnimation(this@PuzzleLayout)
+
+                puzzle?.let { puzzle -> onPuzzleStateChanged?.onPieceChanged(puzzle.id, piece) }
             }
 
             isDragging.getAndSet(false)
@@ -111,7 +121,7 @@ class PuzzleLayout @JvmOverloads constructor(
         }
 
         override fun getOrderedChildIndex(index: Int): Int =
-            if (pieces.getOrNull(index)?.canMove == false) 0 else index
+            if (pieceViews.getOrNull(index)?.piece?.canMove == false) 0 else index
     }
 
     private val dragHelper: ViewDragHelper = ViewDragHelper.create(this, 2f, dragCallback)
@@ -193,7 +203,7 @@ class PuzzleLayout @JvmOverloads constructor(
     }
 
     private fun drawPieces() {
-        pieces.forEach { piece ->
+        pieceViews.forEach { piece ->
             if (isScaling.get()) piece.updateScale(scaleFactor)
 
             if (!dragHelper.continueSettling(true))
@@ -210,7 +220,7 @@ class PuzzleLayout @JvmOverloads constructor(
                     .load(puzzle.image)
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            createPieces(resource)
+                            createPieceViews(resource)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
@@ -220,8 +230,8 @@ class PuzzleLayout @JvmOverloads constructor(
         }
     }
 
-    private fun createPieces(resource: Bitmap) {
-        pieces.clear()
+    private fun createPieceViews(resource: Bitmap) {
+        pieceViews.clear()
 
         puzzle?.let {
             val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
@@ -231,31 +241,23 @@ class PuzzleLayout @JvmOverloads constructor(
 
             val axisSize = buildAxisSize(aspectRatio, it.difficulty)
 
-            val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
-
             scaleFrame(width / 2, height / 2)
 
-            val coordinates = Point(0, 0)
-            for (row in 0 until axisSize.height) {
-                coordinates.x = 0
-                for (col in 0 until axisSize.width) {
-                    val piece = PieceView.createPiece(
-                        context,
-                        scaledBitmap,
-                        Point(col, row),
-                        axisSize,
-                        coordinates,
-                        pieceSize,
-                        Size(width, height)
-                    )
-                    pieces.add(piece)
-                    coordinates.x += pieceSize.width
-                }
-                coordinates.y += pieceSize.height
-            }
+            val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
+
+            when {
+                it.pieces.isEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize)
+                it.pieces.isNotEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize, it.pieces)
+             }
 
             addPiecesToLayout()
         }
+    }
+
+    private fun scaleImage(resource: Bitmap, aspectRatio: Float): Bitmap {
+        val targetWidth = if (aspectRatio >= 1) width else (resource.width * height.toFloat() / resource.height).toInt()
+        val targetHeight = if (aspectRatio < 1) height else (resource.height * width.toFloat() / resource.width).toInt()
+        return Bitmap.createScaledBitmap(resource, targetWidth, targetHeight, true)
     }
 
     private fun buildAxisSize(aspectRatio: Float, difficulty: Difficulty): Size {
@@ -265,18 +267,56 @@ class PuzzleLayout @JvmOverloads constructor(
         return Size(width.toInt(), height.toInt())
     }
 
+    private fun createPieces(scaledBitmap: Bitmap, axisSize: Size, pieceSize: Size) {
+        val coordinates = Point(0, 0)
+
+        for (row in 0 until axisSize.height) {
+            coordinates.x = 0
+            for (col in 0 until axisSize.width) {
+                val pieceView = PieceView.createPiece(
+                    context,
+                    scaledBitmap,
+                    Point(col, row),
+                    axisSize,
+                    coordinates,
+                    pieceSize,
+                    Size(width, height)
+                )
+                pieceViews.add(pieceView)
+                coordinates.x += pieceSize.width
+            }
+            coordinates.y += pieceSize.height
+        }
+
+        puzzle?.let { puzzle ->
+            puzzle.pieces = pieceViews.map { it.piece }
+            onPuzzleStateChanged?.onPiecesCreated(puzzle.id, puzzle.pieces)
+        }
+    }
+
+    private fun createPieces(scaledBitmap: Bitmap, axisSize: Size, pieceSize: Size, pieces: List<Piece>) {
+        pieces.forEach { piece ->
+            val pieceView = PieceView.createPiece(
+                context,
+                scaledBitmap,
+                axisSize,
+                pieceSize,
+                piece
+            )
+            pieceViews.add(pieceView)
+        }
+    }
+
     private fun addPiecesToLayout() {
-        pieces.shuffle()
+        pieceViews.shuffle()
         removeAllViews()
 
-        pieces.forEach { piece ->
+        pieceViews.forEach { piece ->
             addView(piece)
         }
     }
 
-    private fun scaleImage(resource: Bitmap, aspectRatio: Float): Bitmap {
-        val targetWidth = if (aspectRatio >= 1) width else (resource.width * height.toFloat() / resource.height).toInt()
-        val targetHeight = if (aspectRatio < 1) height else (resource.height * width.toFloat() / resource.width).toInt()
-        return Bitmap.createScaledBitmap(resource, targetWidth, targetHeight, true)
+    fun addOnPuzzleStateChanged(listener: OnPuzzleStateChanged) {
+        onPuzzleStateChanged = listener
     }
 }
