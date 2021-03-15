@@ -5,10 +5,12 @@ import android.util.Size
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.santukis.cleanarchitecture.core.domain.model.Response
@@ -45,13 +47,19 @@ class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
     }
 
     override fun releaseViewComponents() {
-        activity?.let { showSystemUI(it.window) }
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.show()
+            showSystemUI(it.window)
+        }
         super.releaseViewComponents()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.let { hideSystemUI(it.window) }
+        (activity as? AppCompatActivity)?.let {
+            it.supportActionBar?.hide()
+            hideSystemUI(it.window)
+        }
     }
 
     private fun hideSystemUI(window: Window) {
