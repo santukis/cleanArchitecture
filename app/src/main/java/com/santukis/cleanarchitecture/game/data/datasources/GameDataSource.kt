@@ -18,4 +18,6 @@ interface GameDataSource {
     suspend fun createPuzzlePieces(puzzleId: String, pieces: List<Piece>)
 
     suspend fun updatePuzzlePiece(puzzleId: String, piece: Piece)
+
+    suspend fun updatePuzzle(puzzle: Puzzle)
 }

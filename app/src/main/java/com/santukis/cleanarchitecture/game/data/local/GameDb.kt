@@ -12,24 +12,24 @@ data class PuzzleDb(
     @PrimaryKey
     val id: String = "",
     val image: String = "",
-    val difficulty: Difficulty
+    val difficulty: Difficulty,
+    val scaleFactor: Float = 1f
 )
 
 @Entity(
     tableName = "pieces",
+    primaryKeys = ["coordinates", "parentId"],
     foreignKeys = [
         ForeignKey(
             entity = PuzzleDb::class,
             parentColumns = ["id"],
             childColumns = ["parentId"],
             onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
+            onUpdate = ForeignKey.NO_ACTION
         )
     ]
 )
 data class PieceDb(
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null,
     val parentId: String = "",
     val cell: Point = Point(),
     val position: Point = Point(),
@@ -39,7 +39,6 @@ data class PieceDb(
 ) {
     fun toPiece() =
         Piece(
-            id = id ?: 0L,
             cell = cell,
             position = position,
             coordinates = coordinates,
@@ -61,6 +60,7 @@ data class PuzzleDetailDb(
             id = puzzleDb.id,
             image = puzzleDb.image,
             difficulty = puzzleDb.difficulty,
-            pieces = pieces.map { it.toPiece() }
+            pieces = pieces.map { it.toPiece() },
+            scaleFactor = puzzleDb.scaleFactor
         )
 }

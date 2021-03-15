@@ -8,9 +8,7 @@ import com.santukis.cleanarchitecture.BuildConfig
 import com.santukis.cleanarchitecture.artwork.data.local.toQuestion
 import com.santukis.cleanarchitecture.core.data.local.AppDatabase
 import com.santukis.cleanarchitecture.core.domain.model.Response
-import com.santukis.cleanarchitecture.game.data.local.PieceDb
-import com.santukis.cleanarchitecture.game.data.local.PuzzleDb
-import com.santukis.cleanarchitecture.game.data.local.fromQuestionTypeToSqlQuery
+import com.santukis.cleanarchitecture.game.data.local.*
 import com.santukis.cleanarchitecture.game.domain.model.*
 
 class LocalGameDataSource(context: Context,
@@ -110,7 +108,16 @@ class LocalGameDataSource(context: Context,
 
     override suspend fun updatePuzzlePiece(puzzleId: String, piece: Piece) {
         try {
-            database.pieceDao().saveItem(piece.toPieceDb(puzzleId))
+            database.pieceDao().updateItem(piece.toPieceDb(puzzleId))
+
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
+    override suspend fun updatePuzzle(puzzle: Puzzle) {
+        try {
+            database.puzzleDao().updateItem(puzzle.toPuzzleDb())
 
         } catch (exception: Exception) {
             exception.printStackTrace()

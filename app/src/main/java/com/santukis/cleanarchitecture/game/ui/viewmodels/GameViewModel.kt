@@ -101,4 +101,10 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
             gameDataSource.createPuzzlePieces(puzzleId, pieces)
         }
     }
+
+    override fun onPuzzleChanged(puzzle: Puzzle) {
+        executor.execute {
+            gameDataSource.updatePuzzle(puzzle)
+        }
+    }
 }
