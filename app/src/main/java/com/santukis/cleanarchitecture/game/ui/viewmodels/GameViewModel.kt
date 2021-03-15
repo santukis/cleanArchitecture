@@ -2,6 +2,7 @@ package com.santukis.cleanarchitecture.game.ui.viewmodels
 
 import android.app.Application
 import android.view.View
+import androidx.databinding.BaseObservable
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
 import com.santukis.cleanarchitecture.core.domain.model.Executor
@@ -35,7 +36,7 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     private val _puzzle: MutableLiveData<Response<Puzzle>> = MutableLiveData()
     val puzzle: LiveData<Response<Puzzle>> = _puzzle
 
-    private var difficulty: Difficulty = Difficulty.Medium
+    var difficulty: Difficulty = Difficulty.Medium
 
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
@@ -79,6 +80,10 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
             _puzzle.postValue(Response.Loading())
             _puzzle.postValue(gameDataSource.loadPuzzle(puzzleId, difficulty))
         }
+    }
+
+    fun updatePuzzleDifficulty(difficulty: Difficulty) {
+        this.difficulty = difficulty
     }
 
     fun loadGameHistory() {

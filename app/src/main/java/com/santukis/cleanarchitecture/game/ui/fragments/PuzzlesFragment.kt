@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.*
 import com.frikiplanet.proteo.ItemsAdapter
+import com.frikiplanet.proteo.OnItemClickListener
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.decorations.MarginItemDecoration
 import com.santukis.cleanarchitecture.R
@@ -14,10 +15,11 @@ import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.ElementPuzzleItemBinding
 import com.santukis.cleanarchitecture.databinding.FragmentPuzzlesBinding
+import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.ui.binding.PuzzleViewHolder
 
-class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
+class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListener {
 
     private val puzzleAdapter: ItemsAdapter<Puzzle> by lazy {
         ItemsAdapter(ViewHolderProvider(itemViewHolder = { parent, viewType ->
@@ -30,6 +32,7 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
 
     override fun initializeViewComponents(binding: FragmentPuzzlesBinding) {
         super.initializeViewComponents(binding)
+        binding.viewmodel = gameViewModel
         binding.recycler.layoutManager = StaggeredGridLayoutManager(2, VERTICAL).apply { gapStrategy = GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS }
         binding.recycler.addItemDecoration(MarginItemDecoration(left = 10, right = 10, top = 10, bottom = 10))
         binding.recycler.adapter = puzzleAdapter
@@ -39,7 +42,7 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
 
     override fun initializeViewListeners(binding: FragmentPuzzlesBinding) {
         super.initializeViewListeners(binding)
-
+        puzzleAdapter.addOnItemClickListener(this)
         gameViewModel?.puzzles?.observe(this) { response ->
             binding.progress.isVisible = response is Response.Loading
 
@@ -71,5 +74,11 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
 
     private fun loadData() {
         gameViewModel?.loadPuzzles()
+    }
+
+    override fun onItemClick(view: View, item: Any) {
+        if (item is Puzzle) {
+            findNavController().navigate(PuzzlesFragmentDirections.openPuzzleGame(item.id, gameViewModel?.difficulty?.ordinal ?: Difficulty.Easy.ordinal))
+        }
     }
 }
