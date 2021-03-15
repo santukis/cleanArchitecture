@@ -1,7 +1,6 @@
 package com.santukis.cleanarchitecture.game.ui.viewmodels
 
 import android.app.Application
-import android.util.Size
 import android.view.View
 import androidx.lifecycle.*
 import com.frikiplanet.proteo.OnItemClickListener
@@ -65,6 +64,13 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         executor.execute {
             _puzzles.postValue(Response.Loading())
             _puzzles.postValue(gameDataSource.loadPuzzles())
+        }
+    }
+
+    fun loadOngoingPuzzles() {
+        executor.execute {
+            _puzzles.postValue(Response.Loading())
+            _puzzles.postValue(gameDataSource.loadOngoingPuzzles())
         }
     }
 

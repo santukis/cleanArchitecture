@@ -15,9 +15,11 @@ interface GameDataSource {
 
     suspend fun loadPuzzles(): Response<List<Puzzle>> = Response.Error(Exception("Unable to load Puzzles"))
 
-    suspend fun createPuzzlePieces(puzzleId: String, pieces: List<Piece>)
+    suspend fun loadOngoingPuzzles(): Response<List<Puzzle>> = Response.Error(Exception("Unable to load Puzzles"))
 
-    suspend fun updatePuzzlePiece(puzzleId: String, piece: Piece)
+    suspend fun createPuzzlePieces(puzzleId: String, pieces: List<Piece>) {}
 
-    suspend fun updatePuzzle(puzzle: Puzzle)
+    suspend fun updatePuzzlePiece(puzzleId: String, piece: Piece) {}
+
+    suspend fun updatePuzzle(puzzle: Puzzle) {}
 }

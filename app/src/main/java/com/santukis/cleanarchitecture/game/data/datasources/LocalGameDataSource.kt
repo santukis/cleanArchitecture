@@ -73,6 +73,18 @@ class LocalGameDataSource(context: Context,
             Response.Error(exception)
         }
 
+    override suspend fun loadOngoingPuzzles(): Response<List<Puzzle>> =
+        try {
+            val items = database.puzzleDao().loadPuzzles()
+
+            when {
+                items.isNullOrEmpty() -> super.loadOngoingPuzzles()
+                else -> Response.Success(items.map { it.toPuzzle() })
+            }
+        } catch (exception: Exception) {
+            Response.Error(exception)
+        }
+
     override suspend fun loadPuzzle(puzzleId: String, difficulty: Difficulty): Response<Puzzle> =
         try {
             when(val item = database.puzzleDao().loadPuzzle(puzzleId, difficulty)) {
