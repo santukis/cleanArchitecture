@@ -36,7 +36,8 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     private val _puzzle: MutableLiveData<Response<Puzzle>> = MutableLiveData()
     val puzzle: LiveData<Response<Puzzle>> = _puzzle
 
-    var difficulty: Difficulty = Difficulty.Medium
+    private val _difficulty: MutableLiveData<Difficulty> = MutableLiveData()
+    val difficulty: LiveData<Difficulty> = _difficulty
 
     private val _screen: MutableLiveData<Int> = MutableLiveData()
     val screen: LiveData<Int> = _screen
@@ -83,7 +84,7 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     }
 
     fun updatePuzzleDifficulty(difficulty: Difficulty) {
-        this.difficulty = difficulty
+        _difficulty.postValue(difficulty)
     }
 
     fun loadGameHistory() {
