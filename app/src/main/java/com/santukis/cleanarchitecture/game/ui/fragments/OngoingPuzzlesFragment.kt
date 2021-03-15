@@ -42,7 +42,7 @@ class OngoingPuzzlesFragment: BaseFragment<FragmentOngoingPuzzlesBinding>() {
 
             when (response) {
                 is Response.Success -> puzzleAdapter.showItems(response.data) { p1, p2 -> p1.id == p2.id }
-                is Response.Error -> Toast.makeText(binding.root.context, "Unable to load Puzzles", Toast.LENGTH_SHORT).show()
+                is Response.Error -> Toast.makeText(binding.root.context, "No saved Puzzles", Toast.LENGTH_SHORT).show()
             }
         }
     }

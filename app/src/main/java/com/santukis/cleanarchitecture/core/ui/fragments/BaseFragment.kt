@@ -38,9 +38,16 @@ abstract class BaseFragment<Binding: ViewBinding>: Fragment(), DIAware {
         initializeViewListeners(binding)
     }
 
+    override fun onDestroyView() {
+        releaseViewComponents()
+        super.onDestroyView()
+    }
+
     abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
 
     open fun initializeViewComponents(binding: Binding) {}
 
     open fun initializeViewListeners(binding: Binding) {}
+
+    open fun releaseViewComponents() {}
 }
