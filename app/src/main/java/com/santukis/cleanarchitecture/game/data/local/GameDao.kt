@@ -12,6 +12,9 @@ interface PuzzleDao: BaseDao<PuzzleDb> {
     @Query("SELECT * FROM puzzles WHERE puzzles.id = :puzzleId AND difficulty = :difficulty LIMIT 1")
     fun loadPuzzle(puzzleId: String, difficulty: Difficulty): PuzzleDetailDb?
 
+    @Query("SELECT * FROM puzzles")
+    fun loadPuzzles(): List<PuzzleDetailDb>
+
 }
 
 @Dao
