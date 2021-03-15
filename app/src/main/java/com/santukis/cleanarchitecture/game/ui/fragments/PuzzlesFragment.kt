@@ -36,6 +36,8 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
         binding.recycler.layoutManager = StaggeredGridLayoutManager(2, VERTICAL).apply { gapStrategy = GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS }
         binding.recycler.addItemDecoration(MarginItemDecoration(left = 10, right = 10, top = 10, bottom = 10))
         binding.recycler.adapter = puzzleAdapter
+        binding.medium.isSelected = true
+        binding.mediumText.isSelected = true
 
         setHasOptionsMenu(true)
     }
@@ -50,6 +52,14 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
                 is Response.Success -> puzzleAdapter.showItems(response.data) { p1, p2 -> p1.id == p2.id }
                 is Response.Error -> Toast.makeText(binding.root.context, "Unable to load Puzzles", Toast.LENGTH_SHORT).show()
             }
+        }
+        gameViewModel?.difficulty?.observe(this) { difficulty ->
+            binding.easy.isSelected = difficulty == Difficulty.Easy
+            binding.easyText.isSelected = difficulty == Difficulty.Easy
+            binding.medium.isSelected = difficulty == Difficulty.Medium
+            binding.mediumText.isSelected = difficulty == Difficulty.Medium
+            binding.hard.isSelected = difficulty == Difficulty.Hard
+            binding.hardText.isSelected = difficulty == Difficulty.Hard
         }
     }
 
@@ -78,7 +88,7 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
 
     override fun onItemClick(view: View, item: Any) {
         if (item is Puzzle) {
-            findNavController().navigate(PuzzlesFragmentDirections.openPuzzleGame(item.id, gameViewModel?.difficulty?.ordinal ?: Difficulty.Easy.ordinal))
+            findNavController().navigate(PuzzlesFragmentDirections.openPuzzleGame(item.id, gameViewModel?.difficulty?.value?.ordinal ?: Difficulty.Easy.ordinal))
         }
     }
 }
