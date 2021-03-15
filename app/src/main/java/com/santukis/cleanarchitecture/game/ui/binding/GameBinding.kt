@@ -39,4 +39,6 @@ object GameBinding {
             else -> view.setImageResource(R.drawable.ic_wrong)
         }
     }
+
+
 }

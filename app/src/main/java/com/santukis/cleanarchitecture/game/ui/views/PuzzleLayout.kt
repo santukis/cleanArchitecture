@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -15,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import androidx.customview.widget.ViewDragHelper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.santukis.cleanarchitecture.game.domain.model.Difficulty
@@ -24,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.*
 
 class PuzzleLayout @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     interface OnPuzzleStateChanged {
@@ -46,6 +48,8 @@ class PuzzleLayout @JvmOverloads constructor(
     private var imageSize = Size(0, 0)
 
     private val scrollDistance = PointF()
+
+    private var screenSize: Size = Size(resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
 
     private val frame = Rect()
     private val frameContour = Paint().apply {
@@ -86,7 +90,7 @@ class PuzzleLayout @JvmOverloads constructor(
         override fun onViewPositionChanged(changedView: View, left: Int, top: Int, dx: Int, dy: Int) {
             super.onViewPositionChanged(changedView, left, top, dx, dy)
             selectedPiece?.apply {
-                piece.position.x =  left
+                piece.position.x = left
                 piece.position.y = top
             }
         }
@@ -149,6 +153,7 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, onGestureListener)
 
+
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         val action = ev.actionMasked
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
@@ -178,15 +183,15 @@ class PuzzleLayout @JvmOverloads constructor(
 
         canvas?.apply {
             save()
-            toggleScalingIfFistLoad(false)
+            toggleScalingIfFirstLoad(false)
             drawFrame()
             drawPieces()
-            toggleScalingIfFistLoad(true)
+            toggleScalingIfFirstLoad(true)
             restore()
         }
     }
 
-    private fun toggleScalingIfFistLoad(finished: Boolean) {
+    private fun toggleScalingIfFirstLoad(finished: Boolean) {
         if (isFirstLoad.get()) {
             isFirstLoad.set(!finished)
             isScaling.set(!isScaling.get())
@@ -194,7 +199,7 @@ class PuzzleLayout @JvmOverloads constructor(
     }
 
     private fun Canvas.drawFrame() {
-        when(isScaling.get()) {
+        when (isScaling.get()) {
             true -> scaleFrame(frame.centerX(), frame.centerY())
             false -> frame.offset(scrollDistance.x.toInt(), scrollDistance.y.toInt())
         }
@@ -228,46 +233,54 @@ class PuzzleLayout @JvmOverloads constructor(
             this.puzzle = puzzle
 
             Glide.with(this)
-                    .asBitmap()
-                    .load(puzzle.image)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            isFirstLoad.getAndSet(true)
-                            createPieceViews(resource)
-                        }
+                .asBitmap()
+                .load(puzzle.image)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        isFirstLoad.getAndSet(true)
+                        createPieceViews(resource)
+                    }
 
-                        override fun onLoadCleared(placeholder: Drawable?) {
+                    override fun onLoadCleared(placeholder: Drawable?) {
 
-                        }
-                    })
+                    }
+                })
         }
     }
 
     private fun createPieceViews(resource: Bitmap) {
-        pieceViews.clear()
+        try {
+            pieceViews.clear()
 
-        val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
-        val scaledBitmap = scaleImage(resource, aspectRatio)
+            val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
+            val scaledBitmap = scaleImage(resource, aspectRatio)
 
-        imageSize = Size(scaledBitmap.width, scaledBitmap.height)
+            Log.d("Scale", "scaledMap width: ${scaledBitmap.width} height: ${scaledBitmap.height}")
 
-        val axisSize = buildAxisSize(aspectRatio, puzzle.difficulty)
+            imageSize = Size(scaledBitmap.width, scaledBitmap.height)
 
-        scaleFrame(width / 2, height / 2)
+            val axisSize = buildAxisSize(aspectRatio, puzzle.difficulty)
 
-        val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
+            scaleFrame(screenSize.width / 2, screenSize.height / 2)
 
-        when {
-            puzzle.pieces.isEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize)
-            puzzle.pieces.isNotEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize, puzzle.pieces)
+            val pieceSize = Size(scaledBitmap.width / axisSize.width, scaledBitmap.height / axisSize.height)
+
+            when {
+                puzzle.pieces.isEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize)
+                puzzle.pieces.isNotEmpty() -> createPieces(scaledBitmap, axisSize, pieceSize, puzzle.pieces)
+            }
+
+            addPiecesToLayout()
+
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
-
-        addPiecesToLayout()
     }
 
     private fun scaleImage(resource: Bitmap, aspectRatio: Float): Bitmap {
-        val targetWidth = if (aspectRatio >= 1) width else (resource.width * height.toFloat() / resource.height).toInt()
-        val targetHeight = if (aspectRatio < 1) height else (resource.height * width.toFloat() / resource.width).toInt()
+        val targetWidth = if (aspectRatio >= 1) screenSize.width else (resource.width * screenSize.height.toFloat() / resource.height).toInt()
+        val targetHeight = if (aspectRatio < 1) screenSize.height else (resource.height * screenSize.width.toFloat() / resource.width).toInt()
         return Bitmap.createScaledBitmap(resource, targetWidth, targetHeight, true)
     }
 
@@ -291,7 +304,7 @@ class PuzzleLayout @JvmOverloads constructor(
                     axisSize,
                     coordinates,
                     pieceSize,
-                    Size(width, height)
+                    screenSize
                 )
                 pieceViews.add(pieceView)
                 coordinates.x += pieceSize.width
