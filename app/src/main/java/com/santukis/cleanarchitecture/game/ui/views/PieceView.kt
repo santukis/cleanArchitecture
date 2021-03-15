@@ -29,7 +29,7 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
             val pieceView = createPieceView(context, pieceBitmap, piece)
 
-            val puzzlePiece = Bitmap.createBitmap(pieceView.piece.size.width, pieceView.piece.size.height, Bitmap.Config.ARGB_8888)
+            val puzzlePiece = Bitmap.createBitmap(piece.size.width, piece.size.height, Bitmap.Config.ARGB_8888)
 
             drawPiece(puzzlePiece, axisSize, piece.cell, offset, pieceSize, pieceBitmap)
 
