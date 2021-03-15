@@ -14,7 +14,38 @@
 
         <action
             android:id="@+id/openPuzzleGame"
-            app:destination="@+id/puzzleGameFragment">
+            app:destination="@+id/puzzleGameFragment"
+            app:popUpTo="@id/puzzlesFragment">
+
+            <argument
+                android:name="puzzleId"
+                android:defaultValue=""
+                app:argType="string" />
+
+            <argument
+                android:name="difficulty"
+                android:defaultValue="1"
+                app:argType="integer" />
+
+        </action>
+
+        <action
+            android:id="@+id/openOngoingPuzzles"
+            app:destination="@+id/ongoingPuzzlesFragment"
+            app:popUpTo="@id/puzzlesFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ongoingPuzzlesFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.OngoingPuzzlesFragment"
+        tools:layout="@layout/fragment_ongoing_puzzles"
+        android:label="Ongoing Puzzles" >
+
+        <action
+            android:id="@+id/openPuzzleGame"
+            app:destination="@+id/puzzleGameFragment"
+            app:popUpTo="@id/puzzlesFragment">
 
             <argument
                 android:name="puzzleId"

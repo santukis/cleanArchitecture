@@ -44,13 +44,23 @@ class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
         }
     }
 
+    override fun releaseViewComponents() {
+        activity?.let { showSystemUI(it.window) }
+        super.releaseViewComponents()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.let { hideSystemUI(window = it.window) }
+        activity?.let { hideSystemUI(it.window) }
     }
 
     private fun hideSystemUI(window: Window) {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         WindowInsetsControllerCompat(window, window.decorView).hide(WindowInsetsCompat.Type.statusBars())
+    }
+
+    private fun showSystemUI(window: Window) {
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.statusBars())
     }
 }

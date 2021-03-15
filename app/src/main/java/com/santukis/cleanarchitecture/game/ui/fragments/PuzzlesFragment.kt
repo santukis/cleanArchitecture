@@ -1,14 +1,15 @@
 package com.santukis.cleanarchitecture.game.ui.fragments
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.*
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.decorations.MarginItemDecoration
+import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.ElementPuzzleItemBinding
@@ -32,6 +33,8 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
         binding.recycler.layoutManager = StaggeredGridLayoutManager(2, VERTICAL).apply { gapStrategy = GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS }
         binding.recycler.addItemDecoration(MarginItemDecoration(left = 10, right = 10, top = 10, bottom = 10))
         binding.recycler.adapter = puzzleAdapter
+
+        setHasOptionsMenu(true)
     }
 
     override fun initializeViewListeners(binding: FragmentPuzzlesBinding) {
@@ -46,6 +49,20 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>() {
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.ongoing_puzzle, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when(item.itemId) {
+            R.id.ongoing_puzzles -> {
+                findNavController().navigate(R.id.openOngoingPuzzles)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
     override fun onStart() {
         super.onStart()

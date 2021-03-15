@@ -31,4 +31,5 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
+    <string name="ongoing_puzzles">Ongoing Puzzles</string>
 </resources>

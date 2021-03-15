@@ -1,7 +1,6 @@
 package com.santukis.cleanarchitecture.game.ui.fragments
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.view.*
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentGamesBinding
 
