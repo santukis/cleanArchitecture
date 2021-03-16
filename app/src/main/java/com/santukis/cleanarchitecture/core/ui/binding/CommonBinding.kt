@@ -38,4 +38,12 @@ object CommonBinding {
             if (resource != 0) view.setText(resource)
         }
     }
+
+    @BindingAdapter("app:showImageResource")
+    @JvmStatic
+    fun showImageResource(view: AppCompatImageView, imageResource: Int?) {
+        imageResource?.let { resource ->
+            if (resource != 0) view.setImageResource(resource)
+        }
+    }
 }
