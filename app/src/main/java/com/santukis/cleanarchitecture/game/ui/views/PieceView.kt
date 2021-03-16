@@ -3,9 +3,13 @@ package com.santukis.cleanarchitecture.game.ui.views
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.util.Size
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.scaleMatrix
 import androidx.core.view.ViewCompat
+import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.game.domain.model.Piece
 import kotlin.math.*
 import kotlin.random.Random
@@ -261,14 +265,12 @@ class PieceView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     }
 
     fun updateScale(scaleFactor: Float) {
-        val pivot = when(piece.canMove) {
-            true -> 0.5f
-            false -> 0f
-        }
-        pivotX = pivot
-        pivotY = pivot
-        scaleX = scaleFactor
-        scaleY = scaleFactor
+        pivotX = 0f
+        pivotY = 0f
+
+        right = left + (piece.size.width * scaleFactor).toInt()
+        bottom = top + (piece.size.height * scaleFactor).toInt()
+        imageMatrix = scaleMatrix(scaleFactor, scaleFactor)
     }
 
     fun calculatePiecePosition(scaleFactor: Float, frame: Rect): Pair<Int, Int> {
