@@ -14,16 +14,18 @@ import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.decorations.MarginItemDecoration
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
+import com.santukis.cleanarchitecture.databinding.ElementOngoingPuzzleItemBinding
 import com.santukis.cleanarchitecture.databinding.ElementPuzzleItemBinding
 import com.santukis.cleanarchitecture.databinding.FragmentOngoingPuzzlesBinding
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
+import com.santukis.cleanarchitecture.game.ui.binding.OngoingPuzzleViewHolder
 import com.santukis.cleanarchitecture.game.ui.binding.PuzzleViewHolder
 
 class OngoingPuzzlesFragment: BaseFragment<FragmentOngoingPuzzlesBinding>(), OnItemClickListener {
 
     private val puzzleAdapter: ItemsAdapter<Puzzle> by lazy {
         ItemsAdapter(ViewHolderProvider(itemViewHolder = { parent, viewType ->
-            PuzzleViewHolder(ElementPuzzleItemBinding.inflate(layoutInflater, parent, false))
+            OngoingPuzzleViewHolder(ElementOngoingPuzzleItemBinding.inflate(layoutInflater, parent, false))
         }))
     }
 

@@ -88,8 +88,8 @@ data class Puzzle(
     var scaleFactor: Float = 1f
 )
 
-enum class Difficulty(val maxSize: Int) {
-    Easy(24), Medium(64), Hard(128)
+enum class Difficulty(val maxSize: Int, val iconRes: Int) {
+    Easy(24, R.drawable.ic_easy), Medium(64, R.drawable.ic_medium), Hard(128, R.drawable.ic_hard)
 }
 
 data class Piece(
