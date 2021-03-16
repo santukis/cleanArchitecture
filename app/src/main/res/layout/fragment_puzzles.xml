@@ -59,6 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@id/easy"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@drawable/color_state_easy"
+                android:onClick="@{() -> easy.performClick()}"
                 android:text="@string/easy"/>
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -85,6 +86,7 @@
                 app:layout_constraintTop_toBottomOf="@id/medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@drawable/color_state_medium"
+                android:onClick="@{() -> medium.performClick()}"
                 android:text="@string/medium"/>
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -112,6 +114,7 @@
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:textColor="@drawable/color_state_hard"
+                android:onClick="@{() -> hard.performClick() }"
                 android:text="@string/hard"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
