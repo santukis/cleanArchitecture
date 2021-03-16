@@ -98,15 +98,13 @@ class PuzzleLayout @JvmOverloads constructor(
         override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
             super.onViewCaptured(capturedChild, activePointerId)
             isDragging.getAndSet(true)
-            capturedChild.animate().translationZ(50f).scaleX(puzzle.scaleFactor + 0.1f).scaleY(puzzle.scaleFactor + 0.1f).setDuration(100).start()
-            capturedChild.alpha = 0.5f
+            capturedChild.animate().translationZ(50f).alpha(0.5f).setDuration(100).start()
             selectedPiece = capturedChild as PieceView
         }
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             super.onViewReleased(releasedChild, xvel, yvel)
-            releasedChild.animate().translationZ(10f).scaleX(puzzle.scaleFactor).scaleY(puzzle.scaleFactor).setDuration(0).start()
-            releasedChild.alpha = 1f
+            releasedChild.animate().translationZ(10f).alpha(1f).setDuration(100).start()
             selectedPiece?.apply {
                 val (x, y) = calculatePiecePosition(puzzle.scaleFactor, frame)
                 dragHelper.settleCapturedViewAt(x, y)
