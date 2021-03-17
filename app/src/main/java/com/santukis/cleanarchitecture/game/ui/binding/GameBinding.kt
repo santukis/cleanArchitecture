@@ -12,6 +12,8 @@ import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.artwork.domain.model.Artwork
 import com.santukis.cleanarchitecture.databinding.ElementGameAnswerBinding
 import com.santukis.cleanarchitecture.game.domain.model.Answer
+import com.santukis.cleanarchitecture.game.domain.model.Puzzle
+import com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout
 
 object GameBinding {
 
@@ -40,4 +42,11 @@ object GameBinding {
         }
     }
 
+    @BindingAdapter("app:showPuzzle")
+    @JvmStatic
+    fun showPuzzle(view: PuzzleLayout, puzzle: Puzzle?) {
+        puzzle?.apply {
+            view.createPuzzle(this)
+        }
+    }
 }
