@@ -1,23 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/puzzle_board">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/image"
+    <data>
+        <variable
+            name="puzzle"
+            type="com.santukis.cleanarchitecture.game.domain.model.Puzzle" />
+
+        <variable
+            name="util"
+            type="com.santukis.cleanarchitecture.core.ui.binding.CommonBinding" />
+
+        <import type="android.view.View"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="center"
-        android:alpha="0"/>
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        <com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:showPuzzle="@{puzzle}"
+            android:clipToPadding="false"
+            android:background="@color/puzzle_board">
 
-</com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout>
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+        </com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout>
+
+
+        <include layout="@layout/element_puzzle_info"
+            android:id="@+id/image_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/xlarge_space"
+            app:puzzle="@{puzzle}"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/normal_space"
+            android:onClick="@{() -> util.toggleVisibility(imageContainer)}"
+            app:fabSize="mini"
+            android:src="@drawable/ic_image"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</layout>

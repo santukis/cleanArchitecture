@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.util.Size
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -253,8 +252,6 @@ class PuzzleLayout @JvmOverloads constructor(
 
             val aspectRatio = resource.width.toFloat() / resource.height.toFloat()
             val scaledBitmap = scaleImage(resource, aspectRatio)
-
-            Log.d("Scale", "scaledMap width: ${scaledBitmap.width} height: ${scaledBitmap.height}")
 
             imageSize = Size(scaledBitmap.width, scaledBitmap.height)
 
