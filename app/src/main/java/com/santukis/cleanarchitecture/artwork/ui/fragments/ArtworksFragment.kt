@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.ViewHolderProvider
@@ -19,6 +20,8 @@ import com.santukis.cleanarchitecture.databinding.FragmentArtworksBinding
 import kotlinx.coroutines.flow.collect
 
 class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
+
+    private val args: ArtworksFragmentArgs by navArgs()
 
     private var selectedCollection: Collection = Collection.Unknown
 
@@ -58,10 +61,8 @@ class ArtworksFragment: BaseFragment<FragmentArtworksBinding>() {
     }
 
     private fun loadData() {
-        arguments?.getString("collectionId")?.apply {
-            selectedCollection = Collection.valueOf(this)
-            artworkViewModel?.loadArtworks(selectedCollection)
-        }
+        selectedCollection = Collection.valueOf(args.collectionId)
+        artworkViewModel?.loadArtworks(selectedCollection)
     }
 
     override fun onLowMemory() {
