@@ -43,6 +43,11 @@
         android:id="@+id/collectionDetail"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworksFragment">
 
+        <argument
+            android:name="collectionId"
+            android:defaultValue=""
+            app:argType="string" />
+
         <action
             android:id="@+id/openArtworkDetail"
             app:destination="@id/artworkDetailFragment"
@@ -62,6 +67,11 @@
         android:id="@+id/artworkDetailFragment"
         android:name="com.santukis.cleanarchitecture.artwork.ui.fragments.ArtworkDetailFragment"
         android:label="Detail" >
+
+        <argument
+            android:name="artworkId"
+            android:defaultValue=""
+            app:argType="string" />
 
         <action
             android:id="@+id/action_artworkDetailFragment_pop"
