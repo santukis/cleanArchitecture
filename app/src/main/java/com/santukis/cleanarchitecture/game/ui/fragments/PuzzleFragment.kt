@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.*
+import androidx.navigation.fragment.navArgs
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.binding.CommonBinding
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
@@ -13,15 +14,15 @@ import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 
 class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
 
+    private val args: PuzzleFragmentArgs by navArgs()
+
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentPuzzleGameBinding =
         FragmentPuzzleGameBinding.inflate(inflater, container, false)
 
     override fun initializeViewComponents(binding: FragmentPuzzleGameBinding) {
         super.initializeViewComponents(binding)
         binding.util = CommonBinding
-        gameViewModel?.loadPuzzle(
-            puzzleId = arguments?.getString("puzzleId") ?: "",
-            difficulty = arguments?.getInt("difficulty", 1)?.let { Difficulty.values().getOrNull(it) } ?: Difficulty.Medium)
+        gameViewModel?.loadPuzzle(args.puzzleId, Difficulty.values().getOrNull(args.difficulty) ?: Difficulty.Medium)
     }
 
     override fun initializeViewListeners(binding: FragmentPuzzleGameBinding) {
