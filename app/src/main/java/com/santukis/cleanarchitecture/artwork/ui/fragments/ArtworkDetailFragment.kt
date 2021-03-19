@@ -36,10 +36,6 @@ class ArtworkDetailFragment: BaseFragment<FragmentArtworkDetailBinding>() {
 
     override fun onStart() {
         super.onStart()
-        loadData()
-    }
-
-    private fun loadData() {
         artworkViewModel?.loadArtworkDetail(args.artworkId)
     }
 }
