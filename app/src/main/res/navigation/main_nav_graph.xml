@@ -87,7 +87,7 @@
 
         <action
             android:id="@+id/openQuizFragment"
-            app:destination="@+id/quizGame"
+            app:destination="@+id/quizGameActivity"
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true"/>
 
@@ -99,16 +99,10 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/quizGame"
-        android:name="com.santukis.cleanarchitecture.game.ui.fragments.QuizGameFragment"
-        android:label="Game" >
-
-        <action
-            android:id="@+id/action_gameFragment_to_gameScoreFragment"
-            app:destination="@id/gameScoreFragment" />
-
-    </fragment>
+    <activity
+        android:id="@+id/quizGameActivity"
+        android:name="com.santukis.cleanarchitecture.game.ui.activities.QuizGameActivity"
+        android:label="Game"/>
 
     <activity
         android:id="@+id/puzzleGameActivity"
@@ -134,10 +128,5 @@
         </action>
 
     </fragment>
-
-    <fragment
-        android:id="@+id/gameScoreFragment"
-        android:name="com.santukis.cleanarchitecture.game.ui.fragments.QuizGameScoreFragment"
-        android:label="Game Score" />
 
 </navigation>

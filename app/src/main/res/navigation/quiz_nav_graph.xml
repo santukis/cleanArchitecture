@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/puzzle_nav_graph"
+    app:startDestination="@id/quizGame">
+
+
+    <fragment
+        android:id="@+id/quizGame"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.QuizGameFragment"
+        android:label="Game" >
+
+        <action
+            android:id="@+id/action_gameFragment_to_gameScoreFragment"
+            app:destination="@id/gameScoreFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameScoreFragment"
+        android:name="com.santukis.cleanarchitecture.game.ui.fragments.QuizGameScoreFragment"
+        android:label="Game Score" />
+
+</navigation>
