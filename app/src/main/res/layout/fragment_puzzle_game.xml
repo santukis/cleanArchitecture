@@ -36,7 +36,6 @@
 
         </com.santukis.cleanarchitecture.game.ui.views.PuzzleLayout>
 
-
         <include layout="@layout/element_puzzle_info"
             android:id="@+id/image_container"
             android:layout_width="match_parent"
@@ -56,10 +55,9 @@
             android:layout_margin="@dimen/normal_space"
             android:onClick="@{() -> util.toggleVisibility(imageContainer)}"
             app:fabSize="mini"
+            app:backgroundTint="@color/white"
             android:src="@drawable/ic_image"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </layout>
