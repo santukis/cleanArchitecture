@@ -5,7 +5,6 @@
     android:id="@+id/puzzle_nav_graph"
     app:startDestination="@id/puzzlesFragment">
 
-
     <fragment
         android:id="@+id/puzzlesFragment"
         android:name="com.santukis.cleanarchitecture.game.ui.fragments.PuzzlesFragment"

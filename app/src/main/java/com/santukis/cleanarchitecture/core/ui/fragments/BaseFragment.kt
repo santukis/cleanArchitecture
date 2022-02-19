@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.santukis.cleanarchitecture.artwork.ui.viewmodels.ArtworkViewModel
 import com.santukis.cleanarchitecture.core.ui.activities.BaseActivity
-import com.santukis.cleanarchitecture.core.ui.activities.MainActivity
-import com.santukis.cleanarchitecture.core.ui.viewmodels.NavigationViewModel
 import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
+import com.santukis.navigator.Navigator
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.di
@@ -21,7 +20,7 @@ abstract class BaseFragment<Binding: ViewBinding>: Fragment(), DIAware {
 
     protected lateinit var binding: Binding
 
-    protected val navigationViewModel: NavigationViewModel? by lazy { (activity as? BaseActivity<*>)?.navigationViewModel }
+    protected val navigator: Navigator? by lazy { (activity as? BaseActivity<*>)?.navigator }
 
     protected val artworkViewModel: ArtworkViewModel? by lazy { (activity as? BaseActivity<*>)?.artworkViewModel }
 

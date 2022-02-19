@@ -12,6 +12,7 @@ import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.OnItemClickListener
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.decorations.MarginItemDecoration
+import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.ElementOngoingPuzzleItemBinding
@@ -42,7 +43,15 @@ class OngoingPuzzlesFragment: BaseFragment<FragmentOngoingPuzzlesBinding>(), OnI
     override fun initializeViewListeners(binding: FragmentOngoingPuzzlesBinding) {
         super.initializeViewListeners(binding)
         puzzleAdapter.addOnItemClickListener(this)
-        gameViewModel?.puzzles?.observe(this) { response ->
+    }
+
+    override fun onStart() {
+        super.onStart()
+        loadData()
+    }
+
+    private fun loadData() {
+        gameViewModel?.loadOngoingPuzzles()?.observe(this) { response ->
             binding.progress.isVisible = response is Response.Loading
 
             when (response) {
@@ -52,18 +61,11 @@ class OngoingPuzzlesFragment: BaseFragment<FragmentOngoingPuzzlesBinding>(), OnI
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        loadData()
-    }
-
-    private fun loadData() {
-        gameViewModel?.loadOngoingPuzzles()
-    }
-
     override fun onItemClick(view: View, item: Any) {
         if (item is Puzzle) {
-            findNavController().navigate(PuzzlesFragmentDirections.openPuzzleGame(item.id, item.difficulty.ordinal))
+            findNavController().navigate(
+                PuzzlesFragmentDirections.openPuzzleGame(item.id, item.difficulty.ordinal)
+            )
         }
     }
 }

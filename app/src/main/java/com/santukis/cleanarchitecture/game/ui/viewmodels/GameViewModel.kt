@@ -24,17 +24,8 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
     private val executor: Executor by di.instance(tag = "executor", arg = viewModelScope)
     private val gameDataSource: GameDataSource by di.instance("local")
 
-    private val _gameHistory: MutableLiveData<Response<GameHistory>> = MutableLiveData()
-    val gameHistory: LiveData<Response<GameHistory>> = _gameHistory
-
     private val _question: MutableLiveData<Response<Question>> = MutableLiveData()
     val question: LiveData<Response<Question>> = _question
-
-    private val _puzzles: MutableLiveData<Response<List<Puzzle>>> = MutableLiveData()
-    val puzzles: LiveData<Response<List<Puzzle>>> = _puzzles
-
-    private val _puzzle: MutableLiveData<Response<Puzzle>> = MutableLiveData()
-    val puzzle: LiveData<Response<Puzzle>> = _puzzle
 
     private val _difficulty: MutableLiveData<Difficulty> = MutableLiveData()
     val difficulty: LiveData<Difficulty> = _difficulty
@@ -62,35 +53,43 @@ class GameViewModel(application: Application, di: DI) : AndroidViewModel(applica
         }
     }
 
-    fun loadPuzzles() {
+    fun loadPuzzles(): LiveData<Response<List<Puzzle>>> {
+        val puzzles: MutableLiveData<Response<List<Puzzle>>> = MutableLiveData()
         executor.execute {
-            _puzzles.postValue(Response.Loading())
-            _puzzles.postValue(gameDataSource.loadPuzzles())
+            puzzles.postValue(Response.Loading())
+            puzzles.postValue(gameDataSource.loadPuzzles())
         }
+        return puzzles
     }
 
-    fun loadOngoingPuzzles() {
+    fun loadOngoingPuzzles(): LiveData<Response<List<Puzzle>>> {
+        val puzzles: MutableLiveData<Response<List<Puzzle>>> = MutableLiveData()
         executor.execute {
-            _puzzles.postValue(Response.Loading())
-            _puzzles.postValue(gameDataSource.loadOngoingPuzzles())
+            puzzles.postValue(Response.Loading())
+            puzzles.postValue(gameDataSource.loadOngoingPuzzles())
         }
+        return puzzles
     }
 
-    fun loadPuzzle(puzzleId: String, difficulty: Difficulty) {
+    fun loadPuzzle(puzzleId: String, difficulty: Difficulty): LiveData<Response<Puzzle>> {
+        val puzzle:  MutableLiveData<Response<Puzzle>> = MutableLiveData()
         executor.execute {
-            _puzzle.postValue(Response.Loading())
-            _puzzle.postValue(gameDataSource.loadPuzzle(puzzleId, difficulty))
+            puzzle.postValue(Response.Loading())
+            puzzle.postValue(gameDataSource.loadPuzzle(puzzleId, difficulty))
         }
+        return puzzle
     }
 
     fun updatePuzzleDifficulty(difficulty: Difficulty) {
         _difficulty.postValue(difficulty)
     }
 
-    fun loadGameHistory() {
+    fun loadGameHistory(): LiveData<Response<GameHistory>> {
+        val gameHistory: MutableLiveData<Response<GameHistory>> = MutableLiveData()
         executor.execute {
-            _gameHistory.postValue(gameDataSource.loadGameHistory())
+            gameHistory.postValue(gameDataSource.loadGameHistory())
         }
+        return gameHistory
     }
 
     private fun updateQuestionAnswer(answer: Answer): Question? =

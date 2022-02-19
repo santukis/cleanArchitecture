@@ -28,10 +28,9 @@ class FavouritesFragment: BaseFragment<FragmentFavouritesBinding>() {
         binding.recycler.addItemDecoration(MarginItemDecoration(bottom = 20))
     }
 
-    override fun initializeViewListeners(binding: FragmentFavouritesBinding) {
-        super.initializeViewListeners(binding)
-
-        artworkViewModel?.favourites?.observe(this) { response ->
+    override fun onStart() {
+        super.onStart()
+        artworkViewModel?.loadFavourites()?.observe(this) { response ->
 
             when(response) {
                 is Response.Success -> artworksAdapter.showItems(response.data)

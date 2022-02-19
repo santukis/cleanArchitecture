@@ -13,6 +13,7 @@ import android.widget.RelativeLayout
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.doOnPreDraw
 import androidx.customview.widget.ViewDragHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -150,7 +151,6 @@ class PuzzleLayout @JvmOverloads constructor(
 
     private val gestureDetector: GestureDetectorCompat = GestureDetectorCompat(context, onGestureListener)
 
-
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         val action = ev.actionMasked
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
@@ -226,7 +226,7 @@ class PuzzleLayout @JvmOverloads constructor(
     }
 
     fun createPuzzle(puzzle: Puzzle) {
-        doOnLayout {
+        doOnPreDraw {
             this.puzzle = puzzle
 
             Glide.with(this)

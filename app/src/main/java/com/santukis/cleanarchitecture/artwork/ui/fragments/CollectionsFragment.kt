@@ -25,10 +25,10 @@ class CollectionsFragment: BaseFragment<FragmentCollectionsBinding>() {
         binding.recycler.adapter = collectionsAdapter
     }
 
-    override fun initializeViewListeners(binding: FragmentCollectionsBinding) {
-        super.initializeViewListeners(binding)
+    override fun onStart() {
+        super.onStart()
 
-        artworkViewModel?.collections?.observe(this) { response ->
+        artworkViewModel?.loadCollections()?.observe(this) { response ->
             when(response) {
                 is Response.Success -> collectionsAdapter.showItems(response.data)
                 is Response.Error -> {}

@@ -12,7 +12,7 @@ import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.FragmentPuzzleGameBinding
 import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 
-class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
+class PuzzleFragment : BaseFragment<FragmentPuzzleGameBinding>() {
 
     private val args: PuzzleFragmentArgs by navArgs()
 
@@ -22,16 +22,23 @@ class PuzzleFragment: BaseFragment<FragmentPuzzleGameBinding>() {
     override fun initializeViewComponents(binding: FragmentPuzzleGameBinding) {
         super.initializeViewComponents(binding)
         binding.util = CommonBinding
-        gameViewModel?.loadPuzzle(args.puzzleId, Difficulty.values().getOrNull(args.difficulty) ?: Difficulty.Medium)
+
     }
 
     override fun initializeViewListeners(binding: FragmentPuzzleGameBinding) {
         super.initializeViewListeners(binding)
         gameViewModel?.apply { binding.container.addOnPuzzleStateChanged(this) }
-        gameViewModel?.puzzle?.observe(this) { response ->
+    }
+
+    override fun onStart() {
+        super.onStart()
+        gameViewModel?.loadPuzzle(
+            args.puzzleId,
+            Difficulty.values().getOrNull(args.difficulty) ?: Difficulty.Medium
+        )?.observe(this) { response ->
             binding.progress.isVisible = response is Response.Loading
 
-            when(response) {
+            when (response) {
                 is Response.Success -> binding.puzzle = response.data
             }
         }

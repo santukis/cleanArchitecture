@@ -22,20 +22,14 @@ class ArtworkDetailFragment: BaseFragment<FragmentArtworkDetailBinding>() {
         binding.viewmodel = artworkViewModel
     }
 
-    override fun initializeViewListeners(binding: FragmentArtworkDetailBinding) {
-        super.initializeViewListeners(binding)
-
-        artworkViewModel?.artwork?.observe(viewLifecycleOwner) { response ->
+    override fun onStart() {
+        super.onStart()
+        artworkViewModel?.loadArtworkDetail(args.artworkId)?.observe(viewLifecycleOwner) { response ->
             when(response) {
                 is Response.Loading -> binding.artwork = Artwork.EMPTY
                 is Response.Success -> binding.artwork = response.data
                 is Response.Error -> Toast.makeText(binding.root.context, "Unable to show Detail", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        artworkViewModel?.loadArtworkDetail(args.artworkId)
     }
 }
