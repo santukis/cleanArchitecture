@@ -21,24 +21,22 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
     private val executor: Executor by di.instance(tag = "executor", arg = viewModelScope)
     private val artworkDataSource: ArtworkDataSource by di.instance(tag = "repository")
 
-    val collections: MutableLiveData<Response<List<ArtworkCollection>>> = MutableLiveData()
-    val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
     val artworks: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
-    val favourites: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
     var isFavourite: ObservableBoolean = ObservableBoolean()
 
     init {
-        loadCollections()
         loadFavourites()
     }
 
-    private fun loadCollections() {
+    fun loadCollections(): LiveData<Response<List<ArtworkCollection>>> {
+        val collections: MutableLiveData<Response<List<ArtworkCollection>>> = MutableLiveData()
         executor.execute {
             artworkDataSource.loadCollections()
                 .onStart { collections.postValue(Response.Loading()) }
                 .catch { exception -> collections.postValue(Response.Error(exception)) }
                 .collect { collections.postValue(it) }
         }
+        return collections
     }
 
     fun loadArtworks(collection: Collection, lastVisible: Int = 0) {
@@ -50,22 +48,25 @@ class ArtworkViewModel(application: Application, di: DI): AndroidViewModel(appli
         }
     }
 
-    fun loadArtworkDetail(artworkId: String) {
+    fun loadArtworkDetail(artworkId: String): LiveData<Response<Artwork>> {
+        val artwork: MutableLiveData<Response<Artwork>> = MutableLiveData()
         executor.execute {
             artwork.postValue(Response.Loading())
             artwork.postValue(artworkDataSource.loadArtworkDetail(artworkId = artworkId))
             isFavourite.set(artworkDataSource.isArtworkFavourite(artworkId))
         }
+        return artwork
     }
 
-    @VisibleForTesting
-    fun loadFavourites() {
+    fun loadFavourites(): LiveData<Response<List<Artwork>>> {
+        val favourites: MutableLiveData<Response<List<Artwork>>> = MutableLiveData()
         executor.execute {
             artworkDataSource.loadFavourites()
                     .onStart { favourites.postValue(Response.Loading()) }
                     .catch { exception -> favourites.postValue(Response.Error(exception)) }
                     .collect { favourites.postValue(it) }
         }
+        return favourites
     }
 
     fun toggleFavourite(artworkId: String) {

@@ -66,18 +66,18 @@ class ArtworkViewModelTest {
         runBlocking {
             val expectedResponse = Artwork(id = "ExpectedId")
             val observer = createObserver<Response<Artwork>>()
-            viewModel?.artwork?.observeForever(observer)
 
             whenever(mockedArtworkDataSource.loadArtworkDetail(Collection.Unknown, "anyId")).thenReturn(Response.Success(expectedResponse))
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
-            viewModel?.loadArtworkDetail("anyId")
+            val artwork = viewModel?.loadArtworkDetail("anyId") as MutableLiveData
+            artwork.observeForever(observer)
 
             verify(observer).onChanged(Response.Loading())
 
             verify(observer).onChanged(Response.Success(expectedResponse))
 
-            removeObserver(viewModel?.artwork, observer)
+            removeObserver(artwork, observer)
         }
     }
 
@@ -86,18 +86,18 @@ class ArtworkViewModelTest {
         runBlocking {
             val expectedResponse = Response.Error<Artwork>(Exception("Expected response"))
             val observer = createObserver<Response<Artwork>>()
-            viewModel?.artwork?.observeForever(observer)
 
             whenever(mockedArtworkDataSource.loadArtworkDetail(Collection.Unknown, "")).thenReturn(expectedResponse)
             whenever(mockedArtworkDataSource.isArtworkFavourite(any())).thenReturn(true)
 
-            viewModel?.loadArtworkDetail("anyId")
+            val artwork = viewModel?.loadArtworkDetail("anyId") as MutableLiveData
+            artwork.observeForever(observer)
 
             verify(observer).onChanged(Response.Loading())
 
             verify(observer).onChanged(expectedResponse)
 
-            removeObserver(viewModel?.artwork, observer)
+            removeObserver(artwork, observer)
         }
     }
 
@@ -110,7 +110,7 @@ class ArtworkViewModelTest {
 
             whenever(mockedArtworkDataSource.loadArtworks(Collection.Unknown, 0)).thenReturn(flow { emit(expectedResponse) } )
 
-            viewModel?.loadArtworks()
+            viewModel?.loadArtworks(Collection.Unknown)
 
             verify(observer).onChanged(Response.Loading())
 
@@ -129,7 +129,7 @@ class ArtworkViewModelTest {
 
             whenever(mockedArtworkDataSource.loadArtworks(Collection.Unknown, 0)).thenReturn(flow { emit(expectedResponse) } )
 
-            viewModel?.loadArtworks()
+            viewModel?.loadArtworks(Collection.Unknown)
 
             verify(observer).onChanged(Response.Loading())
 

@@ -1,6 +1,9 @@
 package com.santukis.cleanarchitecture.artwork.data.datasources
 
 import androidx.room.Room
+import androidx.test.espresso.Espresso.onData
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.ViewAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.santukis.cleanarchitecture.artwork.ArtworkDataProvider
@@ -15,6 +18,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.EnumSet.allOf
 
 @RunWith(AndroidJUnit4::class)
 class LocalArtworkDataSourceTest {

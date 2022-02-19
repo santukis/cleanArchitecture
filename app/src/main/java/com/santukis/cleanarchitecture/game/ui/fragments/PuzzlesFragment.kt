@@ -1,5 +1,6 @@
 package com.santukis.cleanarchitecture.game.ui.fragments
 
+import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -19,7 +20,7 @@ import com.santukis.cleanarchitecture.game.domain.model.Difficulty
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.ui.binding.PuzzleViewHolder
 
-class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListener {
+class PuzzlesFragment : BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListener {
 
     private val puzzleAdapter: ItemsAdapter<Puzzle> by lazy {
         ItemsAdapter(ViewHolderProvider(itemViewHolder = { parent, viewType ->
@@ -45,14 +46,6 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
     override fun initializeViewListeners(binding: FragmentPuzzlesBinding) {
         super.initializeViewListeners(binding)
         puzzleAdapter.addOnItemClickListener(this)
-        gameViewModel?.puzzles?.observe(this) { response ->
-            binding.progress.isVisible = response is Response.Loading
-
-            when (response) {
-                is Response.Success -> puzzleAdapter.showItems(response.data) { p1, p2 -> p1.id == p2.id }
-                is Response.Error -> Toast.makeText(binding.root.context, "Unable to load Puzzles", Toast.LENGTH_SHORT).show()
-            }
-        }
         gameViewModel?.difficulty?.observe(this) { difficulty ->
             binding.easy.isSelected = difficulty == Difficulty.Easy
             binding.easyText.isSelected = difficulty == Difficulty.Easy
@@ -69,7 +62,7 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.ongoing_puzzles -> {
                 findNavController().navigate(R.id.openOngoingPuzzles)
                 true
@@ -83,12 +76,24 @@ class PuzzlesFragment: BaseFragment<FragmentPuzzlesBinding>(), OnItemClickListen
     }
 
     private fun loadData() {
-        gameViewModel?.loadPuzzles()
+        gameViewModel?.loadPuzzles()?.observe(this) { response ->
+            binding.progress.isVisible = response is Response.Loading
+
+            when (response) {
+                is Response.Success -> puzzleAdapter.showItems(response.data) { p1, p2 -> p1.id == p2.id }
+                is Response.Error -> Toast.makeText(binding.root.context, "Unable to load Puzzles", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onItemClick(view: View, item: Any) {
         if (item is Puzzle) {
-            findNavController().navigate(PuzzlesFragmentDirections.openPuzzleGame(item.id, gameViewModel?.difficulty?.value?.ordinal ?: Difficulty.Easy.ordinal))
+            findNavController().navigate(
+                PuzzlesFragmentDirections.openPuzzleGame(
+                    item.id,
+                    gameViewModel?.difficulty?.value?.ordinal ?: Difficulty.Easy.ordinal
+                )
+            )
         }
     }
 }
