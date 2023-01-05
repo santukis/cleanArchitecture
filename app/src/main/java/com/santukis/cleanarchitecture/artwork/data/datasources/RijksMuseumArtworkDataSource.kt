@@ -26,12 +26,12 @@ class RijksMuseumArtworkDataSource(
                 ).items.map { it.toArtwork().apply { shouldBeUpdated = true } }
 
                 when (artworks.isNullOrEmpty()) {
-                    true -> emit(Response.Error<List<Artwork>>(Exception("No more items")))
+                    true -> emit(Response.Error(Exception("No more items")))
                     else -> emit(Response.Success(artworks))
                 }
 
             } catch (exception: Exception) {
-                emit(Response.Error<List<Artwork>>(exception))
+                emit(Response.Error(exception))
             }
         }
 

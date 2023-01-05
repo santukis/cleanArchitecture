@@ -12,11 +12,11 @@ import com.santukis.cleanarchitecture.game.ui.viewmodels.GameViewModel
 import com.santukis.navigator.Navigator
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.di
+import org.kodein.di.android.x.closestDI
 
 abstract class BaseFragment<Binding: ViewBinding>: Fragment(), DIAware {
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     protected lateinit var binding: Binding
 

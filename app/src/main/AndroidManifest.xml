@@ -16,7 +16,8 @@
         android:networkSecurityConfig="@xml/network_security_configuration"
         android:theme="@style/Theme.CleanArchitecture">
 
-        <activity android:name=".core.ui.activities.MainActivity">
+        <activity android:name=".core.ui.activities.MainActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

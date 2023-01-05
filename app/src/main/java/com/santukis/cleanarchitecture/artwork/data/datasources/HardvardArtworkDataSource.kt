@@ -33,7 +33,7 @@ class HardvardArtworkDataSource(
                 }
 
             } catch (exception: Exception) {
-                emit(Response.Error<List<Artwork>>(exception))
+                emit(Response.Error(exception))
             }
         }
 }

@@ -12,12 +12,12 @@ import com.santukis.navigator.Navigator
 import com.santukis.navigator.NavigatorFactory
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.di
+import org.kodein.di.android.closestDI
 import org.kodein.di.instance
 
 abstract class BaseActivity<Binding: ViewBinding>: AppCompatActivity() , DIAware {
 
-    override val di: DI by di()
+    override val di: DI by closestDI()
 
     private val viewModelFactory: ViewModelProvider.Factory by instance()
 

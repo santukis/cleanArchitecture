@@ -31,7 +31,7 @@ class ChicagoArtworkDataSource(
                     else -> emit(Response.Success(artworks.map { it.toArtwork() }))
                 }
             } catch (exception: Exception) {
-                emit(Response.Error<List<Artwork>>(exception))
+                emit(Response.Error(exception))
             }
         }
 }
