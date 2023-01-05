@@ -10,13 +10,12 @@ def credentialsProperties = new Properties()
 credentialsProperties.load(new FileInputStream(credentialsPropertiesFile))
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.santukis.cleanarchitecture"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -53,12 +52,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     sourceSets {
@@ -86,43 +85,41 @@ android {
 
 dependencies {
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.core:core-ktx:1.6.0-rc01'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     //Kodein
-    implementation 'org.kodein.di:kodein-di-framework-android-core:7.5.0'
-    implementation 'org.kodein.di:kodein-di-framework-android-x:7.5.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-core:7.15.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:7.15.0'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation('com.squareup.retrofit2:converter-moshi:2.9.0')
-    implementation("com.squareup.moshi:moshi:1.11.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.2.0'
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 
     //Room
-    def room_version = '2.3.0'
+    def room_version = '2.4.3'
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     //Navigator
-    def nav_version = '2.3.5'
+    def nav_version = '2.5.3'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'com.github.santukis:navigator:1.1.1@aar'
 
     //LiveData
-    def lifecycle_version = "2.3.1"
+    def lifecycle_version = "2.5.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -138,21 +135,21 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Testing
-    testImplementation 'junit:junit:4.13.1'
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.2.0")
-    testImplementation("com.squareup.okhttp3:okhttp:4.2.0")
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.3")
     testImplementation "com.google.truth:truth:1.0.1"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.8'
-    testImplementation "androidx.test.ext:junit-ktx:1.1.2"
-    testImplementation "androidx.test:core-ktx:1.3.0"
-    testImplementation "org.robolectric:robolectric:4.4"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation "androidx.test.ext:junit-ktx:1.1.5"
+    testImplementation "androidx.test:core-ktx:1.5.0"
+    testImplementation "org.robolectric:robolectric:4.5.1"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
-    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation 'org.mockito:mockito-core:3.9.0'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 

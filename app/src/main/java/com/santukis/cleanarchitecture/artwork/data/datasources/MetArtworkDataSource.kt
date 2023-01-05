@@ -23,11 +23,11 @@ class MetArtworkDataSource(private val client: HttpClient = HttpClient(host = Bu
                 ).ids
 
                 when(ids.isNullOrEmpty()) {
-                    true -> emit(Response.Error<List<Artwork>>(Exception("No more items")))
+                    true -> emit(Response.Error(Exception("No more items")))
                     false -> emit(Response.Success(loadArtworks(ids = ids.subList(lastItem, lastItem + MAX_ITEM_SIZE))))
                 }
             } catch (exception: Exception) {
-                emit(Response.Error<List<Artwork>>(exception))
+                emit(Response.Error(exception))
             }
         }
 

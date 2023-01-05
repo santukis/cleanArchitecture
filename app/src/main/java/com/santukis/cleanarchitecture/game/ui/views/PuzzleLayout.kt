@@ -69,12 +69,12 @@ class PuzzleLayout @JvmOverloads constructor(
             return true
         }
 
-        override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
+        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
             isScaling.getAndSet(true)
             return super.onScaleBegin(detector)
         }
 
-        override fun onScaleEnd(detector: ScaleGestureDetector?) {
+        override fun onScaleEnd(detector: ScaleGestureDetector) {
             isScaling.getAndSet(false)
             super.onScaleEnd(detector)
         }

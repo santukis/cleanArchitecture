@@ -12,15 +12,12 @@ import com.frikiplanet.proteo.ItemsAdapter
 import com.frikiplanet.proteo.OnItemClickListener
 import com.frikiplanet.proteo.ViewHolderProvider
 import com.frikiplanet.proteo.decorations.MarginItemDecoration
-import com.santukis.cleanarchitecture.R
 import com.santukis.cleanarchitecture.core.domain.model.Response
 import com.santukis.cleanarchitecture.core.ui.fragments.BaseFragment
 import com.santukis.cleanarchitecture.databinding.ElementOngoingPuzzleItemBinding
-import com.santukis.cleanarchitecture.databinding.ElementPuzzleItemBinding
 import com.santukis.cleanarchitecture.databinding.FragmentOngoingPuzzlesBinding
 import com.santukis.cleanarchitecture.game.domain.model.Puzzle
 import com.santukis.cleanarchitecture.game.ui.binding.OngoingPuzzleViewHolder
-import com.santukis.cleanarchitecture.game.ui.binding.PuzzleViewHolder
 
 class OngoingPuzzlesFragment: BaseFragment<FragmentOngoingPuzzlesBinding>(), OnItemClickListener {
 

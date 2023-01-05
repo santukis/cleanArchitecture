@@ -22,7 +22,7 @@ class RemoteArtworkDataSource(
                     .collect { response ->
                         when(response) {
                             is Response.Success -> emit(Response.Success(listOf(ArtworkCollection(collection, response.data))))
-                            is Response.Error -> emit(Response.Error<List<ArtworkCollection>>(response.error))
+                            is Response.Error -> emit(Response.Error(response.error))
                         }
                     }
             }
