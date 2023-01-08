@@ -12,7 +12,7 @@ Some screen captures to show the app functions
      <td>Favourite Artworks</td>
   </tr>
   <tr>
-    <td><img src="/art/00.png" width=180></td>
+    <td><img src="/art/00.jpg" width=180></td>
     <td><img src="/art/01.png" width=180></td>
     <td><img src="/art/02.png" width=180></td>
     <td><img src="/art/03.png" width=180></td>
@@ -24,7 +24,7 @@ Some screen captures to show the app functions
      <td>Game Score</td>
   </tr>
   <tr>
-    <td><img src="/art/07.png" width=180></td>
+    <td><img src="/art/07.jpg" width=180></td>
     <td><img src="/art/04.png" width=180></td>
     <td><img src="/art/05.png" width=180></td>
     <td><img src="/art/06.png" width=180></td>
